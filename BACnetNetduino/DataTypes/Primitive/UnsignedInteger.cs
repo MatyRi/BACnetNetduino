@@ -7,49 +7,45 @@ namespace BACnetNetduino.DataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 2;
 
-        private IntX bValue;
-        private int smallValue;
-        private BitArray bigValue;
+        private uint internalValue;
 
-        public UnsignedInteger(int value)
+        public UnsignedInteger(uint value)
         {
             if (value < 0)
                 throw new ArgumentException("Value cannot be less than zero");
-            smallValue = value;
+            internalValue = value;
         }
 
-        public UnsignedInteger(long value)
+        /*public UnsignedInteger(long value)
         {
             bigValue = new BitArray();.valueOf(value);
-        }
+        }*/
 
-        public UnsignedInteger(BitArray value)
+        /*public UnsignedInteger(BitArray value)
         {
             if (value.signum() == -1)
                 throw new ArgumentException("Value cannot be less than zero");
             bigValue = value;
+        }*/
+
+        public uint intValue()
+        {
+            return internalValue;
         }
 
-        public int intValue()
+        /*public long longValue()
         {
             if (bigValue == null)
-                return smallValue;
-            return bigValue.intValue();
-        }
-
-        public long longValue()
-        {
-            if (bigValue == null)
-                return smallValue;
+                return internalValue;
             return bigValue.longValue();
-        }
+        }*/
 
-        public BigInteger bigIntegerValue()
+        /*public BigInteger bigIntegerValue()
         {
             if (bigValue == null)
-                return BigInteger.valueOf(smallValue);
+                return BigInteger.valueOf(internalValue);
             return bigValue;
-        }
+        }*/
 
         //
         // Reading and writing
@@ -60,12 +56,12 @@ namespace BACnetNetduino.DataTypes.Primitive
             if (length < 4)
             {
                 while (length > 0)
-                    smallValue |= (queue.pop() & 0xff) << (--length * 8);
+                    internalValue |= (uint)(queue.popU1B() & 0xff) << (--length * 8);
             }
             else {
                 byte[] bytes = new byte[length + 1];
-                queue.pop(bytes, 1, length);
-                bigValue = new BigInteger(bytes);
+                queue.Read(bytes, 1, length);
+                //bigValue = new BigInteger(bytes);
             }
         }
 
@@ -75,7 +71,7 @@ namespace BACnetNetduino.DataTypes.Primitive
             if (bigValue == null)
             {
                 while (length > 0)
-                    queue.push(smallValue >> (--length * 8));
+                    queue.push(internalValue >> (--length * 8));
             }
             else {
                 byte[] bytes = new byte[length];
@@ -92,24 +88,24 @@ namespace BACnetNetduino.DataTypes.Primitive
 
     protected override long getLength()
         {
-            if (bigValue == null)
-            {
+            //if (bigValue == null)
+            //{
                 int length;
-                if (smallValue < 0x100)
+                if (internalValue < 0x100)
                     length = 1;
-                else if (smallValue < 0x10000)
+                else if (internalValue < 0x10000)
                     length = 2;
-                else if (smallValue < 0x1000000)
+                else if (internalValue < 0x1000000)
                     length = 3;
                 else
                     length = 4;
 
                 return length;
-            }
+            //}
 
-            if (bigValue.intValue() == 0)
-                return 1;
-            return (bigValue.bitLength() + 7) / 8;
+            //if (bigValue.intValue() == 0)
+            //    return 1;
+            //return (bigValue.bitLength() + 7) / 8;
         }
 
     protected override byte getTypeId()
@@ -119,9 +115,8 @@ namespace BACnetNetduino.DataTypes.Primitive
 
     public override string ToString()
         {
-            if (bigValue == null)
-                return Integer.toString(smallValue);
-            return bigValue.ToString();
+            return internalValue.ToString();
+
         }
     }
 }

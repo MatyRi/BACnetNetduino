@@ -7,9 +7,9 @@ namespace BACnetNetduino.DataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 9;
 
-        public Enumerated(int value) : base(value) { }
+        public Enumerated(uint value) : base(value) { }
 
-        public Enumerated(BitArray value) : base(value) { }
+        //public Enumerated(BitArray value) : base(value) { }
 
         public byte byteValue()
         {

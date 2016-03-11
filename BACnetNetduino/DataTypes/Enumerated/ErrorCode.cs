@@ -106,13 +106,13 @@ namespace BACnetNetduino.DataTypes.Enumerated
             noAlarmConfigured, logBufferFull, loggedValuePurged, noPropertySpecified, notConfiguredForTriggeredLogging,
             communicationDisabled, unknownFileSize, };
 
-    public ErrorCode(int value) : base(value) { }
+    public ErrorCode(uint value) : base(value) { }
 
     public ErrorCode(ByteStream queue) : base(queue) { }
 
         public override string ToString()
     {
-        int type = intValue();
+        uint type = intValue();
         if (type == other.intValue())
             return "Other";
         if (type == authenticationFailed.intValue())
@@ -277,4 +277,3 @@ namespace BACnetNetduino.DataTypes.Enumerated
     }
 }
     }
-}

@@ -12,7 +12,7 @@ namespace BACnetNetduino.DataTypes.Enumerated
 
         public static readonly Segmentation[] ALL = { segmentedBoth, segmentedTransmit, segmentedReceive, noSegmentation, };
 
-        public Segmentation(int value) : base(value) { }
+        public Segmentation(uint value) : base(value) { }
 
         public Segmentation(ByteStream queue) : base(queue) { }
 
@@ -26,9 +26,9 @@ namespace BACnetNetduino.DataTypes.Enumerated
         return this.Equals(segmentedBoth) || this.Equals(segmentedReceive);
     }
 
-    public string ToString()
+    public override string ToString()
     {
-        int type = intValue();
+        uint type = intValue();
         if (type == segmentedBoth.intValue())
             return "both";
         if (type == segmentedTransmit.intValue())

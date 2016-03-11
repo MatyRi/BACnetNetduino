@@ -22,17 +22,17 @@ namespace BACnetNetduino.DataTypes.Constructed
                 this.errorCode = e.getErrorCode();
             }
 
-        public override void write(ByteStream queue)
+            /*public override void write(ByteStream queue)
             {
                 write(queue, errorClass);
                 write(queue, errorCode);
-            }
+            }*/
 
             public BACnetError(ByteStream queue) // throws BACnetException
             {
-                errorClass = read(queue, ErrorClass.class);
-            errorCode = read(queue, ErrorCode.class);
-        }
+                errorClass = new ErrorClass(queue);
+                errorCode = new ErrorCode(queue);
+            }
 
         public ErrorClass getErrorClass()
         {
@@ -46,7 +46,7 @@ namespace BACnetNetduino.DataTypes.Constructed
 
         public bool equals(ErrorClass errorClass, ErrorCode errorCode)
         {
-            return this.errorClass.equals(errorClass) && this.errorCode.equals(errorCode);
+            return this.errorClass.Equals(errorClass) && this.errorCode.Equals(errorCode);
         }
 
         public override string ToString()

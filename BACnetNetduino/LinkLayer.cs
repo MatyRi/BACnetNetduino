@@ -12,7 +12,7 @@ namespace BACnetNetduino
     internal class LinkLayer
     {
 
-        private static readonly int DEFAULT_PORT = 47808;
+        public static readonly int DEFAULT_PORT = 47808; // 0xBAC0
 
         readonly Thread _receiverThread;
         private readonly int _port;

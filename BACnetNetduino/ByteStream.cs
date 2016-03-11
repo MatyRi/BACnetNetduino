@@ -38,6 +38,11 @@ namespace BACnetNetduino
             source.Read(buff, 0, buff.Length);
         }
 
+        public void Read(byte[] buff, int start, int length)
+        {
+            source.Read(buff, 0, buff.Length);
+        }
+
         public short ReadShort()
         {
             return (short)((toInt((byte)source.ReadByte()) << 8) | toInt((byte)source.ReadByte()));
@@ -53,14 +58,14 @@ namespace BACnetNetduino
             return b & 0xff;
         }
 
-        public int popU1B()
+        public byte popU1B()
         {
-            return source.ReadByte() & 0xff;
+            return (byte) (source.ReadByte() & 0xff);
         }
 
-        public int popU2B()
+        public short popU2B()
         {
-            return (source.ReadByte() & 0xff) << 8 | source.ReadByte() & 0xff;
+            return (short) ((source.ReadByte() & 0xff) << 8 | source.ReadByte() & 0xff);
         }
 
         public int popU3B()
@@ -73,9 +78,31 @@ namespace BACnetNetduino
             return (source.ReadByte() & 0xff) << 24 | (source.ReadByte() & 0xff) << 16 | (source.ReadByte() & 0xff) << 8 | source.ReadByte() & 0xff;
         }
 
-        public long popU4B()
+        public uint popU4B()
         {
-            return (long)(source.ReadByte() & 0xff) << 24 | (long)(source.ReadByte() & 0xff) << 16 | (long)(source.ReadByte() & 0xff) << 8 | (long)(source.ReadByte() & 0xff);
+            return (uint)(source.ReadByte() & 0xff) << 24 | (uint)(source.ReadByte() & 0xff) << 16 | (uint)(source.ReadByte() & 0xff) << 8 | (uint)(source.ReadByte() & 0xff);
+        }
+
+        public float ReadFloat()
+        {
+            byte[] source = new byte[4];
+            Read(source);
+            if (BitConverter.IsLittleEndian)
+            {
+                // TODO Reverse
+            }
+            return System.BitConverter.ToSingle(source, 0);
+        }
+
+        public double ReadDouble()
+        {
+            byte[] source = new byte[8];
+            Read(source);
+            if (BitConverter.IsLittleEndian)
+            {
+                // TODO Reverse
+            }
+            return System.BitConverter.ToDouble(source, 0);
         }
 
         [Obsolete]

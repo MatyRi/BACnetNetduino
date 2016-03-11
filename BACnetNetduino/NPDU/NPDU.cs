@@ -2,17 +2,21 @@ namespace BACnetNetduino.NPDU
 {
     class NPDU
     {
-        private int version;
-        private BitArray control;
-        private int destinationNetwork;
-        private int destinationLength;
+        private byte version;
+        private BitArray control; // 1 byte
+
+        private short destinationNetworkAddress;
+        private byte destinationMacLyerAddressLength;
         private byte[] destinationAddress;
-        private int sourceNetwork;
-        private int sourceLength;
+
+        private short sourceNetworkAddress;
+        private byte sourceMacLyerAddressLength;
         private byte[] sourceAddress;
-        private int hopCount;
-        private int messageType;
-        private int vendorId;
+
+        private byte hopCount;
+
+        private byte messageType;
+        private short vendorId;
 
         private NPDU()
         {
@@ -23,25 +27,26 @@ namespace BACnetNetduino.NPDU
 
             NPDU result = new NPDU();
 
-            result.version = source.ReadIntByte();
-            result.control = new BitArray(new[] { (byte) (source.ReadIntByte()) });
+            result.version = source.ReadByte();
+            result.control = new BitArray(new[] { source.ReadByte() });
 
             if (result.control.Get(5))
             {
-                result.destinationNetwork = source.popU2B();
-                result.destinationLength = source.popU1B();
-                if (result.destinationLength > 0)
+                result.destinationNetworkAddress = source.popU2B();
+                result.destinationMacLyerAddressLength = source.popU1B();
+                if (result.destinationMacLyerAddressLength > 0)
                 {
-                    result.destinationAddress = new byte[result.destinationLength];
+                    result.destinationAddress = new byte[result.destinationMacLyerAddressLength];
                     source.pop(result.destinationAddress);
                 }
             }
 
             if (result.control.Get(3))
             {
-                result.sourceNetwork = source.popU2B();
-                result.sourceLength = source.popU1B();
-                result.sourceAddress = new byte[result.sourceLength];
+                // TODO Check address length
+                result.sourceNetworkAddress = source.popU2B();
+                result.sourceMacLyerAddressLength = source.popU1B();
+                result.sourceAddress = new byte[result.sourceMacLyerAddressLength];
                 source.pop(result.destinationAddress);
             }
 
@@ -71,7 +76,7 @@ namespace BACnetNetduino.NPDU
             control = BigInteger.valueOf(0);
 
             control = control.setBit(5);
-            destinationNetwork = 0xFFFF;
+            destinationNetworkAddress = 0xFFFF;
             hopCount = 0xFF;
 
             setSourceAddress(source);
@@ -85,10 +90,10 @@ namespace BACnetNetduino.NPDU
             if (destination != null)
             {
                 control = control.setBit(5);
-                destinationNetwork = destination.getNetworkNumber().intValue();
+                destinationNetworkAddress = destination.getNetworkNumber().intValue();
                 destinationAddress = destination.getMacAddress().getBytes();
                 if (destinationAddress != null)
-                    destinationLength = destinationAddress.length;
+                    destinationMacLyerAddressLength = destinationAddress.length;
                 hopCount = 0xFF;
             }
 
@@ -125,8 +130,8 @@ namespace BACnetNetduino.NPDU
 
             if (control.testBit(5))
             {
-                queue.pushU2B(destinationNetwork);
-                queue.push(destinationLength);
+                queue.pushU2B(destinationNetworkAddress);
+                queue.push(destinationMacLyerAddressLength);
                 if (destinationAddress != null)
                     queue.push(destinationAddress);
             }
@@ -156,7 +161,7 @@ namespace BACnetNetduino.NPDU
 
         public bool isDestinationBroadcast()
         {
-            return destinationLength == 0;
+            return destinationMacLyerAddressLength == 0;
         }
 
         public bool hasSourceInfo()
@@ -191,12 +196,12 @@ namespace BACnetNetduino.NPDU
 
         public int getDestinationLength()
         {
-            return destinationLength;
+            return destinationMacLyerAddressLength;
         }
 
         public int getDestinationNetwork()
         {
-            return destinationNetwork;
+            return destinationNetworkAddress;
         }
 
         public int getHopCount()
@@ -216,12 +221,12 @@ namespace BACnetNetduino.NPDU
 
         public int getSourceLength()
         {
-            return sourceLength;
+            return sourceMacLyerAddressLength;
         }
 
         public int getSourceNetwork()
         {
-            return sourceNetwork;
+            return sourceNetworkAddress;
         }
 
         public int getVendorId()

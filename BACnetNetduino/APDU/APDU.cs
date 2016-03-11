@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using BACnetNetduino.Exception;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino.APDU
@@ -28,7 +29,19 @@ namespace BACnetNetduino.APDU
                 return Reject.Parse(source);
             if (type == Abort.TYPE_ID)
                 return Abort.Parse(source);
-            throw new Exception("Unknown APDU Type: " + BitConverter.ToString(new[] {type}));
+            throw new IllegalPduTypeException("Unknown APDU Type: " + BitConverter.ToString(new[] {type}));
         }
+
+        public abstract byte getPduType();
+
+        //public abstract void write(ByteStream queue);
+
+        protected int getShiftedTypeId(byte typeId)
+        {
+            return typeId << 4;
+        }
+
+        public abstract bool expectsReply();
+
     }
 }

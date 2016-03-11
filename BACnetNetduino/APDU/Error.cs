@@ -25,12 +25,12 @@ namespace BACnetNetduino.APDU
             return TYPE_ID;
         }
 
-        public override void write(ByteStream queue)
+        /*public override void write(ByteStream queue)
         {
             queue.push(getShiftedTypeId(TYPE_ID));
             queue.push(originalInvokeId);
             error.write(queue);
-        }
+        }*/
 
         Error(ByteStream queue) // throws BACnetException
         {
