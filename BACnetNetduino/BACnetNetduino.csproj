@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>BACnetNetduino</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BACnetNetduino</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2284E1BD-6560-4A8F-B710-040C8591273A}</ProjectGuid>
+    <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
+    <DeployDevice>Netduino</DeployDevice>
+    <DeployTransport>USB</DeployTransport>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="APDU\Abort.cs" />
+    <Compile Include="APDU\AckAPDU.cs" />
+    <Compile Include="APDU\APDU.cs" />
+    <Compile Include="APDU\ComplexACK.cs" />
+    <Compile Include="APDU\ConfirmedRequest.cs" />
+    <Compile Include="APDU\Error.cs" />
+    <Compile Include="APDU\Reject.cs" />
+    <Compile Include="APDU\SegmentACK.cs" />
+    <Compile Include="APDU\SimpleACK.cs" />
+    <Compile Include="APDU\UnconfirmedRequest.cs" />
+    <Compile Include="ApplicationLayer.cs" />
+    <Compile Include="BACnetStack.cs" />
+    <Compile Include="BACnetUtils.cs" />
+    <Compile Include="BitArray.cs" />
+    <Compile Include="BVLC.cs" />
+    <Compile Include="ByteStream.cs" />
+    <Compile Include="DataTypes\Constructed\Address.cs" />
+    <Compile Include="DataTypes\AmbiguousValue.cs" />
+    <Compile Include="DataTypes\Constructed\BACnetError.cs" />
+    <Compile Include="DataTypes\Constructed\BaseType.cs" />
+    <Compile Include="DataTypes\Encodable.cs" />
+    <Compile Include="DataTypes\Enumerated\ErrorClass.cs" />
+    <Compile Include="DataTypes\Enumerated\ErrorCode.cs" />
+    <Compile Include="DataTypes\Enumerated\ObjectType.cs" />
+    <Compile Include="DataTypes\Enumerated\RejectReason.cs" />
+    <Compile Include="DataTypes\Enumerated\Segmentation.cs" />
+    <Compile Include="DataTypes\Error\BaseError.cs" />
+    <Compile Include="DataTypes\Error\ChangeListError.cs" />
+    <Compile Include="DataTypes\Error\ConfirmedPrivateTransferError.cs" />
+    <Compile Include="DataTypes\Error\CreateObjectError.cs" />
+    <Compile Include="DataTypes\Error\VTCloseError.cs" />
+    <Compile Include="DataTypes\Error\WritePropertyMultipleError.cs" />
+    <Compile Include="DataTypes\Primitive\Enumerated.cs" />
+    <Compile Include="DataTypes\Primitive\ObjectIdentifier.cs" />
+    <Compile Include="DataTypes\Primitive\OctetString.cs" />
+    <Compile Include="DataTypes\Primitive\Primitive.cs" />
+    <Compile Include="DataTypes\Primitive\UnsignedInteger.cs" />
+    <Compile Include="DataTypes\SequenceDefinition.cs" />
+    <Compile Include="DataTypes\TagData.cs" />
+    <Compile Include="DataTypes\ThreadLocalObjectTypeStack.cs" />
+    <Compile Include="DebuggerBrowsableState.cs" />
+    <Compile Include="Enums\BVCLEnums.cs" />
+    <Compile Include="Exception\AbortAPDUException.cs" />
+    <Compile Include="Exception\BACnetErrorException.cs" />
+    <Compile Include="Exception\BACnetException.cs" />
+    <Compile Include="Exception\BACnetRejectException.cs" />
+    <Compile Include="Exception\BACnetRuntimeException.cs" />
+    <Compile Include="Exception\BACnetServiceException.cs" />
+    <Compile Include="Exception\BACnetTimeoutException.cs" />
+    <Compile Include="Exception\ConfirmedRequestParseException.cs" />
+    <Compile Include="Exception\ErrorAPDUException.cs" />
+    <Compile Include="Exception\IllegalPduTypeException.cs" />
+    <Compile Include="Exception\PropertyValueException.cs" />
+    <Compile Include="Exception\ReflectionException.cs" />
+    <Compile Include="Exception\RejectAPDUException.cs" />
+    <Compile Include="Exception\SegmentedMessageAbortedException.cs" />
+    <Compile Include="NetworkLayer.cs" />
+    <Compile Include="NPDU\NPDU.cs" />
+    <Compile Include="LinkLayer.cs" />
+    <Compile Include="NPDU\MessageValidationAssertionException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Service\Service.cs" />
+    <Compile Include="Service\Unconfirmed\IAmRequest.cs" />
+    <Compile Include="Service\Unconfirmed\UnconfirmedRequestService.cs" />
+    <Compile Include="Service\VendorServiceKey.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Hardware" />
+    <Reference Include="Microsoft.SPOT.Hardware.PWM" />
+    <Reference Include="Microsoft.SPOT.Hardware.SerialPort" />
+    <Reference Include="Microsoft.SPOT.Native" />
+    <Reference Include="Microsoft.SPOT.Net" />
+    <Reference Include="SecretLabs.NETMF.Hardware" />
+    <Reference Include="SecretLabs.NETMF.Hardware.Netduino" />
+    <Reference Include="System" />
+    <Reference Include="GoBus" />
+    <Reference Include="System.Ftp" />
+    <Reference Include="System.Http" />
+    <Reference Include="System.IO" />
+    <Reference Include="System.Net.Security" />
+    <Reference Include="System.Security" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataTypes\EventParameter\" />
+    <Folder Include="DataTypes\NotificationParameter\" />
+  </ItemGroup>
+</Project>
