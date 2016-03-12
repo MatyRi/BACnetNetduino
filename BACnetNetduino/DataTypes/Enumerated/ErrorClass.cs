@@ -16,13 +16,13 @@ namespace BACnetNetduino.DataTypes.Enumerated
 
         public static readonly ErrorClass[] ALL = { device, objectClass, property, resources, security, services, vt, communication, };
 
-    public ErrorClass(int value) : base(value) { }
+    public ErrorClass(uint value) : base(value) { }
 
     public ErrorClass(ByteStream queue) : base(queue) { }
 
     public override string ToString()
     {
-        int type = intValue();
+        uint type = intValue();
         if (type == device.intValue())
             return "Device";
         if (type == objectClass.intValue())

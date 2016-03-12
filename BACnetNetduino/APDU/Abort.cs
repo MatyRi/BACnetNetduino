@@ -52,7 +52,7 @@ namespace BACnetNetduino.APDU
             queue.push(abortReason);
         }*/
 
-        Abort(ByteStream queue)
+        internal Abort(ByteStream queue)
         {
             server = (queue.popU1B() & 1) == 1;
             originalInvokeId = queue.ReadByte();

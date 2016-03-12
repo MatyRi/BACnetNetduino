@@ -1,9 +1,12 @@
 using System;
+using BACnetNetduino.DataTypes.Constructed;
+using BACnetNetduino.Enums;
+using BACnetNetduino.Service.Confirmed;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino.APDU
 {
-    class ConfirmedRequest : APDU
+    class ConfirmedRequest : APDU, ISegmentable
     {
         public static readonly byte TYPE_ID = 0;
 
@@ -146,20 +149,20 @@ namespace BACnetNetduino.APDU
             this.serviceChoice = serviceChoice;
         }
 
-        override
-    public byte getPduType()
+        
+        public override byte getPduType()
         {
             return TYPE_ID;
         }
 
-        override
-    public byte getInvokeId()
+        
+        public byte getInvokeId()
         {
             return invokeId;
         }
 
-        override
-    public int getSequenceNumber()
+        
+        public int getSequenceNumber()
         {
             return sequenceNumber;
         }
@@ -174,20 +177,20 @@ namespace BACnetNetduino.APDU
             return maxSegmentsAccepted;
         }
 
-        override
-    public bool isMoreFollows()
+        
+        public bool isMoreFollows()
         {
             return moreFollows;
         }
 
-        override
-    public int getProposedWindowSize()
+        
+        public int getProposedWindowSize()
         {
             return proposedWindowSize;
         }
 
-        override
-    public bool isSegmentedMessage()
+        
+        public bool isSegmentedMessage()
         {
             return segmentedMessage;
         }
@@ -202,14 +205,14 @@ namespace BACnetNetduino.APDU
             return serviceRequest;
         }
 
-        override
-    public void appendServiceData(ByteStream data)
+        
+        public void appendServiceData(ByteStream data)
         {
-            this.serviceData.push(data);
+            // TODO this.serviceData.push(data);
         }
 
-        override
-    public ByteStream getServiceData()
+        
+        public ByteStream getServiceData()
         {
             return serviceData;
         }
@@ -233,59 +236,60 @@ namespace BACnetNetduino.APDU
                 queue.push(serviceData);
         }*/
 
-        ConfirmedRequest(ServicesSupported servicesSupported, ByteStream queue)
+        public ConfirmedRequest(ServicesSupported servicesSupported, ByteStream queue)
         {
-        byte b = queue.pop();
-        segmentedMessage = (b & 8) != 0;
-        moreFollows = (b & 4) != 0;
-        segmentedResponseAccepted = (b & 2) != 0;
+            byte b = queue.ReadByte();
+            segmentedMessage = (b & 8) != 0;
+            moreFollows = (b & 4) != 0;
+            segmentedResponseAccepted = (b & 2) != 0;
 
-        b = queue.pop();
-        maxSegmentsAccepted = MaxSegments.valueOf((byte) ((b & 0x70) >> 4));
-        maxApduLengthAccepted = MaxApduLength.valueOf((byte) (b & 0xf));
-        invokeId = queue.pop();
-        if (segmentedMessage) {
-            sequenceNumber = queue.popU1B();
-            proposedWindowSize = queue.popU1B();
+            b = queue.ReadByte();
+            // TODO maxSegmentsAccepted = MaxSegments.valueOf((byte) ((b & 0x70) >> 4));
+            // TODO maxApduLengthAccepted = MaxApduLength.valueOf((byte) (b & 0xf));
+            invokeId = queue.ReadByte();
+            if (segmentedMessage) {
+                sequenceNumber = queue.popU1B();
+                proposedWindowSize = queue.popU1B();
+            }
+            serviceChoice = queue.ReadByte();
+            serviceData = new ByteStream(queue.ReadToEnd());
+
+            ConfirmedRequestService.checkConfirmedRequestService(servicesSupported, serviceChoice);
         }
-    serviceChoice = queue.pop();
-        serviceData = new ByteStream(queue.popAll());
 
-        ConfirmedRequestService.checkConfirmedRequestService(servicesSupported, serviceChoice);
+
+        public void parseServiceData()
+        {
+            if (serviceData != null)
+            {
+                serviceRequest = ConfirmedRequestService.createConfirmedRequestService(serviceChoice, serviceData);
+                serviceData = null;
+            }
+        }
+
+
+        public APDU clone(bool moreFollows, int sequenceNumber, int actualSegWindow, ByteStream serviceData)
+    {
+        return new ConfirmedRequest(this.segmentedMessage, moreFollows, this.segmentedResponseAccepted,
+                this.maxSegmentsAccepted, this.maxApduLengthAccepted, this.invokeId, sequenceNumber, actualSegWindow,
+                this.serviceChoice, serviceData);
     }
 
-override
-    public void parseServiceData()
-{
-        if (serviceData != null) {
-        serviceRequest = ConfirmedRequestService.createConfirmedRequestService(serviceChoice, serviceData);
-        serviceData = null;
+
+    public override string ToString()
+    {
+        return "ConfirmedRequest(segmentedMessage=" + segmentedMessage + ", moreFollows=" + moreFollows
+                + ", segmentedResponseAccepted=" + segmentedResponseAccepted + ", maxSegmentsAccepted="
+                + maxSegmentsAccepted + ", maxApduLengthAccepted=" + maxApduLengthAccepted + ", invokeId=" + invokeId
+                + ", sequenceNumber=" + sequenceNumber + ", proposedWindowSize=" + proposedWindowSize
+                + ", serviceChoice=" + serviceChoice + ", serviceRequest=" + serviceRequest + ")";
     }
-}
 
-override
-    public APDU clone(bool moreFollows, int sequenceNumber, int actualSegWindow, ByteStream serviceData)
-{
-    return new ConfirmedRequest(this.segmentedMessage, moreFollows, this.segmentedResponseAccepted,
-            this.maxSegmentsAccepted, this.maxApduLengthAccepted, this.invokeId, sequenceNumber, actualSegWindow,
-            this.serviceChoice, serviceData);
-}
 
-override
-    public string ToString()
-{
-    return "ConfirmedRequest(segmentedMessage=" + segmentedMessage + ", moreFollows=" + moreFollows
-            + ", segmentedResponseAccepted=" + segmentedResponseAccepted + ", maxSegmentsAccepted="
-            + maxSegmentsAccepted + ", maxApduLengthAccepted=" + maxApduLengthAccepted + ", invokeId=" + invokeId
-            + ", sequenceNumber=" + sequenceNumber + ", proposedWindowSize=" + proposedWindowSize
-            + ", serviceChoice=" + serviceChoice + ", serviceRequest=" + serviceRequest + ")";
-}
-
-override
-    public bool expectsReply()
-{
-    return true;
-}
+    public override bool expectsReply()
+    {
+        return true;
+    }
 
     }
 }

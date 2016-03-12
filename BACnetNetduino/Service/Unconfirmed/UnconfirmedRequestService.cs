@@ -1,11 +1,12 @@
 using System;
+using BACnetNetduino.DataTypes.Constructed;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino.Service.Unconfirmed
 {
     internal abstract class UnconfirmedRequestService : Service
     {
-        internal static UnconfirmedRequestService createUnconfirmedRequestService(byte type, ByteStream source)
+        internal static UnconfirmedRequestService createUnconfirmedRequestService(ServicesSupported Service, byte type, ByteStream source)
         {
             if (type == IAmRequest.TYPE_ID)
             {

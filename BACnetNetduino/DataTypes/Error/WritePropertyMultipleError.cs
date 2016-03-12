@@ -13,16 +13,16 @@ namespace BACnetNetduino.DataTypes.Error
             this.firstFailedWriteAttempt = firstFailedWriteAttempt;
         }
 
-        public override void write(ByteStream queue)
+        /*public override void write(ByteStream queue)
         {
             queue.push(choice);
             write(queue, error, 0);
             firstFailedWriteAttempt.write(queue, 1);
-        }
+        }*/
 
-        WritePropertyMultipleError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
+        internal WritePropertyMultipleError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
         {
-            firstFailedWriteAttempt = read(queue, typeof(ObjectPropertyReference), 1);
-    }
+            // TODO firstFailedWriteAttempt = read(queue, typeof(ObjectPropertyReference), 1);
+        }
 }
 }

@@ -72,13 +72,13 @@ namespace BACnetNetduino.DataTypes.Enumerated
             lifeSafetyPoint, lifeSafetyZone, accumulator, pulseConverter, eventLog, trendLogMultiple, loadControl,
             structuredView, accessDoor, };
 
-    public ObjectType(int value) : base(value) { }
+    public ObjectType(uint value) : base(value) { }
 
     public ObjectType(ByteStream queue) : base(queue) { }
 
-    public string toString()
+    public override string ToString()
     {
-        int type = intValue();
+        uint type = intValue();
         if (type == analogInput.intValue())
             return "Analog Input";
         if (type == analogOutput.intValue())

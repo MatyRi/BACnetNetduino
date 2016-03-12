@@ -20,7 +20,7 @@ namespace BACnetNetduino.DataTypes.Enumerated
             invalidTag, missingRequiredParameter, parameterOutOfRange, tooManyArguments, undefinedEnumeration,
             unrecognizedService, };
 
-    public RejectReason(int value) : base(value) { }
+    public RejectReason(uint value) : base(value) { }
 
     public RejectReason(ByteStream queue) : base(queue) { }
 }

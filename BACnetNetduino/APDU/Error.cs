@@ -32,10 +32,10 @@ namespace BACnetNetduino.APDU
             error.write(queue);
         }*/
 
-        Error(ByteStream queue) // throws BACnetException
+        internal Error(ByteStream queue) // throws BACnetException
         {
-            queue.pop(); // Ignore the first byte. No news there.
-            originalInvokeId = queue.pop();
+            queue.ReadByte(); // Ignore the first byte. No news there.
+            originalInvokeId = queue.ReadByte();
             error = BaseError.createBaseError(queue);
         }
 

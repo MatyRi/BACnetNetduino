@@ -8,7 +8,7 @@ namespace BACnetNetduino.DataTypes.Error
     {
         public static BaseError createBaseError(ByteStream queue)
         {
-            byte choice = queue.pop();
+            byte choice = queue.ReadByte();
 
             switch (choice)
             {
@@ -36,22 +36,22 @@ namespace BACnetNetduino.DataTypes.Error
             this.error = error;
         }
 
-        public override void write(ByteStream queue)
+        /*public override void write(ByteStream queue)
         {
             queue.push(choice);
             write(queue, error);
-        }
+        }*/
 
         public BaseError(byte choice, ByteStream queue) // throws BACnetException
         {
             this.choice = choice;
-            error = read(queue, typeof (BACnetError));
+            error = new BACnetError(queue);
         }
 
         public BaseError(byte choice, ByteStream queue, int contextId) // throws BACnetException
         {
             this.choice = choice;
-            error = read(queue, typeof (BACnetError), contextId);
+            error = new BACnetError(queue);
         }
 
         public override string ToString()

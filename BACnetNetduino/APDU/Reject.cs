@@ -14,14 +14,14 @@ namespace BACnetNetduino.APDU
          */
         private readonly RejectReason rejectReason;
 
-    public Reject(byte originalInvokeId, RejectReason rejectReason)
+        public Reject(byte originalInvokeId, RejectReason rejectReason)
         {
             this.originalInvokeId = originalInvokeId;
             this.rejectReason = rejectReason;
         }
 
-        override
-    public byte getPduType()
+        
+        public override byte getPduType()
         {
             return TYPE_ID;
         }
@@ -34,21 +34,21 @@ namespace BACnetNetduino.APDU
             queue.push(rejectReason.byteValue());
         }*/
 
-        Reject(ByteStream queue)
+        internal Reject(ByteStream queue)
         {
-            queue.pop(); // Ignore the first byte. No news there.
-            originalInvokeId = queue.pop();
+            queue.ReadByte(); // Ignore the first byte. No news there.
+            originalInvokeId = queue.ReadByte();
             rejectReason = new RejectReason(queue.popU1B());
         }
 
 
-    public override string ToString()
+        public override string ToString()
         {
             return "Reject(originalInvokeId=" + originalInvokeId + ", rejectReason=" + rejectReason + ")";
         }
 
-        override
-    public bool expectsReply()
+        
+        public override bool expectsReply()
         {
             return false;
         }

@@ -105,6 +105,16 @@ namespace BACnetNetduino
             return System.BitConverter.ToDouble(source, 0);
         }
 
+        /*public MemoryStream ReadToEnd()
+        {
+            return new MemoryStream(source.ToArray());
+        }*/
+
+        public byte[] ReadToEnd()
+        {
+            return source.ToArray();
+        }
+
         [Obsolete]
         public void pop(byte[] buff)
         {
@@ -153,5 +163,6 @@ namespace BACnetNetduino
             source.Position = tmpPosition;
             return result;
         }
+
     }
 }

@@ -9,14 +9,14 @@ namespace BACnetNetduino.DataTypes.Primitive
         public static readonly byte TYPE_ID = 12;
 
         private ObjectType objectType;
-        private int instanceNumber;
+        private uint instanceNumber;
 
-        public ObjectIdentifier(ObjectType objectType, int instanceNumber)
+        public ObjectIdentifier(ObjectType objectType, uint instanceNumber)
         {
             setValues(objectType, instanceNumber);
         }
 
-        private void setValues(ObjectType objectType, int instanceNumber)
+        private void setValues(ObjectType objectType, uint instanceNumber)
         {
             if (instanceNumber < 0 || instanceNumber > 0x3FFFFF)
                 throw new ArgumentException("Illegal instance number: " + instanceNumber);
@@ -30,14 +30,14 @@ namespace BACnetNetduino.DataTypes.Primitive
             return objectType;
         }
 
-        public int getInstanceNumber()
+        public uint getInstanceNumber()
         {
             return instanceNumber;
         }
 
         public override string ToString()
         {
-            return objectType.toString() + " " + instanceNumber;
+            return objectType.ToString() + " " + instanceNumber;
         }
 
         //
@@ -47,14 +47,14 @@ namespace BACnetNetduino.DataTypes.Primitive
         {
             readTag(queue);
 
-            int objectType = queue.popU1B() << 2;
-            int i = queue.popU1B();
+            uint objectType = (uint) (queue.popU1B() << 2);
+            uint i = queue.popU1B();
             objectType |= i >> 6;
 
             this.objectType = new ObjectType(objectType);
 
             instanceNumber = (i & 0x3f) << 16;
-            instanceNumber |= queue.popU1B() << 8;
+            instanceNumber |= (uint)queue.popU1B() << 8;
             instanceNumber |= queue.popU1B();
         }
 

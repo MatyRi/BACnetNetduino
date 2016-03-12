@@ -1,4 +1,5 @@
 using System;
+using BACnetNetduino.Service.Acknowledgement;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino.APDU
@@ -166,7 +167,7 @@ namespace BACnetNetduino.APDU
                 queue.push(serviceData);
         }*/
 
-        ComplexACK(ByteStream queue)
+        internal ComplexACK(ByteStream queue)
         {
             byte b = queue.ReadByte();
             segmentedMessage = (b & 8) != 0;
@@ -178,8 +179,8 @@ namespace BACnetNetduino.APDU
                 sequenceNumber = queue.popU1B();
                 proposedWindowSize = queue.popU1B();
             }
-            serviceChoice = queue.pop();
-            serviceData = new ByteStream(queue.popAll());
+            serviceChoice = queue.ReadByte();
+            serviceData = new ByteStream(queue.ReadToEnd());
         }
 
         public void parseServiceData()

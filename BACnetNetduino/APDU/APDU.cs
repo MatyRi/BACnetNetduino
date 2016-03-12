@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using BACnetNetduino.DataTypes.Constructed;
 using BACnetNetduino.Exception;
 using Microsoft.SPOT;
 
@@ -14,21 +15,21 @@ namespace BACnetNetduino.APDU
             type = (byte)((type & 0xff) >> 4);
 
             if (type == ConfirmedRequest.TYPE_ID)
-                return ConfirmedRequest.Parse(source);
+                return new ConfirmedRequest((ServicesSupported)null, source);
             if (type == UnconfirmedRequest.TYPE_ID)
-                return UnconfirmedRequest.Parse(source);
+                return new UnconfirmedRequest((ServicesSupported)null, source);
             if (type == SimpleACK.TYPE_ID)
-                return SimpleACK.Parse(source);
+                return new SimpleACK(source);
             if (type == ComplexACK.TYPE_ID)
-                return ComplexACK.Parse(source);
+                return new ComplexACK(source);
             if (type == SegmentACK.TYPE_ID)
-                return SegmentACK.Parse(source);
+                return new SegmentACK(source);
             if (type == Error.TYPE_ID)
-                return Error.Parse(source);
+                return new Error(source);
             if (type == Reject.TYPE_ID)
-                return Reject.Parse(source);
+                return new Reject(source);
             if (type == Abort.TYPE_ID)
-                return Abort.Parse(source);
+                return new Abort(source);
             throw new IllegalPduTypeException("Unknown APDU Type: " + BitConverter.ToString(new[] {type}));
         }
 

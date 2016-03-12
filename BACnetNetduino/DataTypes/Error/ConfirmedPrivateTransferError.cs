@@ -8,7 +8,7 @@ namespace BACnetNetduino.DataTypes.Error
 {
     class ConfirmedPrivateTransferError : BaseError
     {
-        public static readonly Map<VendorServiceKey, SequenceDefinition> vendorServiceResolutions = new HashMap<VendorServiceKey, SequenceDefinition>();
+        // TODO public static readonly Map<VendorServiceKey, SequenceDefinition> vendorServiceResolutions = new HashMap<VendorServiceKey, SequenceDefinition>();
 
         private readonly UnsignedInteger vendorId;
         private readonly UnsignedInteger serviceNumber;
@@ -22,20 +22,20 @@ namespace BACnetNetduino.DataTypes.Error
             this.errorParameters = errorParameters;
         }
 
-        public override void write(ByteStream queue)
+        /*public override void write(ByteStream queue)
         {
             queue.push(choice);
             write(queue, error, 0);
             write(queue, vendorId, 1);
             write(queue, serviceNumber, 2);
             writeOptional(queue, errorParameters, 3);
-        }
+        }*/
 
-        ConfirmedPrivateTransferError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
+        internal ConfirmedPrivateTransferError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
         {
-            vendorId = read(queue, typeof(UnsignedInteger), 1);
-            serviceNumber = read(queue, typeof(UnsignedInteger), 2);
-            errorParameters = readVendorSpecific(queue, vendorId, serviceNumber, vendorServiceResolutions, 3);
+            // TODO vendorId = read(queue, typeof(UnsignedInteger), 1);
+            // TODO  serviceNumber = read(queue, typeof(UnsignedInteger), 2);
+            // TODO errorParameters = readVendorSpecific(queue, vendorId, serviceNumber, vendorServiceResolutions, 3);
         }
     }
 }

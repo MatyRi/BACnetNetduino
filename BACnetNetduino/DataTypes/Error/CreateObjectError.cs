@@ -21,16 +21,16 @@ namespace BACnetNetduino.DataTypes.Error
             this.firstFailedElementNumber = firstFailedElementNumber;
         }
 
-        public override void write(ByteStream queue)
+        /*public override void write(ByteStream queue)
         {
             queue.push(choice);
             write(queue, error, 0);
             firstFailedElementNumber.write(queue, 1);
-        }
+        }*/
 
-        CreateObjectError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
+        internal CreateObjectError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
         {
-            firstFailedElementNumber = read(queue, typeof(UnsignedInteger), 1);
+            // TODO firstFailedElementNumber = read(queue, typeof(UnsignedInteger), 1);
         }
     }
 }
