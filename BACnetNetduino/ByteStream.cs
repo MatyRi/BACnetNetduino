@@ -10,6 +10,11 @@ namespace BACnetNetduino
 
         private readonly MemoryStream source;
 
+        public ByteStream()
+        {
+            source = new MemoryStream();
+        }
+
         public ByteStream(MemoryStream ms)
         {
             source = ms;
@@ -163,6 +168,51 @@ namespace BACnetNetduino
             source.Position = tmpPosition;
             return result;
         }
+
+
+
+
+        #region Writing
+
+        public void WriteByte(byte data)
+        {
+            source.WriteByte(data);
+        }
+
+        public void Write(ByteStream data)
+        {
+            byte[] bData = data.source.ToArray();
+            this.source.Write(bData,0,bData.Length);
+        }
+
+        public void WriteShort(short value)
+        {
+            source.WriteByte((byte)(0xff & (value >> 8)));
+            source.WriteByte((byte)(0xff & value));
+        }
+
+        public void WriteInt(int value)
+        {
+            source.WriteByte((byte)(0xff & (value >> 24)));
+            source.WriteByte((byte)(0xff & (value >> 16)));
+            source.WriteByte((byte)(0xff & (value >> 8)));
+            source.WriteByte((byte)(0xff & value));
+        }
+
+        public void WriteLong(short value)
+        {
+            source.WriteByte((byte)(0xff & (value >> 56)));
+            source.WriteByte((byte)(0xff & (value >> 48)));
+            source.WriteByte((byte)(0xff & (value >> 40)));
+            source.WriteByte((byte)(0xff & (value >> 32)));
+            source.WriteByte((byte)(0xff & (value >> 24)));
+            source.WriteByte((byte)(0xff & (value >> 16)));
+            source.WriteByte((byte)(0xff & (value >> 8)));
+            source.WriteByte((byte)(0xff & value));
+        }
+
+        #endregion
+
 
     }
 }

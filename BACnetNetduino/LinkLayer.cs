@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using BACnetNetduino.Exception;
 using Microsoft.SPOT;
 using Microsoft.SPOT.Hardware;
 using SecretLabs.NETMF.Hardware.Netduino;
@@ -18,6 +19,8 @@ namespace BACnetNetduino
         private readonly int _port;
         private bool _timeToDie;
         private readonly OutputPort led;
+
+        private Socket server;
 
         public delegate void MessageReceiverHandler(EndPoint from, byte[] data);
 
@@ -55,6 +58,8 @@ namespace BACnetNetduino
                 EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, _port);
                 serverSocket.Bind(remoteEndPoint);
 
+                server = serverSocket;
+
                 //serverSocket.Listen(5);
 
                 while (!_timeToDie)
@@ -76,6 +81,14 @@ namespace BACnetNetduino
                 }
 
 
+            }
+        }
+
+        public void SendPacket(IPEndPoint endpoint, byte[] data)
+        {
+            if (server != null)
+            {
+                server.SendTo(data, endpoint);
             }
         }
 

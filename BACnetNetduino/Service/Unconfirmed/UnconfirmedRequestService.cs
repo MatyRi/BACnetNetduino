@@ -63,14 +63,14 @@ namespace BACnetNetduino.Service.Unconfirmed
                     return new WhoHasRequest(source);
                 return null;
             }
-
+            */
             if (type == WhoIsRequest.TYPE_ID)
             {
-                if (services.isWhoIs())
-                    return new WhoIsRequest(queue);
-                return null;
+                //if (services.isWhoIs())
+                    return new WhoIsRequest(source);
+                //return null;
             }
-
+            /*
             if (type == UTCTimeSynchronizationRequest.TYPE_ID)
             {
                 if (services.isUtcTimeSynchronization())

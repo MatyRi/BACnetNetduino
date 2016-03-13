@@ -177,5 +177,6 @@ namespace BACnetNetduino.DataTypes.Primitive
                 sb.Append(ToString());
             return sb.ToString();
         }
+
     }
 }

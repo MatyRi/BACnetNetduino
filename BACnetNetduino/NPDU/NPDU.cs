@@ -1,3 +1,5 @@
+using BACnetNetduino.DataTypes.Constructed;
+
 namespace BACnetNetduino.NPDU
 {
     class NPDU
@@ -70,49 +72,48 @@ namespace BACnetNetduino.NPDU
          * @param source
          *            optional source address
          */
-        /*public NPDU(Address source)
+        public NPDU(Address source)
         {
             version = 1;
-            control = BigInteger.valueOf(0);
+            control = new BitArray(1);
 
-            control = control.setBit(5);
-            destinationNetworkAddress = 0xFFFF;
+            control.Set(5, true);
+            destinationNetworkAddress = (short) 0xFFFF;
             hopCount = 0xFF;
 
             setSourceAddress(source);
         }
 
-        public NPDU(Address destination, Address source, boolean expectsReply)
+        public NPDU(Address destination, Address source, bool expectsReply)
         {
             version = 1;
-            control = BigInteger.valueOf(0);
+            control = new BitArray(1);
 
             if (destination != null)
             {
-                control = control.setBit(5);
+                control.Set(5, true);
                 destinationNetworkAddress = destination.getNetworkNumber().intValue();
                 destinationAddress = destination.getMacAddress().getBytes();
                 if (destinationAddress != null)
-                    destinationMacLyerAddressLength = destinationAddress.length;
+                    destinationMacLyerAddressLength = (byte) destinationAddress.Length;
                 hopCount = 0xFF;
             }
 
             setSourceAddress(source);
 
             if (expectsReply)
-                control = control.setBit(2);
+                control.Set(2, true);
         }
 
-        public NPDU(Address destination, Address source, boolean expectsReply, int messageType, int vendorId)
+        public NPDU(Address destination, Address source, bool expectsReply, byte messageType, byte vendorId) : this(destination, source, expectsReply)
         {
-            this(destination, source, expectsReply);
 
-            control = control.setBit(7);
+            control.Set(7, true);
             this.messageType = messageType;
             this.vendorId = vendorId;
         }
 
-        private void setSourceAddress(Address source)
+        /*private void setSourceAddress(Address source)
         {
             if (source != null)
             {
@@ -123,36 +124,36 @@ namespace BACnetNetduino.NPDU
             }
         }*/
 
-        /*public void write(ByteQueue queue)
+        public void write(ByteStream queue)
         {
-            queue.push(version);
-            queue.push(control.intValue());
+            queue.WriteByte(version);
+            queue.WriteByte(control);
 
-            if (control.testBit(5))
+            if (control.Get(5))
             {
                 queue.pushU2B(destinationNetworkAddress);
-                queue.push(destinationMacLyerAddressLength);
+                queue.WriteByte(destinationMacLyerAddressLength);
                 if (destinationAddress != null)
-                    queue.push(destinationAddress);
+                    queue.WriteByte(destinationAddress);
             }
 
-            if (control.testBit(3))
+            if (control.Get(3))
             {
                 queue.pushU2B(sourceNetwork);
-                queue.push(sourceLength);
-                queue.push(sourceAddress);
+                queue.WriteByte(sourceLength);
+                queue.WriteByte(sourceAddress);
             }
 
-            if (control.testBit(5))
-                queue.push(hopCount);
+            if (control.Get(5))
+                queue.WriteByte(hopCount);
 
-            if (control.testBit(7))
+            if (control.Get(7))
             {
-                queue.push(messageType);
+                queue.WriteByte(messageType);
                 if (messageType >= 80)
                     queue.pushU2B(vendorId);
             }
-        }*/
+        }
 
         public bool hasDestinationInfo()
         {

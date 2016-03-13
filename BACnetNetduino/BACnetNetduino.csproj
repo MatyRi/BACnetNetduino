@@ -118,26 +118,19 @@
     <Compile Include="Service\Service.cs" />
     <Compile Include="Service\Unconfirmed\IAmRequest.cs" />
     <Compile Include="Service\Unconfirmed\UnconfirmedRequestService.cs" />
+    <Compile Include="Service\Unconfirmed\WhoIsRequest.cs" />
     <Compile Include="Service\VendorServiceKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SPOT.Hardware" />
-    <Reference Include="Microsoft.SPOT.Hardware.PWM" />
-    <Reference Include="Microsoft.SPOT.Hardware.SerialPort" />
     <Reference Include="Microsoft.SPOT.Native" />
-    <Reference Include="Microsoft.SPOT.Net" />
-    <Reference Include="SecretLabs.NETMF.Hardware" />
     <Reference Include="SecretLabs.NETMF.Hardware.Netduino" />
     <Reference Include="System" />
-    <Reference Include="GoBus" />
-    <Reference Include="System.Ftp" />
-    <Reference Include="System.Http" />
     <Reference Include="System.IO" />
-    <Reference Include="System.Net.Security" />
-    <Reference Include="System.Security" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataTypes\EventParameter\" />
     <Folder Include="DataTypes\NotificationParameter\" />
+    <Folder Include="Objects\" />
   </ItemGroup>
 </Project>

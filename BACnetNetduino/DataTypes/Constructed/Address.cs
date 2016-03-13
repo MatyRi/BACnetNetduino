@@ -8,12 +8,11 @@ namespace BACnetNetduino.DataTypes.Constructed
         public static readonly Address GLOBAL = new Address((ushort)0xFFFF, new byte[] {});
 
         private readonly ushort networkNumber;
-        private readonly OctetString macAddress;
 
         public Address(ushort networkNumber, OctetString macAddress)
         {
             this.networkNumber = networkNumber;
-            this.macAddress = macAddress;
+            this.MACAddress = macAddress;
         }
 
         public Address(ushort networkNum, byte[] macAddress)
@@ -28,5 +27,6 @@ namespace BACnetNetduino.DataTypes.Constructed
             : this(LOCAL_NETWORK, new OctetString(macAddress))
         { }
 
+        public OctetString MACAddress { get; }
     }
 }

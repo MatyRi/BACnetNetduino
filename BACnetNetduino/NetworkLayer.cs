@@ -3,6 +3,7 @@ using System.Net;
 using BACnetNetduino.DataTypes;
 using BACnetNetduino.DataTypes.Constructed;
 using BACnetNetduino.DataTypes.Primitive;
+using BACnetNetduino.Exception;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino
@@ -11,16 +12,18 @@ namespace BACnetNetduino
     {
 
         private readonly int localNetworkNumber;
+        private readonly LinkLayer link;
 
 
         public NetworkLayer(int newtrokNumber, LinkLayer linkLayer)
         {
             localNetworkNumber = newtrokNumber;
+            link = linkLayer;
             linkLayer.NewMessageReceived += OnReceived;
             //linkLayer.Start();
         }
 
-        public delegate void NPDUReceiverHandler(IPEndPoint from, NPDU.NPDU data, ByteStream raw);
+        public delegate void NPDUReceiverHandler(IPEndPoint from, Address fromAddress, OctetString linkService, NPDU.NPDU data, ByteStream raw);
 
         public event NPDUReceiverHandler NewNPDUReceived;
 
@@ -59,7 +62,72 @@ namespace BACnetNetduino
             
             // Create the APDU.
 
-            NewNPDUReceived?.Invoke(@from, npdu, bs);
+            NewNPDUReceived?.Invoke(@from, fromAddress, fromAddress.MACAddress, npdu, bs);
+        }
+
+        public void sendAPDU(Address recipient, OctetString link, APDU.APDU apdu, bool broadcast)
+        {
+            ByteStream queue = new ByteStream();
+
+        // BACnet virtual link layer detail
+
+        // BACnet/IP
+        queue.WriteByte(0x81);
+
+        // Original-Unicast-NPDU, or Original-Broadcast-NPDU
+        queue.WriteByte((byte) (broadcast? 0xb : 0xa));
+
+            // NPCI
+        ByteStream apduStream = new ByteStream();
+        writeNpci(apduStream, recipient, link, apdu);
+
+        // APDU
+        apdu.write(apduStream);
+
+            // Length
+        queue.WriteShort((short) (queue.Position + apduStream.Length + 2));
+
+        // Combine the queues
+        queue.Write(apduStream);
+
+        IPEndPoint isa;
+
+            if (recipient.isGlobal())
+            {
+                isa = getLocalBroadcastAddress().getMacAddress().getInetSocketAddress();
+            }
+            
+            else if (link != null)
+            {
+                isa = link.getInetSocketAddress();
+            }
+
+            else
+            {
+                isa = recipient.getMacAddress().getInetSocketAddress();
+            }
+            
+        this.link.SendPacket(isa, queue.ReadToEnd());
+    }
+
+        protected void writeNpci(ByteStream queue, Address recipient, OctetString link, APDU.APDU apdu)
+        {
+            NPDU.NPDU npci;
+            if (recipient.isGlobal())
+                npci = new NPDU.NPDU((Address)null);
+            else if (isLocal(recipient))
+            {
+                if (link != null)
+                    throw new RuntimeException("Invalid arguments: link service address provided for a local recipient");
+                npci = new NPDU.NPDU(null, null, apdu.expectsReply());
+            }
+            else {
+                if (link == null)
+                    throw new RuntimeException(
+                            "Invalid arguments: link service address not provided for a remote recipient");
+                npci = new NPDU.NPDU(recipient, null, apdu.expectsReply());
+            }
+            npci.write(queue);
         }
 
 
