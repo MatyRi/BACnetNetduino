@@ -2,7 +2,7 @@ using BACnetNetduino.DataTypes.Primitive;
 
 namespace BACnetNetduino.DataTypes.Constructed
 {
-    internal class Address
+    internal class Address : BaseType
     {
         private static readonly ushort LOCAL_NETWORK = 0;
         public static readonly Address GLOBAL = new Address((ushort)0xFFFF, new byte[] {});

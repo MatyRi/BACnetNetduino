@@ -5,20 +5,20 @@ namespace BACnetNetduino.NPDU
     class NPDU
     {
         private byte version;
-        private BitArray control; // 1 byte
+        private NLPCI control; // 1 byte
 
-        private short destinationNetworkAddress;
+        private ushort destinationNetworkAddress;
         private byte destinationMacLyerAddressLength;
         private byte[] destinationAddress;
 
-        private short sourceNetworkAddress;
+        private ushort sourceNetworkAddress;
         private byte sourceMacLyerAddressLength;
         private byte[] sourceAddress;
 
         private byte hopCount;
 
         private byte messageType;
-        private short vendorId;
+        private ushort vendorId;
 
         private NPDU()
         {
@@ -30,9 +30,9 @@ namespace BACnetNetduino.NPDU
             NPDU result = new NPDU();
 
             result.version = source.ReadByte();
-            result.control = new BitArray(new[] { source.ReadByte() });
+            result.control = new NLPCI(source.ReadByte());
 
-            if (result.control.Get(5))
+            if (result.control.IsDestinationSpecific)
             {
                 result.destinationNetworkAddress = source.popU2B();
                 result.destinationMacLyerAddressLength = source.popU1B();
@@ -43,7 +43,7 @@ namespace BACnetNetduino.NPDU
                 }
             }
 
-            if (result.control.Get(3))
+            if (result.control.IsSourceSpecific)
             {
                 // TODO Check address length
                 result.sourceNetworkAddress = source.popU2B();
@@ -52,10 +52,10 @@ namespace BACnetNetduino.NPDU
                 source.pop(result.destinationAddress);
             }
 
-            if (result.control.Get(5))
+            if (result.control.IsDestinationSpecific)
                 result.hopCount = source.popU1B();
 
-            if (result.control.Get(7))
+            if (result.control.IsNetworkLayerMessage)
             {
                 result.messageType = source.popU1B();
                 if (result.messageType >= 80)
@@ -75,40 +75,40 @@ namespace BACnetNetduino.NPDU
         public NPDU(Address source)
         {
             version = 1;
-            control = new BitArray(1);
+            control = new NLPCI(1); //new BitArray(1));
 
-            control.Set(5, true);
-            destinationNetworkAddress = (short) 0xFFFF;
+            //control.Set(5, true);
+            destinationNetworkAddress = ushort.MaxValue; //(ushort) 0xFFFF;
             hopCount = 0xFF;
 
-            setSourceAddress(source);
+            // TODO setSourceAddress(source);
         }
 
         public NPDU(Address destination, Address source, bool expectsReply)
         {
             version = 1;
-            control = new BitArray(1);
+            control = new NLPCI(1); //new BitArray(1));
 
             if (destination != null)
             {
-                control.Set(5, true);
-                destinationNetworkAddress = destination.getNetworkNumber().intValue();
-                destinationAddress = destination.getMacAddress().getBytes();
+                //control.Set(5, true);
+                // TODO destinationNetworkAddress = destination.getNetworkNumber().intValue();
+                // TODO destinationAddress = destination.getMacAddress().getBytes();
                 if (destinationAddress != null)
                     destinationMacLyerAddressLength = (byte) destinationAddress.Length;
                 hopCount = 0xFF;
             }
 
-            setSourceAddress(source);
+            // TODO setSourceAddress(source);
 
-            if (expectsReply)
-                control.Set(2, true);
+            //if (expectsReply)
+                //control.Set(2, true);
         }
 
         public NPDU(Address destination, Address source, bool expectsReply, byte messageType, byte vendorId) : this(destination, source, expectsReply)
         {
 
-            control.Set(7, true);
+            //control.Set(7, true);
             this.messageType = messageType;
             this.vendorId = vendorId;
         }
@@ -126,12 +126,12 @@ namespace BACnetNetduino.NPDU
 
         public void write(ByteStream queue)
         {
-            queue.WriteByte(version);
-            queue.WriteByte(control);
+            /*queue.WriteByte(version);
+            // TODO queue.WriteByte(control);
 
             if (control.Get(5))
             {
-                queue.pushU2B(destinationNetworkAddress);
+                // TODO queue.pushU2B(destinationNetworkAddress);
                 queue.WriteByte(destinationMacLyerAddressLength);
                 if (destinationAddress != null)
                     queue.WriteByte(destinationAddress);
@@ -152,12 +152,12 @@ namespace BACnetNetduino.NPDU
                 queue.WriteByte(messageType);
                 if (messageType >= 80)
                     queue.pushU2B(vendorId);
-            }
+            }*/
         }
 
         public bool hasDestinationInfo()
         {
-            return control.Get(5);
+            return control.IsDestinationSpecific;
         }
 
         public bool isDestinationBroadcast()
@@ -167,17 +167,17 @@ namespace BACnetNetduino.NPDU
 
         public bool hasSourceInfo()
         {
-            return control.Get(3);
+            return control.IsSourceSpecific;
         }
 
         public bool isExpectingReply()
         {
-            return control.Get(2);
+            return control.ExpectsReply;
         }
 
         public bool isNetworkMessage()
         {
-            return control.Get(7);
+            return control.IsNetworkLayerMessage;
         }
 
         public bool isVendorSpecificNetworkMessage()
@@ -187,7 +187,7 @@ namespace BACnetNetduino.NPDU
 
         public int getNetworkPriority()
         {
-            return (control.Get(1) ? 2 : 0) | (control.Get(0) ? 1 : 0);
+            return (control.Bit1 ? 2 : 0) | (control.Bit0 ? 1 : 0);
         }
 
         public byte[] getDestinationAddress()

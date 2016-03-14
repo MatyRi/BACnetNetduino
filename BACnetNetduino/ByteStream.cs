@@ -68,9 +68,9 @@ namespace BACnetNetduino
             return (byte) (source.ReadByte() & 0xff);
         }
 
-        public short popU2B()
+        public ushort popU2B()
         {
-            return (short) ((source.ReadByte() & 0xff) << 8 | source.ReadByte() & 0xff);
+            return (ushort) ((source.ReadByte() & 0xff) << 8 | source.ReadByte() & 0xff);
         }
 
         public int popU3B()

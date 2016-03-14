@@ -1,5 +1,6 @@
 using System;
 using BACnetNetduino.DataTypes.Constructed;
+using BACnetNetduino.DataTypes.Primitive;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino.Service.Unconfirmed
@@ -79,6 +80,11 @@ namespace BACnetNetduino.Service.Unconfirmed
             }*/
 
             throw new System.Exception("Unsupported unconfirmed service: " + (type & 0xff));
+        }
+
+        public virtual void handle(Address address, OctetString linkService)
+        {
+            throw new NotImplementedException();
         }
     }
 }

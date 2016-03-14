@@ -6,7 +6,7 @@ using Microsoft.SPOT;
 
 namespace BACnetNetduino.Service.Unconfirmed
 {
-    class IAmRequest : UnconfirmedRequestService
+    internal class IAmRequest : UnconfirmedRequestService
     {
         //private static readonly Logger LOGGER = Logger.getLogger(IAmRequest.class.getName());
 

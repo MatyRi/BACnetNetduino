@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using BACnetNetduino.DataTypes;
 using BACnetNetduino.DataTypes.Constructed;
 using BACnetNetduino.DataTypes.Enumerated;
@@ -11,9 +12,10 @@ namespace BACnetNetduino.Objects
     class BACnetObject
     {
         private readonly LocalDevice localDevice;
-    private readonly ObjectIdentifier id;
-    private readonly Map<PropertyIdentifier, Encodable> properties = new HashMap<PropertyIdentifier, Encodable>();
-        private readonly List<ObjectCovSubscription> covSubscriptions = new ArrayList<ObjectCovSubscription>();
+        private readonly ObjectIdentifier id;
+        private readonly Hashtable properties = new Hashtable();
+        //private readonly Map<PropertyIdentifier, Encodable> properties = new HashMap<PropertyIdentifier, Encodable>();
+        //private readonly List<ObjectCovSubscription> covSubscriptions = new ArrayList<ObjectCovSubscription>();
 
         public BACnetObject(LocalDevice localDevice, ObjectIdentifier id)
         {
@@ -24,15 +26,15 @@ namespace BACnetNetduino.Objects
 
             try
             {
-                setProperty(PropertyIdentifier.objectName, new CharacterString(id.toString()));
+                setProperty(PropertyIdentifier.objectName, new CharacterString(id.ToString()));
 
                 // Set any default values.
-                List<PropertyTypeDefinition> defs = ObjectProperties.getPropertyTypeDefinitions(id.getObjectType());
+                /* TODO List<PropertyTypeDefinition> defs = ObjectProperties.getPropertyTypeDefinitions(id.getObjectType());
                 for (PropertyTypeDefinition def : defs)
                 {
                     if (def.getDefaultValue() != null)
                         setProperty(def.getPropertyIdentifier(), def.getDefaultValue());
-                }
+                }*/
             }
             catch (BACnetServiceException e)
             {
@@ -46,12 +48,12 @@ namespace BACnetNetduino.Objects
             return id;
         }
 
-        public int getInstanceId()
+        public uint getInstanceId()
         {
             return id.getInstanceNumber();
         }
 
-        public String getObjectName()
+        public string getObjectName()
         {
             CharacterString name = getRawObjectName();
             if (name == null)
@@ -61,12 +63,12 @@ namespace BACnetNetduino.Objects
 
         public CharacterString getRawObjectName()
         {
-            return (CharacterString)properties.get(PropertyIdentifier.objectName);
+            return (CharacterString) properties[PropertyIdentifier.objectName];
         }
 
-        public String getDescription()
+        public string getDescription()
         {
-            CharacterString name = (CharacterString)properties.get(PropertyIdentifier.description);
+            CharacterString name = (CharacterString) properties[PropertyIdentifier.description];
             if (name == null)
                 return null;
             return name.getValue();
@@ -78,23 +80,23 @@ namespace BACnetNetduino.Objects
         //
         public Encodable getProperty(PropertyIdentifier pid)
         {
-        if (pid.intValue() == PropertyIdentifier.objectIdentifier.intValue())
-            return id;
-        if (pid.intValue() == PropertyIdentifier.objectType.intValue())
-            return id.getObjectType();
+            if (pid.intValue() == PropertyIdentifier.objectIdentifier.intValue())
+                return id;
+            if (pid.intValue() == PropertyIdentifier.objectType.intValue())
+                return id.getObjectType();
 
             // Check that the requested property is valid for the object. This will throw an exception if the
             // property doesn't belong.
-            ObjectProperties.getPropertyTypeDefinitionRequired(id.getObjectType(), pid);
+            // TODO ObjectProperties.getPropertyTypeDefinitionRequired(id.getObjectType(), pid);
 
-        // Do some property-specific checking here.
-        if (pid.intValue() == PropertyIdentifier.localTime.intValue())
-            return new Time();
-        if (pid.intValue() == PropertyIdentifier.localDate.intValue())
-            return new Date();
-        
-        // AdK - COV subscriptions
-        if(pid.intValue() == PropertyIdentifier.activeCovSubscriptions.intValue()) {
+            // Do some property-specific checking here.
+            if (pid.intValue() == PropertyIdentifier.localTime.intValue())
+                return new Time();
+            if (pid.intValue() == PropertyIdentifier.localDate.intValue())
+                return new Date();
+
+            // AdK - COV subscriptions
+            /*if(pid.intValue() == PropertyIdentifier.activeCovSubscriptions.intValue()) {
         	List<BACnetObject> objs = localDevice.getLocalObjects();
         SequenceOf<CovSubscription> covS = new SequenceOf<CovSubscription>();
 
@@ -115,27 +117,28 @@ covS.add(new CovSubscription(new RecipientProcess(r, s.getSubscriberProcessIdent
             	}
             }
             return covS;
+        }*/
+
+
+            return (Encodable) properties[pid];
         }
-        
-        
-        return properties.get(pid);
-    }
 
-    public Encodable getPropertyRequired(PropertyIdentifier pid) throws BACnetServiceException
-{
-    Encodable p = getProperty(pid);
-        if (p == null)
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.unknownProperty);
-        return p;
-    }
+        public Encodable getPropertyRequired(PropertyIdentifier pid)
+        {
+            Encodable p = getProperty(pid);
+            if (p == null)
+                throw new BACnetServiceException(ErrorClass.property, ErrorCode.unknownProperty);
+            return p;
+        }
 
-    public Encodable getProperty(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
-{
-    Encodable result = getProperty(pid);
-        if (propertyArrayIndex == null)
-            return result;
+        public Encodable getProperty(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
+        {
+            Encodable result = getProperty(pid);
+            if (propertyArrayIndex == null)
+                return result;
 
-        if (!(result instanceof SequenceOf<?>))
+            return null; // TODO 
+            /*if (!(result instanceof SequenceOf<?>))
             throw new BACnetServiceException(ErrorClass.property, ErrorCode.propertyIsNotAnArray);
 
 SequenceOf<?> array = (SequenceOf <?>) result;
@@ -146,107 +149,110 @@ SequenceOf<?> array = (SequenceOf <?>) result;
         if (index > array.getCount())
             throw new BACnetServiceException(ErrorClass.property, ErrorCode.invalidArrayIndex);
 
-        return array.get(index);
-    }
+        return array.get(index);*/
+        }
 
-    public Encodable getPropertyRequired(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
-{
-    Encodable p = getProperty(pid, propertyArrayIndex);
-        if (p == null)
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.unknownProperty);
-        return p;
-    }
+        public Encodable getPropertyRequired(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
+        {
+            Encodable p = getProperty(pid, propertyArrayIndex);
+            if (p == null)
+                throw new BACnetServiceException(ErrorClass.property, ErrorCode.unknownProperty);
+            return p;
+        }
 
-    //
-    //
-    // Set property
-    //
-    public void setProperty(PropertyIdentifier pid, Encodable value)
-{
-    ObjectProperties.validateValue(id.getObjectType(), pid, value);
-    setPropertyImpl(pid, value);
+        //
+        //
+        // Set property
+        //
+        public void setProperty(PropertyIdentifier pid, Encodable value)
+        {
+            // TODO ObjectProperties.validateValue(id.getObjectType(), pid, value);
+            setPropertyImpl(pid, value);
 
-        // If the relinquish default was set, make sure the present value gets updated as necessary.
-        if (pid.equals(PropertyIdentifier.relinquishDefault))
-            setCommandableImpl((PriorityArray) getProperty(PropertyIdentifier.priorityArray));
-}
+            // If the relinquish default was set, make sure the present value gets updated as necessary.
+            // TODO if (pid.Equals(PropertyIdentifier.relinquishDefault))
+            //    setCommandableImpl((PriorityArray) getProperty(PropertyIdentifier.priorityArray));
+        }
 
-    public void setProperty(PropertyIdentifier pid, int indexBase1, Encodable value)
-{
-    ObjectProperties.validateSequenceValue(id.getObjectType(), pid, value);
+        public void setProperty(PropertyIdentifier pid, uint indexBase1, Encodable value)
+        {
+            /*ObjectProperties.validateSequenceValue(id.getObjectType(), pid, value);
     SequenceOf<Encodable> list = (SequenceOf<Encodable>) properties.get(pid);
     if (list == null)
     {
         list = new SequenceOf<Encodable>();
         setPropertyImpl(pid, list);
     }
-    list.set(indexBase1, value);
-    }
-
-    public void setProperty(PropertyValue value)
-{
-    PropertyIdentifier pid = value.getPropertyIdentifier();
-
-        if (pid.intValue() == PropertyIdentifier.objectIdentifier.intValue())
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
-        if (pid.intValue() == PropertyIdentifier.objectType.intValue())
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
-        if (pid.intValue() == PropertyIdentifier.priorityArray.intValue())
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
-        //        if (pid.intValue() == PropertyIdentifier.relinquishDefault.intValue())
-        //            throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
-
-        if (ObjectProperties.isCommandable((ObjectType) getProperty(PropertyIdentifier.objectType), pid))
-            setCommandable(value.getValue(), value.getPriority());
-        else if (value.getValue() == null) {
-            if (value.getPropertyArrayIndex() == null)
-                removeProperty(value.getPropertyIdentifier());
-            else
-                removeProperty(value.getPropertyIdentifier(), value.getPropertyArrayIndex());
+    list.set(indexBase1, value);*/
         }
-        else {
-            if (value.getPropertyArrayIndex() != null)
-                setProperty(pid, value.getPropertyArrayIndex().intValue(), value.getValue());
-            else
-                setProperty(pid, value.getValue());
-        }
-    }
 
-    public void setCommandable(Encodable value, UnsignedInteger priority)
-{
-        int pri = 16;
-        if (priority != null)
-            pri = priority.intValue();
-
-    PriorityArray priorityArray = (PriorityArray) getProperty(PropertyIdentifier.priorityArray);
-    priorityArray.set(pri, createCommandValue(value));
-    setCommandableImpl(priorityArray);
-    }
-
-    private void setCommandableImpl(PriorityArray priorityArray)
-{
-    PriorityValue priorityValue = null;
-        for (PriorityValue priv : priorityArray) {
-        if (!priv.isNull())
+        public void setProperty(PropertyValue value)
         {
-            priorityValue = priv;
-            break;
+            PropertyIdentifier pid = value.getPropertyIdentifier();
+
+            if (pid.intValue() == PropertyIdentifier.objectIdentifier.intValue())
+                throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
+            if (pid.intValue() == PropertyIdentifier.objectType.intValue())
+                throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
+            if (pid.intValue() == PropertyIdentifier.priorityArray.intValue())
+                throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
+            //        if (pid.intValue() == PropertyIdentifier.relinquishDefault.intValue())
+            //            throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
+
+            if (ObjectProperties.isCommandable((ObjectType) getProperty(PropertyIdentifier.objectType), pid))
+                setCommandable(value.getValue(), value.getPriority());
+            else if (value.getValue() == null)
+            {
+                if (value.getPropertyArrayIndex() == null)
+                    removeProperty(value.getPropertyIdentifier());
+                else
+                    removeProperty(value.getPropertyIdentifier(), value.getPropertyArrayIndex());
+            }
+            else
+            {
+                if (value.getPropertyArrayIndex() != null)
+                    setProperty(pid, value.getPropertyArrayIndex().intValue(), value.getValue());
+                else
+                    setProperty(pid, value.getValue());
+            }
         }
-    }
 
-    Encodable newValue = getProperty(PropertyIdentifier.relinquishDefault);
-        if (priorityValue != null)
-            newValue = priorityValue.getValue();
+        public void setCommandable(Encodable value, UnsignedInteger priority)
+        {
+            uint pri = 16;
+            if (priority != null)
+                pri = priority.intValue();
 
-    setPropertyImpl(PropertyIdentifier.presentValue, newValue);
-}
+            PriorityArray priorityArray = (PriorityArray) getProperty(PropertyIdentifier.priorityArray);
+            priorityArray.set((int) pri, createCommandValue(value));
+            setCommandableImpl(priorityArray);
+        }
 
-private void setPropertyImpl(PropertyIdentifier pid, Encodable value)
-{
-    Encodable oldValue = properties.get(pid);
-    properties.put(pid, value);
+        private void setCommandableImpl(PriorityArray priorityArray)
+        {
+            PriorityValue priorityValue = null;
+            foreach (PriorityValue priv in priorityArray)
+            {
+                if (!priv.isNull())
+                {
+                    priorityValue = priv;
+                    break;
+                }
+            }
 
-    if (!ObjectUtils.equals(value, oldValue))
+            Encodable newValue = getProperty(PropertyIdentifier.relinquishDefault);
+            if (priorityValue != null)
+                newValue = priorityValue.getValue();
+
+            setPropertyImpl(PropertyIdentifier.presentValue, newValue);
+        }
+
+        private void setPropertyImpl(PropertyIdentifier pid, Encodable value)
+        {
+            Encodable oldValue = (Encodable) properties[pid];
+            properties.Add(pid, value);
+
+            /*if (!ObjectUtils.equals(value, oldValue))
     {
         // Check for subscriptions.
         if (ObjectCovSubscription.sendCovNotification(id.getObjectType(), pid, this.getCovIncrement()))
@@ -264,43 +270,45 @@ private void setPropertyImpl(PropertyIdentifier pid, Encodable value)
                 }
             }
         }
-    }
-}
+    }*/
+        }
 
-private PriorityValue createCommandValue(Encodable value)
-{
-        if (value instanceof Null)
-            return new PriorityValue((Null) value);
+        private PriorityValue createCommandValue(Encodable value)
+        {
+            if (value is Null)
+                return new PriorityValue((Null) value);
 
-        ObjectType type = (ObjectType)getProperty(PropertyIdentifier.objectType);
-        if (type.equals(ObjectType.accessDoor))
-            return new PriorityValue((BaseType) value);
-        if (type.equals(ObjectType.analogOutput) || type.equals(ObjectType.analogValue))
-            return new PriorityValue((Real) value);
-        if (type.equals(ObjectType.binaryOutput) || type.equals(ObjectType.binaryValue))
-            return new PriorityValue((BinaryPV) value);
-        return new PriorityValue((UnsignedInteger) value);
-    }
+            ObjectType type = (ObjectType) getProperty(PropertyIdentifier.objectType);
+            if (type.Equals(ObjectType.accessDoor))
+                return new PriorityValue((BaseType) value);
+            if (type.Equals(ObjectType.analogOutput) || type.Equals(ObjectType.analogValue))
+                return new PriorityValue((Real) value);
+            if (type.Equals(ObjectType.binaryOutput) || type.Equals(ObjectType.binaryValue))
+                return new PriorityValue((BinaryPV) value);
+            return new PriorityValue((UnsignedInteger) value);
+        }
 
-    /**
+        /**
      * return all implemented properties
      * 
      * @return
      */
-    public List<PropertyIdentifier> getProperties()
-{
-    ArrayList<PropertyIdentifier> list = new ArrayList<PropertyIdentifier>();
-    for (PropertyIdentifier pid : properties.keySet())
-        list.add(pid);
-    return list;
-}
+
+        public IList getProperties()
+        {
+            IList list = new ArrayList();
+            foreach (PropertyIdentifier pid in properties.Keys)
+                list.Add(pid);
+            return list;
+        }
 
 //
 //
 // COV subscriptions
 //
+/*
 public void addCovSubscription(Address from, OctetString linkService, UnsignedInteger subscriberProcessIdentifier,
-        Boolean issueConfirmedNotifications, UnsignedInteger lifetime)
+        BBoolean issueConfirmedNotifications, UnsignedInteger lifetime)
 {
     synchronized (covSubscriptions) {
         ObjectCovSubscription sub = findCovSubscription(from, subscriberProcessIdentifier);
@@ -333,7 +341,7 @@ public void addCovSubscription(Address from, OctetString linkService, UnsignedIn
 
 public Real getCovIncrement()
 {
-    return (Real)properties.get(PropertyIdentifier.covIncrement);
+    return (Real)properties[PropertyIdentifier.covIncrement];
 }
 
 public void removeCovSubscription(Address from, UnsignedInteger subscriberProcessIdentifier)
@@ -347,7 +355,7 @@ public void removeCovSubscription(Address from, UnsignedInteger subscriberProces
 
 private ObjectCovSubscription findCovSubscription(Address from, UnsignedInteger subscriberProcessIdentifier)
 {
-    foreach (ObjectCovSubscription sub : covSubscriptions)
+    foreach (ObjectCovSubscription sub in covSubscriptions)
     {
         if (sub.getAddress().equals(from)
                 && sub.getSubscriberProcessIdentifier().equals(subscriberProcessIdentifier))
@@ -385,41 +393,35 @@ private void sendCovNotification(ObjectCovSubscription sub, long now)
         ExceptionDispatch.fireReceivedException(e);
     }
 }
+        */
 
-public void validate()
-{
-    // Ensure that all required properties have values.
-    List<PropertyTypeDefinition> defs = ObjectProperties.getRequiredPropertyTypeDefinitions(id.getObjectType());
-        for (PropertyTypeDefinition def : defs) {
-        if (getProperty(def.getPropertyIdentifier()) == null)
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.other, "Required property not set: "
-                    + def.getPropertyIdentifier());
-    }
-}
+        public void validate()
+        {
+            // Ensure that all required properties have values.
+            IList defs = ObjectProperties.getRequiredPropertyTypeDefinitions(id.getObjectType());
+            foreach (PropertyTypeDefinition def in defs)
+            {
+                if (getProperty(def.getPropertyIdentifier()) == null)
+                    throw new BACnetServiceException(ErrorClass.property, ErrorCode.other, "Required property not set: " + def.getPropertyIdentifier());
+            }
+        }
 
-public void removeProperty(PropertyIdentifier pid)
-{
-    PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(id.getObjectType(), pid);
-        if (def.isRequired())
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
-properties.remove(pid);
-    }
+        public void removeProperty(PropertyIdentifier pid)
+        {
+            PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(id.getObjectType(), pid);
+            if (def.isRequired())
+                throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
+            properties.Remove(pid);
+        }
 
-    public void removeProperty(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
-            throws BACnetServiceException
-{
-    PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(id.getObjectType(), pid);
-        if (!def.isSequence())
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.invalidArrayIndex);
-SequenceOf<?> sequence = (SequenceOf <?>) properties.get(pid);
-        if (sequence != null)
-            sequence.remove(propertyArrayIndex.intValue());
-    }
-
-public void distributeUpdate(Object arg)
-{
-    this.setChanged();
-    notifyObservers(arg);
-}
+        public void removeProperty(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
+        {
+            PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(id.getObjectType(), pid);
+            if (!def.isSequence())
+                throw new BACnetServiceException(ErrorClass.property, ErrorCode.invalidArrayIndex);
+            SequenceOf sequence = (SequenceOf) properties[pid];
+            if (sequence != null)
+                sequence.remove((int) propertyArrayIndex.intValue());
+        }
     }
 }

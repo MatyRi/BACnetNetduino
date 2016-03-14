@@ -65,28 +65,43 @@ namespace BACnetNetduino.DataTypes.Primitive
             }
         }
 
-    /* TODO protected override void writeImpl(ByteStream queue)
+        public UnsignedInteger(ByteStream queue, int contextTag)
         {
-            int length = (int)getLength();
-            if (bigValue == null)
+            int length = (int)readTag(queue);
+            if (length < 4)
             {
                 while (length > 0)
-                    queue.push(internalValue >> (--length * 8));
+                    internalValue |= (uint)(queue.popU1B() & 0xff) << (--length * 8);
             }
             else {
-                byte[] bytes = new byte[length];
-
-                for (int i = 0; i < bigValue.bitLength(); i++)
-                {
-                    if (bigValue.testBit(i))
-                        bytes[length - i / 8 - 1] |= 1 << (i % 8);
-                }
-
-                queue.push(bytes);
+                byte[] bytes = new byte[length + 1];
+                queue.Read(bytes, 1, length);
+                //bigValue = new BigInteger(bytes);
             }
-        }*/
+        }
 
-    protected override long getLength()
+        /* TODO protected override void writeImpl(ByteStream queue)
+            {
+                int length = (int)getLength();
+                if (bigValue == null)
+                {
+                    while (length > 0)
+                        queue.push(internalValue >> (--length * 8));
+                }
+                else {
+                    byte[] bytes = new byte[length];
+
+                    for (int i = 0; i < bigValue.bitLength(); i++)
+                    {
+                        if (bigValue.testBit(i))
+                            bytes[length - i / 8 - 1] |= 1 << (i % 8);
+                    }
+
+                    queue.push(bytes);
+                }
+            }*/
+
+        protected override long getLength()
         {
             //if (bigValue == null)
             //{

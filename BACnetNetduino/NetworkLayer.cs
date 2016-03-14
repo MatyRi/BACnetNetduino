@@ -32,7 +32,7 @@ namespace BACnetNetduino
             IPEndPoint from = (IPEndPoint) aFrom;
             ByteStream bs = new ByteStream(data);
 
-            BVLC bvlc = BVLC.Parse(bs);
+            BVLC.BVLC bvlc = new BVLC.BVLC(bs);
 
             int packetLength = bvlc.Length;
 
@@ -82,7 +82,7 @@ namespace BACnetNetduino
         writeNpci(apduStream, recipient, link, apdu);
 
         // APDU
-        apdu.write(apduStream);
+        // TODO apdu.write(apduStream);
 
             // Length
         queue.WriteShort((short) (queue.Position + apduStream.Length + 2));
@@ -90,9 +90,9 @@ namespace BACnetNetduino
         // Combine the queues
         queue.Write(apduStream);
 
-        IPEndPoint isa;
+        IPEndPoint isa = link.getInetSocketAddress(); // TODO Remove definition
 
-            if (recipient.isGlobal())
+            /*if (recipient.isGlobal())
             {
                 isa = getLocalBroadcastAddress().getMacAddress().getInetSocketAddress();
             }
@@ -105,14 +105,14 @@ namespace BACnetNetduino
             else
             {
                 isa = recipient.getMacAddress().getInetSocketAddress();
-            }
+            }*/
             
         this.link.SendPacket(isa, queue.ReadToEnd());
     }
 
         protected void writeNpci(ByteStream queue, Address recipient, OctetString link, APDU.APDU apdu)
         {
-            NPDU.NPDU npci;
+            /*NPDU.NPDU npci;
             if (recipient.isGlobal())
                 npci = new NPDU.NPDU((Address)null);
             else if (isLocal(recipient))
@@ -127,7 +127,7 @@ namespace BACnetNetduino
                             "Invalid arguments: link service address not provided for a remote recipient");
                 npci = new NPDU.NPDU(recipient, null, apdu.expectsReply());
             }
-            npci.write(queue);
+            npci.write(queue);*/
         }
 
 

@@ -1,9 +1,44 @@
 using System;
+using BACnetNetduino.DataTypes.Enumerated;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino.DataTypes
 {
     class ThreadLocalObjectTypeStack
     {
+        /*private static ThreadLocal<List<ObjectType>> objType = new ThreadLocal<List<ObjectType>>();
+
+        public static void set(ObjectType objectType)
+        {
+            List<ObjectType> stack = objType.get();
+
+            if (stack == null)
+            {
+                stack = new ArrayList<ObjectType>();
+                objType.set(stack);
+            }
+
+            stack.add(objectType);
+        }
+
+        public static ObjectType get()
+        {
+            List<ObjectType> stack = objType.get();
+            if (stack == null)
+                return null;
+            return stack.get(stack.size() - 1);
+        }
+
+        public static void remove()
+        {
+            List<ObjectType> stack = objType.get();
+            if (stack == null)
+                return;
+
+            if (stack.size() <= 1)
+                objType.remove();
+            else
+                stack.remove(stack.size() - 1);
+        }*/
     }
 }

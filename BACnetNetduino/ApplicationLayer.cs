@@ -8,6 +8,7 @@ using BACnetNetduino.DataTypes.Primitive;
 using BACnetNetduino.Exception;
 using BACnetNetduino.Service.Acknowledgement;
 using BACnetNetduino.Service.Confirmed;
+using BACnetNetduino.Service.Unconfirmed;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino
@@ -145,7 +146,7 @@ namespace BACnetNetduino
                     Error error = new Error(confAPDU.getInvokeId(), new BaseError((byte) 127, new BACnetError(
                         ErrorClass.services, ErrorCode.inconsistentParameters)));
                     network.sendAPDU(address, linkService, error, false);
-                    ExceptionDispatch.fireReceivedException(e);
+                    // TODO ExceptionDispatch.fireReceivedException(e);
                 }
             }
         }
@@ -163,11 +164,12 @@ namespace BACnetNetduino
 
                 try
                 {
-                    ur.getService().handle(localDevice, address, linkService);
+                    // TODO ur.getService().handle(localDevice, address, linkService);
+                    ur.getService().handle(address, linkService);
                 }
                 catch (BACnetException e)
                 {
-                    ExceptionDispatch.fireReceivedException(e);
+                    // TODO ExceptionDispatch.fireReceivedException(e);
                 }
             }
         else {
@@ -188,8 +190,9 @@ namespace BACnetNetduino
         //
         private AcknowledgementService handleConfirmedRequest(Address from, OctetString linkService, byte invokeId, ConfirmedRequestService service)
         {
-        try {
-                return service.handle(localDevice, from, linkService);
+        try
+        {
+            return null; // TODO service.handle(localDevice, from, linkService);
             }
         catch (NotImplementedException e) {
                 Debug.Print("Unsupported confirmed request: invokeId=" + invokeId + ", from=" + from + ", request="
@@ -204,5 +207,35 @@ namespace BACnetNetduino
             }
         }
 
+        public LocalDevice Device { get; set; }
+
+        public void sendUnconfirmed(Address address, OctetString linkService, UnconfirmedRequestService serviceRequest, bool broadcast) 
+        {
+            sendUnconfirmed(address, linkService, serviceRequest, broadcast, false);
+        }
+
+        public void sendUnconfirmed(Address address, OctetString linkService, UnconfirmedRequestService serviceRequest, bool broadcast, bool initiated)
+        {
+            if (address == null)
+                throw new ArgumentException("address cannot be null");
+            if (address.Equals(linkService))
+                linkService = null;
+
+            /*
+            //DCC - neodesilat nic
+            if (Device.getDCCEnableDisable().equals(EnableDisable.disable))
+            {
+                throw new BACnetException("Communication blocked by DCC.");
+            }
+            // Odesilat jenom I-Am, pokud bylo iniciovano
+            if (Device.getDCCEnableDisable().equals(EnableDisable.disableInitiation) && !initiated)
+            {
+                throw new BACnetException("Communication blocked by DCC.");
+            }
+            */
+
+            // Unconfirmed services will never have to be segmented, so just send it.
+            network.sendAPDU(address, linkService, new UnconfirmedRequest(serviceRequest), broadcast);
+        }
     }
 }

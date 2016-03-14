@@ -51,21 +51,41 @@
     <Compile Include="BACnetStack.cs" />
     <Compile Include="BACnetUtils.cs" />
     <Compile Include="BitArray.cs" />
-    <Compile Include="BVLC.cs" />
+    <Compile Include="BVLC\BVLC.cs" />
+    <Compile Include="BVLC\BVLCEnums.cs" />
     <Compile Include="ByteStream.cs" />
     <Compile Include="DataTypes\Constructed\Address.cs" />
     <Compile Include="DataTypes\AmbiguousValue.cs" />
+    <Compile Include="DataTypes\Constructed\AddressBinding.cs" />
     <Compile Include="DataTypes\Constructed\BACnetError.cs" />
     <Compile Include="DataTypes\Constructed\BaseType.cs" />
+    <Compile Include="DataTypes\Constructed\Choice.cs" />
+    <Compile Include="DataTypes\Constructed\CovSubscription.cs" />
+    <Compile Include="DataTypes\Constructed\DateTime.cs" />
     <Compile Include="DataTypes\Constructed\ObjectPropertyReference.cs" />
+    <Compile Include="DataTypes\Constructed\ObjectTypesSupported.cs" />
+    <Compile Include="DataTypes\Constructed\PriorityArray.cs" />
+    <Compile Include="DataTypes\Constructed\PriorityValue.cs" />
+    <Compile Include="DataTypes\Constructed\PropertyValue.cs" />
+    <Compile Include="DataTypes\Constructed\Recipient.cs" />
+    <Compile Include="DataTypes\Constructed\RecipientProcess.cs" />
+    <Compile Include="DataTypes\Constructed\SequenceOf.cs" />
     <Compile Include="DataTypes\Constructed\ServicesSupported.cs" />
+    <Compile Include="DataTypes\Constructed\SessionKey.cs" />
+    <Compile Include="DataTypes\Constructed\TimeStamp.cs" />
+    <Compile Include="DataTypes\Constructed\VtSession.cs" />
     <Compile Include="DataTypes\Encodable.cs" />
+    <Compile Include="DataTypes\Enumerated\BackupState.cs" />
+    <Compile Include="DataTypes\Enumerated\BinaryPV.cs" />
+    <Compile Include="DataTypes\Enumerated\DeviceStatus.cs" />
     <Compile Include="DataTypes\Enumerated\ErrorClass.cs" />
     <Compile Include="DataTypes\Enumerated\ErrorCode.cs" />
     <Compile Include="DataTypes\Enumerated\ObjectType.cs" />
     <Compile Include="DataTypes\Enumerated\PropertyIdentifier.cs" />
     <Compile Include="DataTypes\Enumerated\RejectReason.cs" />
+    <Compile Include="DataTypes\Enumerated\RestartReason.cs" />
     <Compile Include="DataTypes\Enumerated\Segmentation.cs" />
+    <Compile Include="DataTypes\Enumerated\VtClass.cs" />
     <Compile Include="DataTypes\Error\BaseError.cs" />
     <Compile Include="DataTypes\Error\ChangeListError.cs" />
     <Compile Include="DataTypes\Error\ConfirmedPrivateTransferError.cs" />
@@ -85,6 +105,7 @@
     <Compile Include="DataTypes\Primitive\Real.cs" />
     <Compile Include="DataTypes\Primitive\SignedInteger.cs" />
     <Compile Include="DataTypes\Primitive\Time.cs" />
+    <Compile Include="DataTypes\Primitive\Unsigned16.cs" />
     <Compile Include="DataTypes\Primitive\UnsignedInteger.cs" />
     <Compile Include="DataTypes\SequenceDefinition.cs" />
     <Compile Include="DataTypes\TagData.cs" />
@@ -107,10 +128,19 @@
     <Compile Include="Exception\ReflectionException.cs" />
     <Compile Include="Exception\RejectAPDUException.cs" />
     <Compile Include="Exception\SegmentedMessageAbortedException.cs" />
+    <Compile Include="LocalDevice.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NetworkLayer.cs" />
+    <Compile Include="NPDU\NLPCI.cs" />
     <Compile Include="NPDU\NPDU.cs" />
     <Compile Include="LinkLayer.cs" />
     <Compile Include="NPDU\MessageValidationAssertionException.cs" />
+    <Compile Include="Objects\BACnetObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Objects\ObjectProperties.cs" />
+    <Compile Include="Objects\PropertyTypeDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Service\Acknowledgement\AcknowledgementService.cs" />
@@ -131,6 +161,8 @@
   <ItemGroup>
     <Folder Include="DataTypes\EventParameter\" />
     <Folder Include="DataTypes\NotificationParameter\" />
-    <Folder Include="Objects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

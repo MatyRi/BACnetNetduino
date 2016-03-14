@@ -48,6 +48,30 @@ namespace BACnetNetduino.Service.Unconfirmed
             //}
         }*/
 
+        public virtual void handle(Address address, OctetString linkService)
+        {
+
+            LocalDevice localDevice = Program.Device;
+
+
+
+            //BACnetObject local = localDevice.getConfiguration();
+
+            // Check if we're in the device id range.
+            //if (deviceInstanceRangeLowLimit != null && local.getInstanceId() < deviceInstanceRangeLowLimit.intValue())
+            //    return;
+
+            //if (deviceInstanceRangeHighLimit != null && local.getInstanceId() > deviceInstanceRangeHighLimit.intValue())
+            //    return;
+
+            // Return the result in a i am message.
+            //DCC - AdK
+            //if(!localDevice.getDCCEnableDisable().equals(EnableDisable.disable)) {
+            IAmRequest iam = localDevice.getIAm();
+            localDevice.sendGlobalBroadcast(iam, true);
+            //}
+        }
+
         /*public override void write(ByteStream queue)
         {
             writeOptional(queue, deviceInstanceRangeLowLimit, 0);
@@ -56,8 +80,9 @@ namespace BACnetNetduino.Service.Unconfirmed
 
         internal WhoIsRequest(ByteStream queue)
         {
-            deviceInstanceRangeLowLimit = new UnsignedInteger(queue);
-            deviceInstanceRangeHighLimit = new UnsignedInteger(queue);
+            //ASN1.DecodeInteger(new byte[] {0x00, 0x01});
+            deviceInstanceRangeLowLimit = new UnsignedInteger(queue, 0);
+            deviceInstanceRangeHighLimit = new UnsignedInteger(queue, 1);
             //deviceInstanceRangeLowLimit = readOptional(queue, UnsignedInteger.class, 0);
             //deviceInstanceRangeHighLimit = readOptional(queue, UnsignedInteger.class, 1);
         }

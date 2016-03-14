@@ -167,43 +167,30 @@ namespace BACnetNetduino.DataTypes
         type.write(source);
     }*/
 
-    /*protected static <T extends Encodable> T read(ByteStream source, Class<T> clazz) //throws BACnetException
-{
-        if (clazz == Primitive.class)
-            return (T) Primitive.createPrimitive(source);
+        protected static Encodable read(ByteStream source, Type type) //throws BACnetException
+        {
+            if (type.IsSubclassOf(typeof (Primitive.Primitive)))
+            {
+                return Primitive.Primitive.createPrimitive(source);
+            }
 
-        try {
-            return clazz.getConstructor(new Class[] { ByteStream.class }).newInstance(new Object[] { source });
+            var constructor = type.GetConstructor(new Type[] {typeof (ByteStream)});
+            Encodable obj = (Encodable) constructor.Invoke(new object[] {source});
+
+            return obj;
         }
-        catch (NoSuchMethodException e) {
-            // Check if this is an EventParameter
-            if (clazz == EventParameter.class)
-                return (T) EventParameter.createEventParameter(source);
-            throw new BACnetException(e);
-        }
-        catch (InvocationTargetException e) {
-            // Check if there is a wrapped BACnet exception
-            if (e.getCause() instanceof BACnetException)
-                throw (BACnetException) e.getCause();
-            throw new ReflectionException(e);
-        }
-        catch (Exception e) {
-            throw new BACnetException(e);
-        }
-    }*/
 
     //
     // Read and write with context id.
-    /*protected static <T extends Encodable> T read(ByteStream source, Class<T> clazz, int contextId)
-            //throws BACnetException
-{
+    protected static Encodable read(ByteStream source, Type type, int contextId)
+    {
         if (!matchNonEndTag(source, contextId))
             throw new BACnetErrorException(ErrorClass.property, ErrorCode.missingRequiredParameter);
 
-        if (Primitive.class.isAssignableFrom(clazz))
-            return read(source, clazz);
-        return readWrapped(source, clazz, contextId);
-    }*/
+        if (type.IsInstanceOfType(typeof (Primitive.Primitive)))
+            return read(source, type);
+        return readWrapped(source, type, contextId);
+    }
 
     /* TODO protected static void write(ByteStream source, Encodable type, int contextId)
     {
@@ -378,13 +365,12 @@ SequenceDefinition def = resolutions.get(key);
         return new Sequence(def, source, contextId);
     }*/
 
-    /*private static <T extends Encodable> T readWrapped(ByteStream source, Class<T> clazz, int contextId)
-           // throws BACnetException
-{
-    popStart(source, contextId);
-    T result = read(source, clazz);
-    popEnd(source, contextId);
-        return result;
-}*/
+    private static Encodable readWrapped(ByteStream source, Type type, int contextId)
+    {
+        popStart(source, contextId);
+        Encodable result = read(source, type);
+        popEnd(source, contextId);
+            return result;
+    }
     }
 }
