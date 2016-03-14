@@ -15,11 +15,11 @@ namespace BACnetNetduino.DataTypes.Constructed
             this.deviceAddress = deviceAddress;
         }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
             write(queue, deviceObjectIdentifier);
             write(queue, deviceAddress);
-        }*/
+        }
 
         public AddressBinding(ByteStream queue)
         {
@@ -27,14 +27,9 @@ namespace BACnetNetduino.DataTypes.Constructed
             deviceAddress = (Address) read(queue, typeof(Address));
         }
 
-    public ObjectIdentifier getDeviceObjectIdentifier()
-    {
-        return deviceObjectIdentifier;
-    }
+    public ObjectIdentifier DeviceObjectIdentifier => deviceObjectIdentifier;
 
-    public Address getDeviceAddress()
-    {
-        return deviceAddress;
-    }
+    public Address DeviceAddress => deviceAddress;
+
 }
 }

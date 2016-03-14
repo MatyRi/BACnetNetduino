@@ -1,4 +1,5 @@
 using System;
+using BACnetNetduino.APDU;
 using BACnetNetduino.DataTypes;
 using BACnetNetduino.DataTypes.Constructed;
 using BACnetNetduino.DataTypes.Enumerated;
@@ -52,6 +53,8 @@ namespace BACnetNetduino
         {
             this.applicationLayer = applicationLayer;
             applicationLayer.Device = this;
+
+            initEventHandlers();
 
             try
             {
@@ -158,7 +161,68 @@ namespace BACnetNetduino
             }
         }
 
+        private void initEventHandlers()
+        {
+            applicationLayer.UnconfirmedRequestReceived += OnUnconfirmedRequestReceived;
+            applicationLayer.ConfirmedRequestReceived += OnConfirmedRequestReceived;
+        }
 
+        private void OnConfirmedRequestReceived(Address fromAddress, OctetString linkService, int invokeId, ConfirmedRequest request)
+        {
+            if (request.getServiceRequest() == null) { return; }
+
+            try
+            {
+                request.getServiceRequest().handle(fromAddress, linkService);
+            }
+            catch (NotImplementedException e)
+            {
+                Debug.Print("Unsupported confirmed request: invokeId=" + invokeId + ", from=" + fromAddress + ", request=" + request.getServiceRequest().GetType().FullName);
+                throw new BACnetErrorException(ErrorClass.services, ErrorCode.serviceRequestDenied);
+            }
+            catch (BACnetErrorException e)
+            {
+                throw e;
+            }
+            catch (System.Exception e)
+            {
+                throw new BACnetErrorException(ErrorClass.device, ErrorCode.operationalProblem);
+            }
+
+
+
+
+            // TODO X BACNET Original
+            // TODO sendResponse(address, linkService, confAPDU, ackService);
+
+            // TODO X BACNET Maty - oprava NPEx
+            /*new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            sendResponse(address, linkService, confAPDU, ackService);
+                        }
+                        catch (BACnetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();*/
+        }
+
+        private void OnUnconfirmedRequestReceived(Address fromAddress, OctetString linkService, UnconfirmedRequest request)
+        {
+            if (request.getService() == null) { return; } // HOT FIX
+
+            try
+            {
+                // TODO ur.getService().handle(localDevice, address, linkService);
+                request.getService().handle(fromAddress, linkService);
+            }
+            catch (BACnetException e)
+            {
+                // TODO ExceptionDispatch.fireReceivedException(e);
+            }
+        }
 
         //        public ExecutorService getExecutorService()
         //        {

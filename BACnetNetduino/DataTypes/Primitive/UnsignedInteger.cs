@@ -80,26 +80,29 @@ namespace BACnetNetduino.DataTypes.Primitive
             }
         }
 
-        /* TODO protected override void writeImpl(ByteStream queue)
+        // TODO to fix>
+        private object bigValue = null;
+
+        protected override void writeImpl(ByteStream queue)
             {
                 int length = (int)getLength();
                 if (bigValue == null)
                 {
                     while (length > 0)
-                        queue.push(internalValue >> (--length * 8));
+                        queue.WriteByte((byte) (internalValue >> (--length * 8)));
                 }
                 else {
                     byte[] bytes = new byte[length];
 
-                    for (int i = 0; i < bigValue.bitLength(); i++)
+                    /*for (int i = 0; i < bigValue.bitLength(); i++)
                     {
                         if (bigValue.testBit(i))
                             bytes[length - i / 8 - 1] |= 1 << (i % 8);
-                    }
+                    }*/
 
-                    queue.push(bytes);
+                    queue.Write(bytes);
                 }
-            }*/
+            }
 
         protected override long getLength()
         {

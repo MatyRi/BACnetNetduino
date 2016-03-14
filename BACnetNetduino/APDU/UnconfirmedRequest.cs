@@ -31,12 +31,12 @@ namespace BACnetNetduino.APDU
             return service;
         }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            queue.push(getShiftedTypeId(TYPE_ID));
-            queue.push(service.getChoiceId());
+            queue.WriteByte(getShiftedTypeId(TYPE_ID));
+            queue.WriteByte(service.getChoiceId());
             service.write(queue);
-        }*/
+        }
 
         public UnconfirmedRequest(ServicesSupported services, ByteStream queue)
         {

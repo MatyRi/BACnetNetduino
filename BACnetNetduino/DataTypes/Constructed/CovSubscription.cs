@@ -12,7 +12,7 @@ namespace BACnetNetduino.DataTypes.Constructed
         private readonly UnsignedInteger timeRemaining;
         private readonly Real covIncrement;
 
-    public CovSubscription(RecipientProcess recipient, ObjectPropertyReference monitoredPropertyReference,
+        public CovSubscription(RecipientProcess recipient, ObjectPropertyReference monitoredPropertyReference,
             BBoolean issueConfirmedNotifications, UnsignedInteger timeRemaining, Real covIncrement)
         {
             this.recipient = recipient;
@@ -22,47 +22,33 @@ namespace BACnetNetduino.DataTypes.Constructed
             this.covIncrement = covIncrement;
         }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            write(queue, recipient, 0);
+            throw new NotImplementedException();
+            /*write(queue, recipient, 0);
             write(queue, monitoredPropertyReference, 1);
             write(queue, issueConfirmedNotifications, 2);
             write(queue, timeRemaining, 3);
-            writeOptional(queue, covIncrement, 4);
-        }*/
+            writeOptional(queue, covIncrement, 4);*/
+        }
 
         public CovSubscription(ByteStream queue)
         {
-            recipient = (RecipientProcess) read(queue, typeof(RecipientProcess), 0);
-            monitoredPropertyReference = (ObjectPropertyReference) read(queue, typeof(ObjectPropertyReference), 1);
-            issueConfirmedNotifications = (BBoolean) read(queue, typeof(BBoolean), 2);
-            timeRemaining = (UnsignedInteger) read(queue, typeof(UnsignedInteger), 3);
+            recipient = (RecipientProcess) read(queue, typeof (RecipientProcess), 0);
+            monitoredPropertyReference = (ObjectPropertyReference) read(queue, typeof (ObjectPropertyReference), 1);
+            issueConfirmedNotifications = (BBoolean) read(queue, typeof (BBoolean), 2);
+            timeRemaining = (UnsignedInteger) read(queue, typeof (UnsignedInteger), 3);
             // TODO covIncrement = readOptional(queue, typeof(Real), 4);
         }
 
-    public RecipientProcess getRecipient()
-    {
-        return recipient;
-    }
+        public RecipientProcess Recipient => recipient;
 
-    public ObjectPropertyReference getMonitoredPropertyReference()
-    {
-        return monitoredPropertyReference;
-    }
+        public ObjectPropertyReference MonitoredPropertyReference => monitoredPropertyReference;
 
-    public BBoolean getIssueConfirmedNotifications()
-    {
-        return issueConfirmedNotifications;
-    }
+        public BBoolean IssueConfirmedNotifications => issueConfirmedNotifications;
 
-    public UnsignedInteger getTimeRemaining()
-    {
-        return timeRemaining;
-    }
+        public UnsignedInteger TimeRemaining => timeRemaining;
 
-    public Real getCovIncrement()
-    {
-        return covIncrement;
+        public Real CovIncrement => covIncrement;
     }
-}
 }

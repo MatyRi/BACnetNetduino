@@ -11,38 +11,32 @@ namespace BACnetNetduino.DataTypes.Constructed
         private readonly ErrorCode errorCode;
 
         public BACnetError(ErrorClass errorClass, ErrorCode errorCode)
-            {
-                this.errorClass = errorClass;
-                this.errorCode = errorCode;
-            }
-
-            public BACnetError(BACnetServiceException e)
-            {
-                this.errorClass = e.getErrorClass();
-                this.errorCode = e.getErrorCode();
-            }
-
-            /*public override void write(ByteStream queue)
-            {
-                write(queue, errorClass);
-                write(queue, errorCode);
-            }*/
-
-            public BACnetError(ByteStream queue) // throws BACnetException
-            {
-                errorClass = new ErrorClass(queue);
-                errorCode = new ErrorCode(queue);
-            }
-
-        public ErrorClass getErrorClass()
         {
-            return errorClass;
+            this.errorClass = errorClass;
+            this.errorCode = errorCode;
         }
 
-        public ErrorCode getErrorCode()
+        public BACnetError(BACnetServiceException e)
         {
-            return errorCode;
+            this.errorClass = e.ErrorClass;
+            this.errorCode = e.ErrorCode;
         }
+
+        public override void write(ByteStream queue)
+        {
+            write(queue, errorClass);
+            write(queue, errorCode);
+        }
+
+        public BACnetError(ByteStream queue) // throws BACnetException
+        {
+            errorClass = new ErrorClass(queue);
+            errorCode = new ErrorCode(queue);
+        }
+
+        public ErrorClass ErrorClass => errorClass;
+
+        public ErrorCode ErrorCode => errorCode;
 
         public bool equals(ErrorClass errorClass, ErrorCode errorCode)
         {
@@ -53,6 +47,5 @@ namespace BACnetNetduino.DataTypes.Constructed
         {
             return "errorClass=" + errorClass + ", errorCode=" + errorCode;
         }
-
     }
 }

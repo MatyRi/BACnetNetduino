@@ -9,8 +9,8 @@ namespace BACnetNetduino.DataTypes.Primitive
 
         public Unsigned16(uint value) : base(value)
         {
-            if (value > MAX)
-                throw new ArgumentException("Value cannot be greater than " + MAX);
+            // TODO if (value > MAX)
+                //throw new ArgumentException("Value cannot be greater than " + MAX);
         }
 
         public Unsigned16(ByteStream queue) : base(queue) { }

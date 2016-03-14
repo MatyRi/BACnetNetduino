@@ -16,59 +16,59 @@ namespace BACnetNetduino.DataTypes.Constructed
             typeof (DateTime)
         };
 
-    public TimeStamp(Time time)
-    {
-        choice = new Choice(0, time);
-    }
+        public TimeStamp(Time time)
+        {
+            choice = new Choice(0, time);
+        }
 
-    public TimeStamp(UnsignedInteger sequenceNumber)
-    {
-        choice = new Choice(1, sequenceNumber);
-    }
+        public TimeStamp(UnsignedInteger sequenceNumber)
+        {
+            choice = new Choice(1, sequenceNumber);
+        }
 
-    public TimeStamp(DateTime dateTime)
-    {
-        choice = new Choice(2, dateTime);
-    }
+        public TimeStamp(DateTime dateTime)
+        {
+            choice = new Choice(2, dateTime);
+        }
 
-    /*public override void write(ByteStream queue)
+        /*public override void write(ByteStream queue)
     {
         write(queue, choice);
     }*/
 
-    public TimeStamp(ByteStream queue)
-    {
-        choice = new Choice(queue, classes);
-}
+        public TimeStamp(ByteStream queue)
+        {
+            choice = new Choice(queue, classes);
+        }
 
-public bool isTime()
-{
-    return choice.getContextId() == 0;
-}
+        public bool isTime()
+        {
+            return choice.ContextId == 0;
+        }
 
-public Time getTime()
-{
-    return (Time)choice.getDatum();
-}
+        public Time getTime()
+        {
+            return (Time) choice.Datum;
+        }
 
-public bool isSequenceNumber()
-{
-    return choice.getContextId() == 1;
-}
+        public bool isSequenceNumber()
+        {
+            return choice.ContextId == 1;
+        }
 
-public UnsignedInteger getSequenceNumber()
-{
-    return (UnsignedInteger)choice.getDatum();
-}
+        public UnsignedInteger getSequenceNumber()
+        {
+            return (UnsignedInteger) choice.Datum;
+        }
 
-public bool isDateTime()
-{
-    return choice.getContextId() == 2;
-}
+        public bool isDateTime()
+        {
+            return choice.ContextId == 2;
+        }
 
-public DateTime getDateTime()
-{
-    return (DateTime)choice.getDatum();
-}
+        public DateTime getDateTime()
+        {
+            return (DateTime) choice.Datum;
+        }
     }
 }

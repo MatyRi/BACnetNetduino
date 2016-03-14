@@ -120,7 +120,7 @@ namespace BACnetNetduino
             return source.ToArray();
         }
 
-        [Obsolete]
+        [Obsolete("Use Read")]
         public void pop(byte[] buff)
         {
             source.Read(buff, 0, buff.Length);
@@ -179,13 +179,18 @@ namespace BACnetNetduino
             source.WriteByte(data);
         }
 
+        public void Write(byte[] data)
+        {
+            this.source.Write(data, 0, data.Length);
+        }
+
         public void Write(ByteStream data)
         {
             byte[] bData = data.source.ToArray();
             this.source.Write(bData,0,bData.Length);
         }
 
-        public void WriteShort(short value)
+        public void WriteShort(ushort value)
         {
             source.WriteByte((byte)(0xff & (value >> 8)));
             source.WriteByte((byte)(0xff & value));
@@ -213,6 +218,11 @@ namespace BACnetNetduino
 
         #endregion
 
+        public void pushU2B(ushort value)
+        {
 
+            WriteByte((byte)(value >> 8));
+            WriteByte((byte)value);
+    }
     }
 }

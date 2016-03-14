@@ -65,7 +65,7 @@ namespace BACnetNetduino.DataTypes.Primitive
  */
 protected bool contextSpecific;
 
-/*public override void write(ByteStream queue)
+public override void write(ByteStream queue)
 {
     writeTag(queue, getTypeId(), false, getLength());
     writeImpl(queue);
@@ -78,24 +78,27 @@ public override void write(ByteStream queue, int contextId)
     writeImpl(queue);
 }
 
-public override void writeEncodable(ByteStream queue, int contextId)
+public void writeEncodable(ByteStream queue, int contextId)
 {
     writeContextTag(queue, contextId, true);
     write(queue);
     writeContextTag(queue, contextId, false);
 }
 
-protected abstract void writeImpl(ByteStream queue);*/
+        protected virtual void writeImpl(ByteStream queue)
+        {
+            throw new NotImplementedException();
+        }
 
 protected abstract long getLength();
 
 protected abstract byte getTypeId();
 
-/*private void writeTag(ByteStream queue, int tagNumber, bool classTag, long length)
+private void writeTag(ByteStream queue, int tagNumber, bool classTag, long length)
 {
     int classValue = classTag ? 8 : 0;
 
-    if (length < 0 || length > 0x100000000l)
+    if (length < 0 || length > 0x100000000l) // TODO MATY Check
         throw new ArgumentException("Invalid length: " + length);
 
     bool extendedTag = tagNumber > 14;
@@ -104,34 +107,34 @@ protected abstract byte getTypeId();
     {
         if (extendedTag)
         {
-            queue.push(0xf0 | classValue | length);
-            queue.push(tagNumber);
+            queue.WriteByte((byte) (0xf0 | classValue | length));
+            queue.WriteByte((byte) tagNumber);
         }
         else
-            queue.push((tagNumber << 4) | classValue | length);
+            queue.WriteByte((byte) ((tagNumber << 4) | classValue | length));
     }
     else {
         if (extendedTag)
         {
-            queue.push(0xf5 | classValue);
-            queue.push(tagNumber);
+            queue.WriteByte((byte) (0xf5 | classValue));
+            queue.WriteByte((byte) tagNumber);
         }
         else
-            queue.push((tagNumber << 4) | classValue | 0x5);
+            queue.WriteByte((byte) ((tagNumber << 4) | classValue | 0x5));
 
         if (length < 254)
-            queue.push(length);
-        else if (length < 65536)
+            queue.WriteByte((byte) length);
+        else if (length < ushort.MaxValue)
         {
-            queue.push(254);
-            BACnetUtils.pushShort(queue, length);
+            queue.WriteByte(254);
+            queue.WriteShort((ushort) length);
         }
         else {
-            queue.push(255);
-            BACnetUtils.pushInt(queue, length);
+            queue.WriteByte(255);
+            queue.WriteInt((int) length);
         }
     }
-}*/
+}
 
 protected long readTag(ByteStream queue)
 {

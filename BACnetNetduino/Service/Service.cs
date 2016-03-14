@@ -1,10 +1,11 @@
 using System;
 using BACnetNetduino.DataTypes;
+using BACnetNetduino.DataTypes.Constructed;
 using Microsoft.SPOT;
 
 namespace BACnetNetduino.Service
 {
-    internal abstract class Service
+    internal abstract class Service : BaseType
     {
 
 

@@ -20,49 +20,42 @@ namespace BACnetNetduino.NPDU
         private byte messageType;
         private ushort vendorId;
 
-        private NPDU()
-        {
-        }
 
-        public static NPDU Parse(ByteStream source)
+        public NPDU(ByteStream source)
         {
 
-            NPDU result = new NPDU();
+            this.version = source.ReadByte();
+            this.control = new NLPCI(source.ReadByte());
 
-            result.version = source.ReadByte();
-            result.control = new NLPCI(source.ReadByte());
-
-            if (result.control.IsDestinationSpecific)
+            if (this.control.IsDestinationSpecific)
             {
-                result.destinationNetworkAddress = source.popU2B();
-                result.destinationMacLyerAddressLength = source.popU1B();
-                if (result.destinationMacLyerAddressLength > 0)
+                this.destinationNetworkAddress = source.popU2B();
+                this.destinationMacLyerAddressLength = source.popU1B();
+                if (this.destinationMacLyerAddressLength > 0)
                 {
-                    result.destinationAddress = new byte[result.destinationMacLyerAddressLength];
-                    source.pop(result.destinationAddress);
+                    this.destinationAddress = new byte[this.destinationMacLyerAddressLength];
+                    source.Read(this.destinationAddress);
                 }
             }
 
-            if (result.control.IsSourceSpecific)
+            if (this.control.IsSourceSpecific)
             {
                 // TODO Check address length
-                result.sourceNetworkAddress = source.popU2B();
-                result.sourceMacLyerAddressLength = source.popU1B();
-                result.sourceAddress = new byte[result.sourceMacLyerAddressLength];
-                source.pop(result.destinationAddress);
+                this.sourceNetworkAddress = source.popU2B();
+                this.sourceMacLyerAddressLength = source.popU1B();
+                this.sourceAddress = new byte[this.sourceMacLyerAddressLength];
+                source.Read(this.destinationAddress);
             }
 
-            if (result.control.IsDestinationSpecific)
-                result.hopCount = source.popU1B();
+            if (this.control.IsDestinationSpecific)
+                this.hopCount = source.popU1B();
 
-            if (result.control.IsNetworkLayerMessage)
+            if (this.control.IsNetworkLayerMessage)
             {
-                result.messageType = source.popU1B();
-                if (result.messageType >= 80)
-                    result.vendorId = source.popU2B();
+                this.messageType = source.popU1B();
+                if (this.messageType >= 80)
+                    this.vendorId = source.popU2B();
             }
-
-            return result;
         }
 
 
@@ -75,13 +68,13 @@ namespace BACnetNetduino.NPDU
         public NPDU(Address source)
         {
             version = 1;
-            control = new NLPCI(1); //new BitArray(1));
+            control = new NLPCI(0); //new BitArray(1));
 
-            //control.Set(5, true);
+            control.IsDestinationSpecific = true;
             destinationNetworkAddress = ushort.MaxValue; //(ushort) 0xFFFF;
             hopCount = 0xFF;
 
-            // TODO setSourceAddress(source);
+            setSourceAddress(source);
         }
 
         public NPDU(Address destination, Address source, bool expectsReply)
@@ -91,153 +84,102 @@ namespace BACnetNetduino.NPDU
 
             if (destination != null)
             {
-                //control.Set(5, true);
-                // TODO destinationNetworkAddress = destination.getNetworkNumber().intValue();
-                // TODO destinationAddress = destination.getMacAddress().getBytes();
+                control.IsDestinationSpecific = true;
+                destinationNetworkAddress = (ushort) destination.NetworkNumber.intValue();
+                destinationAddress = destination.MACAddress.getBytes();
                 if (destinationAddress != null)
                     destinationMacLyerAddressLength = (byte) destinationAddress.Length;
                 hopCount = 0xFF;
             }
 
-            // TODO setSourceAddress(source);
+            setSourceAddress(source);
 
-            //if (expectsReply)
-                //control.Set(2, true);
+            if (expectsReply)
+                control.ExpectsReply = true;
         }
 
         public NPDU(Address destination, Address source, bool expectsReply, byte messageType, byte vendorId) : this(destination, source, expectsReply)
         {
 
-            //control.Set(7, true);
+            control.IsNetworkLayerMessage = true;
             this.messageType = messageType;
             this.vendorId = vendorId;
         }
 
-        /*private void setSourceAddress(Address source)
+        private void setSourceAddress(Address source)
         {
             if (source != null)
             {
-                control = control.setBit(3);
-                sourceNetwork = source.getNetworkNumber().intValue();
-                sourceAddress = source.getMacAddress().getBytes();
-                sourceLength = sourceAddress.length;
+                control.IsSourceSpecific = true;
+                sourceNetworkAddress = (ushort) source.NetworkNumber.intValue();
+                sourceAddress = source.MACAddress.getBytes();
+                sourceMacLyerAddressLength = (byte) sourceAddress.Length;
             }
-        }*/
+        }
 
         public void write(ByteStream queue)
         {
-            /*queue.WriteByte(version);
-            // TODO queue.WriteByte(control);
+            queue.WriteByte(version);
+            queue.WriteByte(control.Value);
 
-            if (control.Get(5))
+            if (control.IsDestinationSpecific)
             {
-                // TODO queue.pushU2B(destinationNetworkAddress);
+                queue.pushU2B(destinationNetworkAddress);
                 queue.WriteByte(destinationMacLyerAddressLength);
                 if (destinationAddress != null)
-                    queue.WriteByte(destinationAddress);
+                    queue.Write(destinationAddress);
             }
 
-            if (control.Get(3))
+            if (control.IsSourceSpecific)
             {
-                queue.pushU2B(sourceNetwork);
-                queue.WriteByte(sourceLength);
-                queue.WriteByte(sourceAddress);
+                queue.pushU2B(sourceNetworkAddress);
+                queue.WriteByte(sourceMacLyerAddressLength);
+                queue.Write(sourceAddress);
             }
 
-            if (control.Get(5))
+            if (control.IsDestinationSpecific)
                 queue.WriteByte(hopCount);
 
-            if (control.Get(7))
+            if (control.IsNetworkLayerMessage)
             {
                 queue.WriteByte(messageType);
                 if (messageType >= 80)
                     queue.pushU2B(vendorId);
-            }*/
+            }
         }
 
-        public bool hasDestinationInfo()
-        {
-            return control.IsDestinationSpecific;
-        }
+        public bool HasDestinationInfo => control.IsDestinationSpecific;
 
-        public bool isDestinationBroadcast()
-        {
-            return destinationMacLyerAddressLength == 0;
-        }
+        public bool IsDestinationBroadcast => destinationMacLyerAddressLength == 0;
 
-        public bool hasSourceInfo()
-        {
-            return control.IsSourceSpecific;
-        }
+        public bool HasSourceInfo => control.IsSourceSpecific;
 
-        public bool isExpectingReply()
-        {
-            return control.ExpectsReply;
-        }
+        public bool IsExpectingReply => control.ExpectsReply;
 
-        public bool isNetworkMessage()
-        {
-            return control.IsNetworkLayerMessage;
-        }
+        public bool IsNetworkMessage => control.IsNetworkLayerMessage;
 
-        public bool isVendorSpecificNetworkMessage()
-        {
-            return isNetworkMessage() && messageType >= 80;
-        }
+        public bool IsVendorSpecificNetworkMessage => IsNetworkMessage && messageType >= 80;
 
-        public int getNetworkPriority()
-        {
-            return (control.Bit1 ? 2 : 0) | (control.Bit0 ? 1 : 0);
-        }
+        public int NetworkPriority => (control.Bit1 ? 2 : 0) | (control.Bit0 ? 1 : 0);
 
-        public byte[] getDestinationAddress()
-        {
-            return destinationAddress;
-        }
+        public byte[] DestinationAddress => destinationAddress;
 
-        public int getDestinationLength()
-        {
-            return destinationMacLyerAddressLength;
-        }
+        public byte DestinationLength => destinationMacLyerAddressLength;
 
-        public int getDestinationNetwork()
-        {
-            return destinationNetworkAddress;
-        }
+        public ushort DestinationNetwork => destinationNetworkAddress;
 
-        public int getHopCount()
-        {
-            return hopCount;
-        }
+        public byte HopCount => hopCount;
 
-        public int getMessageType()
-        {
-            return messageType;
-        }
+        public byte MessageType => messageType;
 
-        public byte[] getSourceAddress()
-        {
-            return sourceAddress;
-        }
+        public byte[] SourceAddress => sourceAddress;
 
-        public int getSourceLength()
-        {
-            return sourceMacLyerAddressLength;
-        }
+        public byte SourceLength => sourceMacLyerAddressLength;
 
-        public int getSourceNetwork()
-        {
-            return sourceNetworkAddress;
-        }
+        public ushort SourceNetwork => sourceNetworkAddress;
 
-        public int getVendorId()
-        {
-            return vendorId;
-        }
+        public ushort VendorId => vendorId;
 
-        public int getVersion()
-        {
-            return version;
-        }
+        public byte Version => version;
     }
 }

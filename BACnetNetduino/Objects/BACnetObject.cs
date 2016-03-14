@@ -250,7 +250,8 @@ SequenceOf<?> array = (SequenceOf <?>) result;
         private void setPropertyImpl(PropertyIdentifier pid, Encodable value)
         {
             Encodable oldValue = (Encodable) properties[pid];
-            properties.Add(pid, value);
+            properties[pid] = value;
+            //properties.Add(pid, value);
 
             /*if (!ObjectUtils.equals(value, oldValue))
     {

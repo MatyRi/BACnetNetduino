@@ -31,9 +31,9 @@ namespace BACnetNetduino.Service.Unconfirmed
             return TYPE_ID;
         }
 
-        //public override void handle(LocalDevice localDevice, Address from, OctetString linkService)
-        //{
-            /*if (!ObjectType.device.Equals(iAmDeviceIdentifier.getObjectType()))
+        public override void handle(Address from, OctetString linkService)
+        {
+            if (!ObjectType.device.Equals(iAmDeviceIdentifier.getObjectType()))
             {
                 //LOGGER.warning("Received IAm from an object that is not a device.");
                 Debug.Print("Received IAm from an object that is not a device.");
@@ -41,12 +41,12 @@ namespace BACnetNetduino.Service.Unconfirmed
             }
 
             // Make sure we're not hearing from ourselves.
-            int myDoi = localDevice.getConfiguration().getInstanceId();
+            /*int myDoi = Program.Device.getConfiguration().getInstanceId();
             int remoteDoi = iAmDeviceIdentifier.getInstanceNumber();
             if (remoteDoi == myDoi)
             {
                 // Get my bacnet address and compare the addresses
-                for (Address addr : localDevice.getAllLocalAddresses())
+                foreach (Address addr in localDevice.getAllLocalAddresses())
                 {
                     if (addr.getMacAddress().equals(from.getMacAddress()))
                         // This is a local address, so ignore.
@@ -63,17 +63,17 @@ namespace BACnetNetduino.Service.Unconfirmed
             d.setVendorId(vendorId.intValue());
 
             // Fire the appropriate event.
-            localDevice.getEventHandler().fireIAmReceived(d);
-            */
-        //}
+            localDevice.getEventHandler().fireIAmReceived(d);*/
+            
+        }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
             write(queue, iAmDeviceIdentifier);
             write(queue, maxAPDULengthAccepted);
             write(queue, segmentationSupported);
             write(queue, vendorId);
-        }*/
+        }
 
         internal IAmRequest(ByteStream queue)
         {

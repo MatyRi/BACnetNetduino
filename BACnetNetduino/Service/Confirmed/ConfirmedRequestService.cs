@@ -143,6 +143,6 @@ namespace BACnetNetduino.Service.Confirmed
         throw new BACnetErrorException(ErrorClass.device, ErrorCode.serviceRequestDenied);
 }
 
-        public abstract AcknowledgementService handle(/*LocalDevice*/ object localDevice, Address from, OctetString linkService);
+        public abstract AcknowledgementService handle(/*LocalDevice localDevice,*/ Address from, OctetString linkService);
     }
 }

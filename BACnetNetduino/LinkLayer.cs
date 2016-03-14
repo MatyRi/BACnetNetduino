@@ -12,7 +12,6 @@ namespace BACnetNetduino
 {
     internal class LinkLayer
     {
-
         public static readonly int DEFAULT_PORT = 47808; // 0xBAC0
 
         readonly Thread _receiverThread;
@@ -30,7 +29,6 @@ namespace BACnetNetduino
         public LinkLayer()
             : this(DEFAULT_PORT)
         {
-            
         }
 
         public LinkLayer(int port)
@@ -43,7 +41,6 @@ namespace BACnetNetduino
             _receiverThread = new Thread(Receive);
 
             NewMessageReceived += BlinkLed;
-
         }
 
         public void Start()
@@ -70,7 +67,7 @@ namespace BACnetNetduino
                         int count = serverSocket.ReceiveFrom(inBuffer, ref remoteEndPoint);
 
                         byte[] trimedBytes = new byte[count];
-                        Array.Copy(inBuffer,0,trimedBytes,0,count);
+                        Array.Copy(inBuffer, 0, trimedBytes, 0, count);
 
                         NewMessageReceived?.Invoke(remoteEndPoint, trimedBytes);
                     }
@@ -79,17 +76,12 @@ namespace BACnetNetduino
                         Thread.Sleep(0);
                     }
                 }
-
-
             }
         }
 
         public void SendPacket(IPEndPoint endpoint, byte[] data)
         {
-            if (server != null)
-            {
-                server.SendTo(data, endpoint);
-            }
+            if (server != null) server.SendTo(data, endpoint);
         }
 
         private void BlinkLed(EndPoint from, byte[] data)
@@ -104,6 +96,5 @@ namespace BACnetNetduino
             this._timeToDie = true;
             this._receiverThread.Abort();
         }
-
     }
 }

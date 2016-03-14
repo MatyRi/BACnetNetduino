@@ -144,13 +144,13 @@ public static void addPropertyTypeDefinition(ObjectType oType, PropertyIdentifie
 {
     IList list = (IList) propertyTypes[oType];
     if (list == null)
-        throw new System.Exception("typeof(ObjectType not found: " + oType);
+        throw new System.Exception("ObjectType not found: " + oType);
 
     // Check for existing entries.
     foreach (PropertyTypeDefinition def in list)
     {
         if (def.getPropertyIdentifier().Equals(pid))
-            throw new System.Exception("typeof(ObjectType already contains the given PropertyIdentifier");
+            throw new System.Exception("ObjectType already contains the given PropertyIdentifier");
     }
 
     list.Add(new PropertyTypeDefinition(oType, pid, type, sequence, required, defaultValue));

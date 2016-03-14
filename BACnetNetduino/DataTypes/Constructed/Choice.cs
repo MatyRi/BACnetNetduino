@@ -15,15 +15,9 @@ namespace BACnetNetduino.DataTypes.Constructed
             this.datum = datum;
         }
 
-        public int getContextId()
-        {
-            return contextId;
-        }
+        public int ContextId => contextId;
 
-        public Encodable getDatum()
-        {
-            return datum;
-        }
+        public Encodable Datum => datum;
 
         /*public override void write(ByteStream queue)
         {

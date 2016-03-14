@@ -36,10 +36,14 @@ namespace BACnetNetduino.APDU
         public abstract byte getPduType();
 
         //public abstract void write(ByteStream queue);
-
-        protected int getShiftedTypeId(byte typeId)
+        public virtual void write(ByteStream queue)
         {
-            return typeId << 4;
+            throw new NotImplementedException();
+        }
+
+        protected byte getShiftedTypeId(byte typeId)
+        {
+            return (byte) (typeId << 4);
         }
 
         public abstract bool expectsReply();

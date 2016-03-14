@@ -18,7 +18,7 @@ namespace BACnetNetduino.Exception
 
         public BACnetErrorException(byte choice, BACnetServiceException e) : base(e)
         {
-            error = new BaseError(choice, new BACnetError(e.getErrorClass(), e.getErrorCode()));
+            error = new BaseError(choice, new BACnetError(e.ErrorClass, e.ErrorCode));
         }
 
         public BACnetErrorException(ErrorClass errorClass, ErrorCode errorCode) : base(getBaseMessage(errorClass, errorCode, null))
@@ -28,7 +28,7 @@ namespace BACnetNetduino.Exception
 
         public BACnetErrorException(BACnetServiceException e) : base(e.Message)
         {
-            error = new BaseError((byte)127, new BACnetError(e.getErrorClass(), e.getErrorCode()));
+            error = new BaseError((byte)127, new BACnetError(e.ErrorClass, e.ErrorCode));
         }
 
         public BACnetErrorException(ErrorClass errorClass, ErrorCode errorCode, string message) : base (getBaseMessage(errorClass, errorCode, message))

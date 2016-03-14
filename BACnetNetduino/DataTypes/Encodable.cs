@@ -8,8 +8,16 @@ namespace BACnetNetduino.DataTypes
     internal abstract class Encodable
     {
         //TODO public abstract void write(ByteStream source);
+        public virtual void write(ByteStream source)
+        {
+            throw new NotImplementedException();
+        }
 
         //TODO public abstract void write(ByteStream source, int contextId);
+        public virtual void write(ByteStream source, int contextId)
+        {
+            throw new NotImplementedException();
+        }
 
         public override string ToString()
         {
@@ -69,15 +77,15 @@ namespace BACnetNetduino.DataTypes
 
         //
         // Write context tags for base types.
-        /* TODO protected void writeContextTag(ByteStream source, int contextId, bool start)
+        protected void writeContextTag(ByteStream source, int contextId, bool start)
         {
             if (contextId <= 14)
-                source.push((contextId << 4) | (start ? 0xe : 0xf));
+                source.WriteByte((byte) ((contextId << 4) | (start ? 0xe : 0xf)));
             else {
-                source.push(start ? 0xfe : 0xff);
-                source.push(contextId);
+                source.WriteByte((byte) (start ? 0xfe : 0xff));
+                source.WriteByte((byte) contextId);
             }
-        } */
+        }
 
         //
         // Read start tags.
@@ -162,10 +170,10 @@ namespace BACnetNetduino.DataTypes
 
     //
     // Basic read and write. Pretty trivial.
-    /* TODO protected static void write(ByteStream source, Encodable type)
+    protected static void write(ByteStream source, Encodable type)
     {
         type.write(source);
-    }*/
+    }
 
         protected static Encodable read(ByteStream source, Type type) //throws BACnetException
         {

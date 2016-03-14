@@ -21,15 +21,9 @@ namespace BACnetNetduino.Exception
             this.errorCode = errorCode;
         }
 
-        public ErrorClass getErrorClass()
-        {
-            return errorClass;
-        }
+        public ErrorClass ErrorClass => errorClass;
 
-        public ErrorCode getErrorCode()
-        {
-            return errorCode;
-        }
+        public ErrorCode ErrorCode => errorCode;
 
         public bool equals(ErrorClass errorClass, ErrorCode errorCode)
         {

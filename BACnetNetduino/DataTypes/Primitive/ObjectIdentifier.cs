@@ -4,7 +4,7 @@ using Microsoft.SPOT;
 
 namespace BACnetNetduino.DataTypes.Primitive
 {
-    class ObjectIdentifier : Primitive
+    internal class ObjectIdentifier : Primitive
     {
         public static readonly byte TYPE_ID = 12;
 
@@ -58,14 +58,14 @@ namespace BACnetNetduino.DataTypes.Primitive
             instanceNumber |= queue.popU1B();
         }
 
-        /*public override void writeImpl(ByteStream queue)
+        protected override void writeImpl(ByteStream queue)
         {
-            int objectType = this.objectType.intValue();
-            queue.push(objectType >> 2);
-            queue.push(((objectType & 3) << 6) | (instanceNumber >> 16));
-            queue.push(instanceNumber >> 8);
-            queue.push(instanceNumber);
-        }*/
+            uint objectType = this.objectType.intValue();
+            queue.WriteByte((byte) (objectType >> 2));
+            queue.WriteByte((byte) (((objectType & 3) << 6) | (instanceNumber >> 16)));
+            queue.WriteByte((byte) (instanceNumber >> 8));
+            queue.WriteByte((byte) instanceNumber);
+        }
 
         protected override long getLength()
         {

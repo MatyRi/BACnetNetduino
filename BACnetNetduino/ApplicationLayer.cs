@@ -23,6 +23,12 @@ namespace BACnetNetduino
             this.network.NewNPDUReceived += OnNPDUReceived;
         }
 
+        public delegate void UnconfirmedRequestHandler(Address fromAddress, OctetString linkService, UnconfirmedRequest request);
+        public event UnconfirmedRequestHandler UnconfirmedRequestReceived;
+
+        public delegate void ConfirmedRequestHandler(Address fromAddress, OctetString linkService, int invokeId, ConfirmedRequest request);
+        public event ConfirmedRequestHandler ConfirmedRequestReceived;
+
         private void OnNPDUReceived(IPEndPoint from, Address fromAddress, OctetString linkService, NPDU.NPDU npdu, ByteStream raw)
         {
             try
@@ -37,7 +43,9 @@ namespace BACnetNetduino
             catch (System.Exception e)
             {
                 // If it's already a BACnetException, don't bother wrapping it.
-                throw e;
+                //throw e;
+                Debug.Print(e.Message);
+                Debug.Print(e.StackTrace);
             }
 
             /*if (inBuffer.Length > 20)
@@ -64,25 +72,26 @@ namespace BACnetNetduino
 
         private void incomingApdu(APDU.APDU apdu, Address address, OctetString linkService)
         {
-        // if (apdu.expectsReply() != npci.isExpectingReply())
-        // throw new MessageValidationAssertionException("Inconsistent message: APDU expectsReply="+
-        // apdu.expectsReply() +" while NPCI isExpectingReply="+ npci.isExpectingReply());
-    	
-        if (apdu is ConfirmedRequest) {
-                ConfirmedRequest confAPDU = (ConfirmedRequest)apdu;
+            // if (apdu.expectsReply() != npci.isExpectingReply())
+            // throw new MessageValidationAssertionException("Inconsistent message: APDU expectsReply="+
+            // apdu.expectsReply() +" while NPCI isExpectingReply="+ npci.isExpectingReply());
+
+            if (apdu is ConfirmedRequest)
+            {
+                ConfirmedRequest confAPDU = (ConfirmedRequest) apdu;
                 byte invokeId = confAPDU.getInvokeId();
 
-            if (confAPDU.isSegmentedMessage() && confAPDU.getSequenceNumber() > 0)
-            {
-                // This is a subsequent part of a segmented message. Notify the waiting room.
-                // TODO waitingRoom.notifyMember(address, linkService, invokeId, false, confAPDU);
-            }
-            else
-            {
-                if (confAPDU.isSegmentedMessage())
+                if (confAPDU.isSegmentedMessage() && confAPDU.getSequenceNumber() > 0)
                 {
-                    // This is the initial part of a segmented message. Go and receive the subsequent parts.
-                    /*WaitingRoomKey key = waitingRoom.enterServer(address, linkService, invokeId);
+                    // This is a subsequent part of a segmented message. Notify the waiting room.
+                    // TODO waitingRoom.notifyMember(address, linkService, invokeId, false, confAPDU);
+                }
+                else
+                {
+                    if (confAPDU.isSegmentedMessage())
+                    {
+                        // This is the initial part of a segmented message. Go and receive the subsequent parts.
+                        /*WaitingRoomKey key = waitingRoom.enterServer(address, linkService, invokeId);
                     try
                     {
                         receiveSegmented(key, confAPDU);
@@ -91,14 +100,14 @@ namespace BACnetNetduino
                     {
                         waitingRoom.leave(key);
                     }*/
-                }
+                    }
 
-                // Handle the request.
-                try
-                {
-                    confAPDU.parseServiceData();
+                    // Handle the request.
+                    try
+                    {
+                        confAPDU.parseServiceData();
 
-                    /*if (localDevice.getDCCEnableDisable().equals(EnableDisable.disable))
+                        /*if (localDevice.getDCCEnableDisable().equals(EnableDisable.disable))
                     {
                         // zpracovavame jenom reset a DCC
                         // povoleni probiha v handleru DCC
@@ -115,95 +124,47 @@ namespace BACnetNetduino
                     }*/
 
 
-                    AcknowledgementService ackService = handleConfirmedRequest(address, linkService, invokeId,
-                        confAPDU.getServiceRequest());
-                    // TODO X BACNET Original
-                    // TODO sendResponse(address, linkService, confAPDU, ackService);
+                        ConfirmedRequestReceived?.Invoke(address, linkService, invokeId, confAPDU); // EVENT
 
-                    // TODO X BACNET Maty - oprava NPEx
-                    /*new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    sendResponse(address, linkService, confAPDU, ackService);
-                                }
-                                catch (BACnetException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();*/
-                }
-                catch (BACnetErrorException e)
-                {
-                    network.sendAPDU(address, linkService, new Error(invokeId, e.getError()), false);
-                }
-                catch (BACnetRejectException e)
-                {
-                    network.sendAPDU(address, linkService, new Reject(invokeId, e.getRejectReason()), false);
-                }
-                catch (BACnetException e)
-                {
-                    Error error = new Error(confAPDU.getInvokeId(), new BaseError((byte) 127, new BACnetError(
-                        ErrorClass.services, ErrorCode.inconsistentParameters)));
-                    network.sendAPDU(address, linkService, error, false);
-                    // TODO ExceptionDispatch.fireReceivedException(e);
+
+                        // TODO Move Handlers to LocalDevice
+                    }
+                    catch (BACnetErrorException e)
+                    {
+                        network.sendAPDU(address, linkService, new Error(invokeId, e.getError()), false);
+                    }
+                    catch (BACnetRejectException e)
+                    {
+                        network.sendAPDU(address, linkService, new Reject(invokeId, e.getRejectReason()), false);
+                    }
+                    catch (BACnetException e)
+                    {
+                        Error error = new Error(confAPDU.getInvokeId(),
+                            new BaseError((byte) 127,
+                                new BACnetError(ErrorClass.services, ErrorCode.inconsistentParameters)));
+                        network.sendAPDU(address, linkService, error, false);
+                        // TODO ExceptionDispatch.fireReceivedException(e);
+                    }
                 }
             }
-        }
-        else if (apdu is UnconfirmedRequest) {
-
+            else if (apdu is UnconfirmedRequest)
+            {
                 //DCC - reakce na prichozi zpravy - blokujeme vsechny Unconfirmed
-                /*if (localDevice.getDCCEnableDisable().equals(EnableDisable.disable))
+                /* TODO if (localDevice.getDCCEnableDisable().equals(EnableDisable.disable))
                 {
                     return;
                 }*/
-
-                UnconfirmedRequest ur = (UnconfirmedRequest)apdu;
-
-                if (ur.getService() == null) { return; } // HOT FIX
-
-                try
-                {
-                    // TODO ur.getService().handle(localDevice, address, linkService);
-                    ur.getService().handle(address, linkService);
-                }
-                catch (BACnetException e)
-                {
-                    // TODO ExceptionDispatch.fireReceivedException(e);
-                }
+                UnconfirmedRequestReceived?.Invoke(address, linkService, (UnconfirmedRequest) apdu);
             }
-        else {
+            else
+            {
                 // An acknowledgement.
-                AckAPDU ack = (AckAPDU)apdu;
+                AckAPDU ack = (AckAPDU) apdu;
 
                 // Used for testing only. This is required to test the parsing of service data in an ack.
                 // ((ComplexACK) ack).parseServiceData();
 
                 //waitingRoom.notifyMember(address, linkService, ack.getOriginalInvokeId(), ack.isServer(), ack);
-            }
-        }
-
-        //
-        //
-        // Receiving messages - messages are initiated externally, and received from the data link. Just call the handler
-        // method in the service.
-        //
-        private AcknowledgementService handleConfirmedRequest(Address from, OctetString linkService, byte invokeId, ConfirmedRequestService service)
-        {
-        try
-        {
-            return null; // TODO service.handle(localDevice, from, linkService);
-            }
-        catch (NotImplementedException e) {
-                Debug.Print("Unsupported confirmed request: invokeId=" + invokeId + ", from=" + from + ", request="
-                        + service.GetType().FullName);
-                throw new BACnetErrorException(ErrorClass.services, ErrorCode.serviceRequestDenied);
-            }
-        catch (BACnetErrorException e) {
-                throw e;
-            }
-        catch (System.Exception e) {
-                throw new BACnetErrorException(ErrorClass.device, ErrorCode.operationalProblem);
             }
         }
 

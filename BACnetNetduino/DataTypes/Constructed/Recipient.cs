@@ -27,22 +27,22 @@ namespace BACnetNetduino.DataTypes.Constructed
 
         public bool isObjectIdentifier()
         {
-            return choice.getContextId() == 0;
+            return choice.ContextId == 0;
         }
 
         public ObjectIdentifier getObjectIdentifier()
         {
-            return (ObjectIdentifier) choice.getDatum();
+            return (ObjectIdentifier) choice.Datum;
         }
 
         public bool isAddress()
         {
-            return choice.getContextId() == 1;
+            return choice.ContextId == 1;
         }
 
         public Address getAddress()
         {
-            return (Address) choice.getDatum();
+            return (Address) choice.Datum;
         }
 
         /*public override void write(ByteQueue queue)
