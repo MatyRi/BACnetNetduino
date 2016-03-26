@@ -5,81 +5,53 @@ namespace BACnetDataTypes
 {
     class SequenceDefinition
     {
-        private readonly IList elements;
         //private readonly List<ElementSpecification> elements;
 
         public SequenceDefinition(params ElementSpecification[] specs)
         {
-            elements = new ArrayList();
+            Elements = new ArrayList();
             foreach (ElementSpecification spec in specs)
-                elements.Add(spec);
+                Elements.Add(spec);
         }
 
         public SequenceDefinition(IList elements)
         {
-            this.elements = elements;
+            this.Elements = elements;
         }
 
-        public IList getElements()
-        {
-            return elements;
-        }
+        public IList Elements { get; }
 
         public class ElementSpecification
         {
-            private readonly string id;
-            private readonly Type type;
-            private readonly int contextId;
-            private readonly bool sequenceOf;
-            private readonly bool optional;
-
             public ElementSpecification(string id, Type type, bool sequenceOf, bool optional)
             {
-                this.id = id;
-                this.type = type;
-                contextId = -1;
-                this.sequenceOf = sequenceOf;
-                this.optional = optional;
+                this.Id = id;
+                this.Type = type;
+                ContextId = -1;
+                this.IsSequenceOf = sequenceOf;
+                this.IsOptional = optional;
             }
 
             public ElementSpecification(string id, Type type, int contextId, bool sequenceOf, bool optional)
             {
-                this.id = id;
-                this.type = type;
-                this.contextId = contextId;
-                this.sequenceOf = sequenceOf;
-                this.optional = optional;
+                this.Id = id;
+                this.Type = type;
+                this.ContextId = contextId;
+                this.IsSequenceOf = sequenceOf;
+                this.IsOptional = optional;
             }
 
-            public string getId()
-            {
-                return id;
-            }
+            public string Id { get; }
 
-            public Type getType()
-            {
-                return type;
-            }
+            public Type Type { get; }
 
-            public int getContextId()
-            {
-                return contextId;
-            }
+            public int ContextId { get; }
 
-            public bool isOptional()
-            {
-                return optional;
-            }
+            public bool IsOptional { get; }
 
-            public bool isSequenceOf()
-            {
-                return sequenceOf;
-            }
+            public bool IsSequenceOf { get; }
 
-            public bool hasContextId()
-            {
-                return contextId != -1;
-            }
+            public bool HasContextId => ContextId != -1;
         }
     }
 }

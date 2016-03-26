@@ -7,94 +7,69 @@ namespace BACnetDataTypes.Constructed
 {
     public class PriorityValue : BaseType
     {
-        private Null nullValue;
-        private Real realValue;
-        private BinaryPV binaryValue;
-        private UnsignedInteger integerValue;
-        private Encodable constructedValue;
+        public Null NullValue { get; }
+        public Real RealValue { get; }
+        public BinaryPV BinaryValue { get; }
+        public UnsignedInteger IntegerValue { get; }
+        public Encodable ConstructedValue { get; }
 
         public PriorityValue(Null nullValue)
         {
-            this.nullValue = nullValue;
+            this.NullValue = nullValue;
         }
 
         public PriorityValue(Real realValue)
         {
-            this.realValue = realValue;
+            this.RealValue = realValue;
         }
 
         public PriorityValue(BinaryPV binaryValue)
         {
-            this.binaryValue = binaryValue;
+            this.BinaryValue = binaryValue;
         }
 
         public PriorityValue(UnsignedInteger integerValue)
         {
-            this.integerValue = integerValue;
+            this.IntegerValue = integerValue;
         }
 
         public PriorityValue(BaseType constructedValue)
         {
-            this.constructedValue = constructedValue;
+            this.ConstructedValue = constructedValue;
         }
 
-        public Null getNullValue()
-        {
-            return nullValue;
-        }
+        public bool IsNull => NullValue != null;
 
-        public Real getRealValue()
+        public Encodable Value
         {
-            return realValue;
-        }
-
-        public BinaryPV getBinaryValue()
-        {
-            return binaryValue;
-        }
-
-        public UnsignedInteger getIntegerValue()
-        {
-            return integerValue;
-        }
-
-        public Encodable getConstructedValue()
-        {
-            return constructedValue;
-        }
-
-        public bool isNull()
-        {
-            return nullValue != null;
-        }
-
-        public Encodable getValue()
-        {
-            if (nullValue != null)
-                return nullValue;
-            if (realValue != null)
-                return realValue;
-            if (binaryValue != null)
-                return binaryValue;
-            if (integerValue != null)
-                return integerValue;
-            return constructedValue;
+            get
+            {
+                if (NullValue != null)
+                    return NullValue;
+                if (RealValue != null)
+                    return RealValue;
+                if (BinaryValue != null)
+                    return BinaryValue;
+                if (IntegerValue != null)
+                    return IntegerValue;
+                return ConstructedValue;
+            }
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("PriorityValue(");
-            if (nullValue != null)
-                sb.Append("nullValue=").Append(nullValue);
-            else if (realValue != null)
-                sb.Append("realValue=").Append(realValue);
-            else if (binaryValue != null)
-                sb.Append("binaryValue=").Append(binaryValue);
-            else if (integerValue != null)
-                sb.Append("integerValue=").Append(integerValue);
-            else if (constructedValue != null)
-                sb.Append("constructedValue=").Append(constructedValue);
+            if (NullValue != null)
+                sb.Append("nullValue=").Append(NullValue);
+            else if (RealValue != null)
+                sb.Append("realValue=").Append(RealValue);
+            else if (BinaryValue != null)
+                sb.Append("binaryValue=").Append(BinaryValue);
+            else if (IntegerValue != null)
+                sb.Append("integerValue=").Append(IntegerValue);
+            else if (ConstructedValue != null)
+                sb.Append("constructedValue=").Append(ConstructedValue);
             sb.Append(")");
             return sb.ToString();
         }
@@ -115,27 +90,29 @@ namespace BACnetDataTypes.Constructed
 
         public PriorityValue(ByteStream queue)
         {
-        // Sweet Jesus...
-        int tag = (queue.PeekFromHere(0) & 0xff);
-        if ((tag & 8) == 8) {
-            // A class tag, so this is a constructed value.
-            constructedValue = new AmbiguousValue(queue, 0);
-    }
-        else {
-            // A primitive value
-            tag = tag >> 4;
-            if (tag == Null.TYPE_ID)
-                nullValue = new Null(queue);
-            else if (tag == Real.TYPE_ID)
-                realValue = new Real(queue);
-            else if (tag == Primitive.Enumerated.TYPE_ID)
-                binaryValue = new BinaryPV(queue);
-            else if (tag == UnsignedInteger.TYPE_ID)
-                integerValue = new UnsignedInteger(queue);
+            // Sweet Jesus...
+            int tag = (queue.PeekFromHere(0) & 0xff);
+            if ((tag & 8) == 8)
+            {
+                // A class tag, so this is a constructed value.
+                ConstructedValue = new AmbiguousValue(queue, 0);
+            }
             else
-                throw new BACnetErrorException(ErrorClass.property, ErrorCode.invalidDataType,
+            {
+                // A primitive value
+                tag = tag >> 4;
+                if (tag == Null.TYPE_ID)
+                    NullValue = new Null(queue);
+                else if (tag == Real.TYPE_ID)
+                    RealValue = new Real(queue);
+                else if (tag == Primitive.Enumerated.TYPE_ID)
+                    BinaryValue = new BinaryPV(queue);
+                else if (tag == UnsignedInteger.TYPE_ID)
+                    IntegerValue = new UnsignedInteger(queue);
+                else
+                    throw new BACnetErrorException(ErrorClass.Property, ErrorCode.InvalidDataType,
                         "Unsupported primitive id: " + tag);
-}
-    }
+            }
+        }
     }
 }

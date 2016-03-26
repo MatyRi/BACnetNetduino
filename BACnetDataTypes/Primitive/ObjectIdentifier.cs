@@ -7,9 +7,6 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 12;
 
-        private ObjectType objectType;
-        private uint instanceNumber;
-
         public ObjectIdentifier(ObjectType objectType, uint instanceNumber)
         {
             setValues(objectType, instanceNumber);
@@ -20,23 +17,17 @@ namespace BACnetDataTypes.Primitive
             if (instanceNumber < 0 || instanceNumber > 0x3FFFFF)
                 throw new ArgumentException("Illegal instance number: " + instanceNumber);
 
-            this.objectType = objectType;
-            this.instanceNumber = instanceNumber;
+            this.ObjectType = objectType;
+            this.InstanceNumber = instanceNumber;
         }
 
-        public ObjectType getObjectType()
-        {
-            return objectType;
-        }
+        public ObjectType ObjectType { get; private set; }
 
-        public uint getInstanceNumber()
-        {
-            return instanceNumber;
-        }
+        public uint InstanceNumber { get; private set; }
 
         public override string ToString()
         {
-            return objectType.ToString() + " " + instanceNumber;
+            return ObjectType.ToString() + " " + InstanceNumber;
         }
 
         //
@@ -50,31 +41,24 @@ namespace BACnetDataTypes.Primitive
             uint i = queue.popU1B();
             objectType |= i >> 6;
 
-            this.objectType = new ObjectType(objectType);
+            this.ObjectType = new ObjectType(objectType);
 
-            instanceNumber = (i & 0x3f) << 16;
-            instanceNumber |= (uint)queue.popU1B() << 8;
-            instanceNumber |= queue.popU1B();
+            InstanceNumber = (i & 0x3f) << 16;
+            InstanceNumber |= (uint)queue.popU1B() << 8;
+            InstanceNumber |= queue.popU1B();
         }
 
         protected override void writeImpl(ByteStream queue)
         {
-            uint objectType = this.objectType.intValue();
+            uint objectType = ((UnsignedInteger) this.ObjectType).Value;
             queue.WriteByte((byte) (objectType >> 2));
-            queue.WriteByte((byte) (((objectType & 3) << 6) | (instanceNumber >> 16)));
-            queue.WriteByte((byte) (instanceNumber >> 8));
-            queue.WriteByte((byte) instanceNumber);
+            queue.WriteByte((byte) (((objectType & 3) << 6) | (InstanceNumber >> 16)));
+            queue.WriteByte((byte) (InstanceNumber >> 8));
+            queue.WriteByte((byte) InstanceNumber);
         }
 
-        protected override long getLength()
-        {
-            return 4;
-        }
+        protected override long Length { get; } = 4;
 
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
-
+        protected override byte TypeId => TYPE_ID;
     }
 }

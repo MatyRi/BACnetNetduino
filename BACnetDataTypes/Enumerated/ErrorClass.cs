@@ -1,17 +1,19 @@
+using BACnetDataTypes.Primitive;
+
 namespace BACnetDataTypes.Enumerated
 {
     public class ErrorClass : Primitive.Enumerated
     {
-        public static readonly ErrorClass device = new ErrorClass(0);
-        public static readonly ErrorClass objectClass = new ErrorClass(1);
-        public static readonly ErrorClass property = new ErrorClass(2);
-        public static readonly ErrorClass resources = new ErrorClass(3);
-        public static readonly ErrorClass security = new ErrorClass(4);
-        public static readonly ErrorClass services = new ErrorClass(5);
-        public static readonly ErrorClass vt = new ErrorClass(6);
-        public static readonly ErrorClass communication = new ErrorClass(7);
+        public static readonly ErrorClass Device = new ErrorClass(0);
+        public static readonly ErrorClass ObjectClass = new ErrorClass(1);
+        public static readonly ErrorClass Property = new ErrorClass(2);
+        public static readonly ErrorClass Resources = new ErrorClass(3);
+        public static readonly ErrorClass Security = new ErrorClass(4);
+        public static readonly ErrorClass Services = new ErrorClass(5);
+        public static readonly ErrorClass Vt = new ErrorClass(6);
+        public static readonly ErrorClass Communication = new ErrorClass(7);
 
-        public static readonly ErrorClass[] ALL = { device, objectClass, property, resources, security, services, vt, communication, };
+        public static readonly ErrorClass[] All = { Device, ObjectClass, Property, Resources, Security, Services, Vt, Communication, };
 
     public ErrorClass(uint value) : base(value) { }
 
@@ -19,22 +21,22 @@ namespace BACnetDataTypes.Enumerated
 
     public override string ToString()
     {
-        uint type = intValue();
-        if (type == device.intValue())
+        uint type = ((UnsignedInteger) this).Value;
+        if (type == ((UnsignedInteger) Device).Value)
             return "Device";
-        if (type == objectClass.intValue())
+        if (type == ((UnsignedInteger) ObjectClass).Value)
             return "Object";
-        if (type == property.intValue())
+        if (type == ((UnsignedInteger) Property).Value)
             return "Property";
-        if (type == resources.intValue())
+        if (type == ((UnsignedInteger) Resources).Value)
             return "Resources";
-        if (type == security.intValue())
+        if (type == ((UnsignedInteger) Security).Value)
             return "Security";
-        if (type == services.intValue())
+        if (type == ((UnsignedInteger) Services).Value)
             return "Services";
-        if (type == vt.intValue())
+        if (type == ((UnsignedInteger) Vt).Value)
             return "VT";
-        if (type == communication.intValue())
+        if (type == ((UnsignedInteger) Communication).Value)
             return "Communication";
         return "Unknown: " + type;
     }

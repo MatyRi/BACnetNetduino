@@ -7,404 +7,380 @@ namespace BACnetDataTypes.Constructed
         public ServicesSupported() : base(new bool[40]) { }
         public ServicesSupported(ByteStream queue) : base(queue) { }
 
-        public bool isAcknowledgeAlarm()
+        public bool AcknowledgeAlarm
         {
-            return getValue()[0];
+            get { return Value[0]; }
+            set { Value[0] = value; }
         }
 
-        public void setAcknowledgeAlarm(bool acknowledgeAlarm)
+        public bool ConfirmedCovNotification
         {
-            getValue()[0] = acknowledgeAlarm;
+            get { return Value[1]; }
+            set { Value[1] = value; }
         }
 
-        public bool isConfirmedCovNotification()
+        public bool ConfirmedEventNotification
         {
-            return getValue()[1];
+            get { return Value[2]; }
+            set { Value[2] = value; }
         }
 
-        public void setConfirmedCovNotification(bool confirmedCovNotification)
+        public bool GetAlarmSummary
         {
-            getValue()[1] = confirmedCovNotification;
+            get { return Value[3]; }
+            set { Value[3] = value; }
         }
 
-        public bool isConfirmedEventNotification()
+        public bool GetEnrollmentSummary
         {
-            return getValue()[2];
+            get { return Value[4]; }
+            set { Value[4] = value; }
         }
 
-        public void setConfirmedEventNotification(bool confirmedEventNotification)
+        public bool SubscribeCov
         {
-            getValue()[2] = confirmedEventNotification;
-        }
-
-        public bool isGetAlarmSummary()
-        {
-            return getValue()[3];
-        }
-
-        public void setGetAlarmSummary(bool getAlarmSummary)
-        {
-            getValue()[3] = getAlarmSummary;
-        }
-
-        public bool isGetEnrollmentSummary()
-        {
-            return getValue()[4];
-        }
-
-        public void setGetEnrollmentSummary(bool getEnrollmentSummary)
-        {
-            getValue()[4] = getEnrollmentSummary;
-        }
-
-        public bool isSubscribeCov()
-        {
-            return getValue()[5];
-        }
-
-        public void setSubscribeCov(bool subscribeCov)
-        {
-            getValue()[5] = subscribeCov;
+            get { return Value[5]; }
+            set { Value[5] = value; }
         }
 
         public bool isAtomicReadFile()
         {
-            return getValue()[6];
+            return Value[6];
         }
 
         public void setAtomicReadFile(bool atomicReadFile)
         {
-            getValue()[6] = atomicReadFile;
+            Value[6] = atomicReadFile;
         }
 
         public bool isAtomicWriteFile()
         {
-            return getValue()[7];
+            return Value[7];
         }
 
         public void setAtomicWriteFile(bool atomicWriteFile)
         {
-            getValue()[7] = atomicWriteFile;
+            Value[7] = atomicWriteFile;
         }
 
         public bool isAddListElement()
         {
-            return getValue()[8];
+            return Value[8];
         }
 
         public void setAddListElement(bool addListElement)
         {
-            getValue()[8] = addListElement;
+            Value[8] = addListElement;
         }
 
         public bool isRemoveListElement()
         {
-            return getValue()[9];
+            return Value[9];
         }
 
         public void setRemoveListElement(bool removeListElement)
         {
-            getValue()[9] = removeListElement;
+            Value[9] = removeListElement;
         }
 
         public bool isCreateObject()
         {
-            return getValue()[10];
+            return Value[10];
         }
 
         public void setCreateObject(bool createObject)
         {
-            getValue()[10] = createObject;
+            Value[10] = createObject;
         }
 
         public bool isDeleteObject()
         {
-            return getValue()[11];
+            return Value[11];
         }
 
         public void setDeleteObject(bool deleteObject)
         {
-            getValue()[11] = deleteObject;
+            Value[11] = deleteObject;
         }
 
         public bool isReadProperty()
         {
-            return getValue()[12];
+            return Value[12];
         }
 
         public void setReadProperty(bool readProperty)
         {
-            getValue()[12] = readProperty;
+            Value[12] = readProperty;
         }
 
         public bool isReadPropertyConditional()
         {
-            return getValue()[13];
+            return Value[13];
         }
 
         public void setReadPropertyConditional(bool readPropertyConditional)
         {
-            getValue()[13] = readPropertyConditional;
+            Value[13] = readPropertyConditional;
         }
 
         public bool isReadPropertyMultiple()
         {
-            return getValue()[14];
+            return Value[14];
         }
 
         public void setReadPropertyMultiple(bool readPropertyMultiple)
         {
-            getValue()[14] = readPropertyMultiple;
+            Value[14] = readPropertyMultiple;
         }
 
         public bool isWriteProperty()
         {
-            return getValue()[15];
+            return Value[15];
         }
 
         public void setWriteProperty(bool writeProperty)
         {
-            getValue()[15] = writeProperty;
+            Value[15] = writeProperty;
         }
 
         public bool isWritePropertyMultiple()
         {
-            return getValue()[16];
+            return Value[16];
         }
 
         public void setWritePropertyMultiple(bool writePropertyMultiple)
         {
-            getValue()[16] = writePropertyMultiple;
+            Value[16] = writePropertyMultiple;
         }
 
         public bool isDeviceCommunicationControl()
         {
-            return getValue()[17];
+            return Value[17];
         }
 
         public void setDeviceCommunicationControl(bool deviceCommunicationControl)
         {
-            getValue()[17] = deviceCommunicationControl;
+            Value[17] = deviceCommunicationControl;
         }
 
         public bool isConfirmedPrivateTransfer()
         {
-            return getValue()[18];
+            return Value[18];
         }
 
         public void setConfirmedPrivateTransfer(bool confirmedPrivateTransfer)
         {
-            getValue()[18] = confirmedPrivateTransfer;
+            Value[18] = confirmedPrivateTransfer;
         }
 
         public bool isConfirmedTextMessage()
         {
-            return getValue()[19];
+            return Value[19];
         }
 
         public void setConfirmedTextMessage(bool confirmedTextMessage)
         {
-            getValue()[19] = confirmedTextMessage;
+            Value[19] = confirmedTextMessage;
         }
 
         public bool isReinitializeDevice()
         {
-            return getValue()[20];
+            return Value[20];
         }
 
         public void setReinitializeDevice(bool reinitializeDevice)
         {
-            getValue()[20] = reinitializeDevice;
+            Value[20] = reinitializeDevice;
         }
 
         public bool isVtOpen()
         {
-            return getValue()[21];
+            return Value[21];
         }
 
         public void setVtOpen(bool vtOpen)
         {
-            getValue()[21] = vtOpen;
+            Value[21] = vtOpen;
         }
 
         public bool isVtClose()
         {
-            return getValue()[22];
+            return Value[22];
         }
 
         public void setVtClose(bool vtClose)
         {
-            getValue()[22] = vtClose;
+            Value[22] = vtClose;
         }
 
         public bool isVtData()
         {
-            return getValue()[23];
+            return Value[23];
         }
 
         public void setVtData(bool vtData)
         {
-            getValue()[23] = vtData;
+            Value[23] = vtData;
         }
 
         public bool isAuthenticate()
         {
-            return getValue()[24];
+            return Value[24];
         }
 
         public void setAuthenticate(bool authenticate)
         {
-            getValue()[24] = authenticate;
+            Value[24] = authenticate;
         }
 
         public bool isRequestKey()
         {
-            return getValue()[25];
+            return Value[25];
         }
 
         public void setRequestKey(bool requestKey)
         {
-            getValue()[25] = requestKey;
+            Value[25] = requestKey;
         }
 
         public bool isIAm()
         {
-            return getValue()[26];
+            return Value[26];
         }
 
         public void setIAm(bool iAm)
         {
-            getValue()[26] = iAm;
+            Value[26] = iAm;
         }
 
         public bool isIHave()
         {
-            return getValue()[27];
+            return Value[27];
         }
 
         public void setIHave(bool iHave)
         {
-            getValue()[27] = iHave;
+            Value[27] = iHave;
         }
 
         public bool isUnconfirmedCovNotification()
         {
-            return getValue()[28];
+            return Value[28];
         }
 
         public void setUnconfirmedCovNotification(bool unconfirmedCovNotification)
         {
-            getValue()[28] = unconfirmedCovNotification;
+            Value[28] = unconfirmedCovNotification;
         }
 
         public bool isUnconfirmedEventNotification()
         {
-            return getValue()[29];
+            return Value[29];
         }
 
         public void setUnconfirmedEventNotification(bool unconfirmedEventNotification)
         {
-            getValue()[29] = unconfirmedEventNotification;
+            Value[29] = unconfirmedEventNotification;
         }
 
         public bool isUnconfirmedPrivateTransfer()
         {
-            return getValue()[30];
+            return Value[30];
         }
 
         public void setUnconfirmedPrivateTransfer(bool unconfirmedPrivateTransfer)
         {
-            getValue()[30] = unconfirmedPrivateTransfer;
+            Value[30] = unconfirmedPrivateTransfer;
         }
 
         public bool isUnconfirmedTextMessage()
         {
-            return getValue()[31];
+            return Value[31];
         }
 
         public void setUnconfirmedTextMessage(bool unconfirmedTextMessage)
         {
-            getValue()[31] = unconfirmedTextMessage;
+            Value[31] = unconfirmedTextMessage;
         }
 
         public bool isTimeSynchronization()
         {
-            return getValue()[32];
+            return Value[32];
         }
 
         public void setTimeSynchronization(bool timeSynchronization)
         {
-            getValue()[32] = timeSynchronization;
+            Value[32] = timeSynchronization;
         }
 
         public bool isWhoHas()
         {
-            return getValue()[33];
+            return Value[33];
         }
 
         public void setWhoHas(bool whoHas)
         {
-            getValue()[33] = whoHas;
+            Value[33] = whoHas;
         }
 
         public bool isWhoIs()
         {
-            return getValue()[34];
+            return Value[34];
         }
 
         public void setWhoIs(bool whoIs)
         {
-            getValue()[34] = whoIs;
+            Value[34] = whoIs;
         }
 
         public bool isReadRange()
         {
-            return getValue()[35];
+            return Value[35];
         }
 
         public void setReadRange(bool readRange)
         {
-            getValue()[36] = readRange;
+            Value[36] = readRange;
         }
 
         public bool isUtcTimeSynchronization()
         {
-            return getValue()[36];
+            return Value[36];
         }
 
         public void setUtcTimeSynchronization(bool utcTimeSynchronization)
         {
-            getValue()[36] = utcTimeSynchronization;
+            Value[36] = utcTimeSynchronization;
         }
 
         public bool isLifeSafetyOperation()
         {
-            return getValue()[37];
+            return Value[37];
         }
 
         public void setLifeSafetyOperation(bool lifeSafetyOperation)
         {
-            getValue()[37] = lifeSafetyOperation;
+            Value[37] = lifeSafetyOperation;
         }
 
         public bool isSubscribeCovProperty()
         {
-            return getValue()[38];
+            return Value[38];
         }
 
         public void setSubscribeCovProperty(bool subscribeCovProperty)
         {
-            getValue()[38] = subscribeCovProperty;
+            Value[38] = subscribeCovProperty;
         }
 
         public bool isGetEventInformation()
         {
-            return getValue()[39];
+            return Value[39];
         }
 
         public void setGetEventInformation(bool getEventInformation)
         {
-            getValue()[39] = getEventInformation;
+            Value[39] = getEventInformation;
         }
     }
 }

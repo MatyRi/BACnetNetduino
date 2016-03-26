@@ -31,7 +31,7 @@ namespace BACnetServices.Objects
             this.linkService = linkService;
         }
 
-        public ObjectIdentifier ObjectIdentifier => new ObjectIdentifier(ObjectType.device, instanceNumber);
+        public ObjectIdentifier ObjectIdentifier => new ObjectIdentifier(ObjectType.Device, instanceNumber);
         
         public override string ToString()
         {
@@ -142,7 +142,7 @@ namespace BACnetServices.Objects
             get
             {
                 if (maxReadMultipleReferences == -1)
-                    maxReadMultipleReferences = segmentationSupported.hasTransmitSegmentation() ? 200 : 20;
+                    maxReadMultipleReferences = segmentationSupported.HasTransmitSegmentation? 200 : 20;
                 return maxReadMultipleReferences;
             }
         }

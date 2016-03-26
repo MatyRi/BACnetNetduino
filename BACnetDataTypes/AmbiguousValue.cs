@@ -23,7 +23,7 @@ namespace BACnetDataTypes
             while (true)
             {
                 peekTagData(queue, tagData);
-                if (tagData.isEndTag(contextId))
+                if (tagData.IsEndTag(contextId))
                     break;
                 readAmbiguousData(queue, tagData);
             }
@@ -52,30 +52,30 @@ namespace BACnetDataTypes
 
         private void readAmbiguousData(ByteStream queue, TagData tagData, ByteStream data)
         {
-            if (!tagData.contextSpecific)
+            if (!tagData.ContextSpecific)
             {
                 // Application class.
-                if (tagData.tagNumber == BBoolean.TYPE_ID)
+                if (tagData.TagNumber == BBoolean.TYPE_ID)
                     copyData(queue, 1, data);
                 else
-                    copyData(queue, tagData.getTotalLength(), data);
+                    copyData(queue, tagData.TotalLength, data);
             }
             else
             {
                 // Context specific class.
-                if (tagData.isStartTag())
+                if (tagData.IsStartTag())
                 {
                     // Copy the start tag
                     copyData(queue, 1, data);
 
                     // Remember the context id
-                    int contextId = tagData.tagNumber;
+                    int contextId = tagData.TagNumber;
 
                     // Read ambiguous data until we find the end tag.
                     while (true)
                     {
                         peekTagData(queue, tagData);
-                        if (tagData.isEndTag(contextId))
+                        if (tagData.IsEndTag(contextId))
                             break;
                         readAmbiguousData(queue, tagData);
                     }
@@ -84,15 +84,12 @@ namespace BACnetDataTypes
                     copyData(queue, 1, data);
                 }
                 else
-                    copyData(queue, tagData.getTotalLength(), data);
+                    copyData(queue, tagData.TotalLength, data);
             }
         }
 
 
-        public override string ToString()
-        {
-            return "Ambiguous(" + data + ")";
-        }
+        public override string ToString() => "Ambiguous(" + data + ")";
 
         private void copyData(ByteStream queue, int length, ByteStream data)
         {
@@ -100,10 +97,7 @@ namespace BACnetDataTypes
                 data.WriteByte(queue.ReadByte());
         }
 
-        public bool isNull()
-        {
-            return data.Length == 1 && data[0] == 0;
-        }
+        public bool IsNull => data.Length == 1 && data[0] == 0;
 
         public object ConvertTo(Type type)
         {

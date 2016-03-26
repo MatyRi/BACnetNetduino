@@ -19,7 +19,7 @@ namespace BACnetServices.Exception
 
         public BACnetError getBACnetError()
         {
-            return apdu.getError().getError();
+            return apdu.getError().Error;
         }
     }
 }

@@ -5,9 +5,9 @@ namespace BACnetDataTypes.Constructed
 {
     public class TimeStamp : BaseType
     {
-        private readonly Choice choice;
+        private readonly Choice _choice;
 
-        private static IList classes = new ArrayList()
+        private static readonly IList classes = new ArrayList()
         {
             typeof (Time),
             typeof (UnsignedInteger),
@@ -16,17 +16,17 @@ namespace BACnetDataTypes.Constructed
 
         public TimeStamp(Time time)
         {
-            choice = new Choice(0, time);
+            _choice = new Choice(0, time);
         }
 
         public TimeStamp(UnsignedInteger sequenceNumber)
         {
-            choice = new Choice(1, sequenceNumber);
+            _choice = new Choice(1, sequenceNumber);
         }
 
         public TimeStamp(DateTime dateTime)
         {
-            choice = new Choice(2, dateTime);
+            _choice = new Choice(2, dateTime);
         }
 
         /*public override void write(ByteStream queue)
@@ -36,37 +36,19 @@ namespace BACnetDataTypes.Constructed
 
         public TimeStamp(ByteStream queue)
         {
-            choice = new Choice(queue, classes);
+            _choice = new Choice(queue, classes);
         }
 
-        public bool isTime()
-        {
-            return choice.ContextId == 0;
-        }
+        public bool IsTime => _choice.ContextId == 0;
 
-        public Time getTime()
-        {
-            return (Time) choice.Datum;
-        }
+        public Time Time => (Time)_choice.Data;
 
-        public bool isSequenceNumber()
-        {
-            return choice.ContextId == 1;
-        }
+        public bool IsSequenceNumber => _choice.ContextId == 1;
 
-        public UnsignedInteger getSequenceNumber()
-        {
-            return (UnsignedInteger) choice.Datum;
-        }
+        public UnsignedInteger SequenceNumber => (UnsignedInteger)_choice.Data;
 
-        public bool isDateTime()
-        {
-            return choice.ContextId == 2;
-        }
+        public bool IsDateTime => _choice.ContextId == 2;
 
-        public DateTime getDateTime()
-        {
-            return (DateTime) choice.Datum;
-        }
+        public DateTime DateTime => (DateTime)_choice.Data;
     }
 }

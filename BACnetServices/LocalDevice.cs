@@ -57,13 +57,13 @@ namespace BACnetServices
 
             try
             {
-                ObjectIdentifier deviceIdentifier = new ObjectIdentifier(ObjectType.device, deviceId);
+                ObjectIdentifier deviceIdentifier = new ObjectIdentifier(ObjectType.Device, deviceId);
 
                 configuration = new BACnetObject(this, deviceIdentifier);
-                configuration.setProperty(PropertyIdentifier.maxApduLengthAccepted, new UnsignedInteger(1476));
-                configuration.setProperty(PropertyIdentifier.vendorIdentifier, new Unsigned16(VENDOR_ID));
-                configuration.setProperty(PropertyIdentifier.vendorName, new CharacterString(VENDOR_STRING));
-                configuration.setProperty(PropertyIdentifier.segmentationSupported, Segmentation.segmentedBoth);
+                configuration.setProperty(PropertyIdentifier.MaxApduLengthAccepted, new UnsignedInteger(1476));
+                configuration.setProperty(PropertyIdentifier.VendorIdentifier, new Unsigned16(VENDOR_ID));
+                configuration.setProperty(PropertyIdentifier.VendorName, new CharacterString(VENDOR_STRING));
+                configuration.setProperty(PropertyIdentifier.SegmentationSupported, Segmentation.SegmentedBoth);
 
                 /*TODO SequenceOf<ObjectIdentifier> objectList = new SequenceOf<ObjectIdentifier>();
                 objectList.add(deviceIdentifier);
@@ -72,18 +72,18 @@ namespace BACnetServices
                 // Set up the supported services indicators. Remove lines as services get implemented.
                 ServicesSupported servicesSupported = new ServicesSupported();
                 servicesSupported.setAll(false);
-                servicesSupported.setAcknowledgeAlarm(true);
-                servicesSupported.setConfirmedCovNotification(true);
-                servicesSupported.setConfirmedEventNotification(true);
-                servicesSupported.setGetAlarmSummary(true);
-                servicesSupported.setGetEnrollmentSummary(true);
+                servicesSupported.AcknowledgeAlarm = true;
+                servicesSupported.ConfirmedCovNotification = true;
+                servicesSupported.ConfirmedEventNotification = true;
+                servicesSupported.GetAlarmSummary = true;
+                servicesSupported.GetEnrollmentSummary = true;
                 servicesSupported.setGetEventInformation(true);
                 servicesSupported.setIAm(true);
                 servicesSupported.setIHave(true);
                 servicesSupported.setReadProperty(true);
                 servicesSupported.setReadPropertyMultiple(true);
                 servicesSupported.setReinitializeDevice(true);
-                servicesSupported.setSubscribeCov(true);
+                servicesSupported.SubscribeCov = true;
                 servicesSupported.setTimeSynchronization(true);
                 servicesSupported.setUnconfirmedCovNotification(true);
                 servicesSupported.setUnconfirmedEventNotification(true);
@@ -119,7 +119,7 @@ namespace BACnetServices
                 //servicesSupported.setGetEventInformation(true);
                 */
 
-                configuration.setProperty(PropertyIdentifier.protocolServicesSupported, servicesSupported);
+                configuration.setProperty(PropertyIdentifier.ProtocolServicesSupported, servicesSupported);
 
                 // Set up the object types supported.
                 /* TODO ObjectTypesSupported objectTypesSupported = new ObjectTypesSupported();
@@ -144,14 +144,14 @@ namespace BACnetServices
                 configuration.setProperty(PropertyIdentifier.protocolObjectTypesSupported, objectTypesSupported);*/
 
                 // Set some other required values to defaults
-                configuration.setProperty(PropertyIdentifier.objectName, new CharacterString(deviceName));
-                configuration.setProperty(PropertyIdentifier.systemStatus, DeviceStatus.operational);
-                configuration.setProperty(PropertyIdentifier.modelName, new CharacterString(modelName));
-                configuration.setProperty(PropertyIdentifier.firmwareRevision, new CharacterString(FIRMWARE_REVISION));
-                configuration.setProperty(PropertyIdentifier.applicationSoftwareVersion, new CharacterString(APPLICATION_SOFTWARE_VERSION));
-                configuration.setProperty(PropertyIdentifier.protocolVersion, new UnsignedInteger(1));
-                configuration.setProperty(PropertyIdentifier.protocolRevision, new UnsignedInteger(0));
-                configuration.setProperty(PropertyIdentifier.databaseRevision, new UnsignedInteger(0));
+                configuration.setProperty(PropertyIdentifier.ObjectName, new CharacterString(deviceName));
+                configuration.setProperty(PropertyIdentifier.SystemStatus, DeviceStatus.Operational);
+                configuration.setProperty(PropertyIdentifier.ModelName, new CharacterString(modelName));
+                configuration.setProperty(PropertyIdentifier.FirmwareRevision, new CharacterString(FIRMWARE_REVISION));
+                configuration.setProperty(PropertyIdentifier.ApplicationSoftwareVersion, new CharacterString(APPLICATION_SOFTWARE_VERSION));
+                configuration.setProperty(PropertyIdentifier.ProtocolVersion, new UnsignedInteger(1));
+                configuration.setProperty(PropertyIdentifier.ProtocolRevision, new UnsignedInteger(0));
+                configuration.setProperty(PropertyIdentifier.DatabaseRevision, new UnsignedInteger(0));
             }
             catch (BACnetServiceException e)
             {
@@ -177,7 +177,7 @@ namespace BACnetServices
             catch (NotImplementedException e)
             {
                 Debug.Print("Unsupported confirmed request: invokeId=" + invokeId + ", from=" + fromAddress + ", request=" + request.getServiceRequest().GetType().FullName);
-                throw new BACnetErrorException(ErrorClass.services, ErrorCode.serviceRequestDenied);
+                throw new BACnetErrorException(ErrorClass.Services, ErrorCode.ServiceRequestDenied);
             }
             catch (BACnetErrorException e)
             {
@@ -185,7 +185,7 @@ namespace BACnetServices
             }
             catch (System.Exception e)
             {
-                throw new BACnetErrorException(ErrorClass.device, ErrorCode.operationalProblem);
+                throw new BACnetErrorException(ErrorClass.Device, ErrorCode.OperationalProblem);
             }
 
 
@@ -428,7 +428,7 @@ namespace BACnetServices
         internal ServicesSupported ServicesSupported
             =>
                 (ServicesSupported)
-                    Configuration.getProperty(PropertyIdentifier.protocolServicesSupported);
+                    Configuration.getProperty(PropertyIdentifier.ProtocolServicesSupported);
 
         ////
         ////
@@ -643,10 +643,10 @@ namespace BACnetServices
         //                    else {
         //                    	//AdK
         //                    	try {
-        //                    		remoteDevice = getRemoteDevice(destination.getRecipient().getObjectIdentifier()
+        //                    		remoteDevice = getRemoteDevice(destination.getRecipient().ObjectIdentifier()
         //                                .getInstanceNumber());
         //                    	} catch (BACnetException e) {
-        //                    		System.out.println("Unknown device " + destination.getRecipient().getObjectIdentifier()
+        //                    		System.out.println("Unknown device " + destination.getRecipient().ObjectIdentifier()
         //                                    .getInstanceNumber());
         //                    		continue;
         //                    	}
@@ -670,7 +670,7 @@ namespace BACnetServices
         //                    if (destination.getRecipient().isAddress())
         //                        address = destination.getRecipient().getAddress();
         //                    else {
-        //                        RemoteDevice remoteDevice = getRemoteDevice(destination.getRecipient().getObjectIdentifier()
+        //                        RemoteDevice remoteDevice = getRemoteDevice(destination.getRecipient().ObjectIdentifier()
         //                                .getInstanceNumber());
         //                        if (remoteDevice != null)
         //                            address = remoteDevice.getAddress();
@@ -706,9 +706,9 @@ namespace BACnetServices
             try
             {
                 return new IAmRequest(configuration.getId(),
-                        (UnsignedInteger)configuration.getProperty(PropertyIdentifier.maxApduLengthAccepted),
-                        (Segmentation)configuration.getProperty(PropertyIdentifier.segmentationSupported),
-                        (Unsigned16)configuration.getProperty(PropertyIdentifier.vendorIdentifier));
+                        (UnsignedInteger)configuration.getProperty(PropertyIdentifier.MaxApduLengthAccepted),
+                        (Segmentation)configuration.getProperty(PropertyIdentifier.SegmentationSupported),
+                        (Unsigned16)configuration.getProperty(PropertyIdentifier.VendorIdentifier));
             }
             catch (BACnetServiceException e)
             {
@@ -756,7 +756,7 @@ namespace BACnetServices
         //}
 
         ////AdK - support for DeviceCommunicationControl
-        private EnableDisable enableDisable = EnableDisable.enable;
+        private EnableDisable enableDisable = EnableDisable.Enable;
         private DateTime endTime = DateTime.MinValue;
         
         internal EnableDisable DCCEnableDisable
@@ -767,7 +767,7 @@ namespace BACnetServices
                 // TODO Test
                 if (endTime != DateTime.MinValue && DateTime.Now.CompareTo(endTime) > 0) // is after endTime
                 {
-                    enableDisable = EnableDisable.enable;
+                    enableDisable = EnableDisable.Enable;
                     endTime = DateTime.MinValue;
                 }
 

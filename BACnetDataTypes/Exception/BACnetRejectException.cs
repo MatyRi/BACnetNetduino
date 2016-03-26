@@ -4,16 +4,11 @@ namespace BACnetDataTypes.Exception
 {
     public class BACnetRejectException : BACnetException
     {
-        private readonly RejectReason rejectReason;
-
         public BACnetRejectException(RejectReason rejectReason)
         {
-            this.rejectReason = rejectReason;
+            this.RejectReason = rejectReason;
         }
 
-        public RejectReason getRejectReason()
-        {
-            return rejectReason;
-        }
+        public RejectReason RejectReason { get; }
     }
 }

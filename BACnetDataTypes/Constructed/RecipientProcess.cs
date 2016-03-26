@@ -4,13 +4,13 @@ namespace BACnetDataTypes.Constructed
 {
     public class RecipientProcess : BaseType
     {
-        private readonly Recipient recipient;
-        private readonly UnsignedInteger processIdentifier;
+        public Recipient Recipient { get; }
+        public UnsignedInteger ProcessIdentifier { get; }
 
         public RecipientProcess(Recipient recipient, UnsignedInteger processIdentifier)
         {
-            this.recipient = recipient;
-            this.processIdentifier = processIdentifier;
+            this.Recipient = recipient;
+            this.ProcessIdentifier = processIdentifier;
         }
 
         /*public override void write(ByteStream queue)
@@ -21,18 +21,9 @@ namespace BACnetDataTypes.Constructed
 
         public RecipientProcess(ByteStream queue)
         {
-            recipient = (Recipient) read(queue, typeof(Recipient), 0);
-            processIdentifier = (UnsignedInteger) read(queue, typeof(UnsignedInteger), 1);
+            Recipient = (Recipient) read(queue, typeof(Recipient), 0);
+            ProcessIdentifier = (UnsignedInteger) read(queue, typeof(UnsignedInteger), 1);
         }
 
-        public Recipient getRecipient()
-        {
-            return recipient;
-        }
-
-        public UnsignedInteger getProcessIdentifier()
-        {
-            return processIdentifier;
-        }
     }
 }

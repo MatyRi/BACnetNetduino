@@ -2,15 +2,15 @@ namespace BACnetDataTypes.Enumerated
 {
     public class DeviceStatus : Primitive.Enumerated
     {
-        public static readonly DeviceStatus operational = new DeviceStatus(0);
-        public static readonly DeviceStatus operationalReadOnly = new DeviceStatus(1);
-        public static readonly DeviceStatus downloadRequired = new DeviceStatus(2);
-        public static readonly DeviceStatus downloadInProgress = new DeviceStatus(3);
-        public static readonly DeviceStatus nonOperational = new DeviceStatus(4);
-        public static readonly DeviceStatus backupInProgress = new DeviceStatus(5);
+        public static readonly DeviceStatus Operational = new DeviceStatus(0);
+        public static readonly DeviceStatus OperationalReadOnly = new DeviceStatus(1);
+        public static readonly DeviceStatus DownloadRequired = new DeviceStatus(2);
+        public static readonly DeviceStatus DownloadInProgress = new DeviceStatus(3);
+        public static readonly DeviceStatus NonOperational = new DeviceStatus(4);
+        public static readonly DeviceStatus BackupInProgress = new DeviceStatus(5);
 
-        public static readonly DeviceStatus[] ALL = { operational, operationalReadOnly, downloadRequired, downloadInProgress,
-            nonOperational, backupInProgress, };
+        public static readonly DeviceStatus[] All = { Operational, OperationalReadOnly, DownloadRequired, DownloadInProgress,
+            NonOperational, BackupInProgress, };
 
     public DeviceStatus(uint value) : base(value) { }
 

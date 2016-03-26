@@ -1,73 +1,75 @@
+using BACnetDataTypes.Primitive;
+
 namespace BACnetDataTypes.Enumerated
 {
     public class ObjectType : Primitive.Enumerated
     {
-        public static readonly ObjectType analogInput = new ObjectType(0);
-        public static readonly ObjectType analogOutput = new ObjectType(1);
-        public static readonly ObjectType analogValue = new ObjectType(2);
-        public static readonly ObjectType binaryInput = new ObjectType(3);
-        public static readonly ObjectType binaryOutput = new ObjectType(4);
-        public static readonly ObjectType binaryValue = new ObjectType(5);
-        public static readonly ObjectType calendar = new ObjectType(6);
-        public static readonly ObjectType command = new ObjectType(7);
-        public static readonly ObjectType device = new ObjectType(8);
-        public static readonly ObjectType eventEnrollment = new ObjectType(9);
-        public static readonly ObjectType file = new ObjectType(10);
-        public static readonly ObjectType group = new ObjectType(11);
-        public static readonly ObjectType loop = new ObjectType(12);
-        public static readonly ObjectType multiStateInput = new ObjectType(13);
-        public static readonly ObjectType multiStateOutput = new ObjectType(14);
-        public static readonly ObjectType notificationClass = new ObjectType(15);
-        public static readonly ObjectType program = new ObjectType(16);
-        public static readonly ObjectType schedule = new ObjectType(17);
-        public static readonly ObjectType averaging = new ObjectType(18);
-        public static readonly ObjectType multiStateValue = new ObjectType(19);
-        public static readonly ObjectType trendLog = new ObjectType(20);
-        public static readonly ObjectType lifeSafetyPoint = new ObjectType(21);
-        public static readonly ObjectType lifeSafetyZone = new ObjectType(22);
-        public static readonly ObjectType accumulator = new ObjectType(23);
-        public static readonly ObjectType pulseConverter = new ObjectType(24);
-        public static readonly ObjectType eventLog = new ObjectType(25);
+        public static readonly ObjectType AnalogInput = new ObjectType(0);
+        public static readonly ObjectType AnalogOutput = new ObjectType(1);
+        public static readonly ObjectType AnalogValue = new ObjectType(2);
+        public static readonly ObjectType BinaryInput = new ObjectType(3);
+        public static readonly ObjectType BinaryOutput = new ObjectType(4);
+        public static readonly ObjectType BinaryValue = new ObjectType(5);
+        public static readonly ObjectType Calendar = new ObjectType(6);
+        public static readonly ObjectType Command = new ObjectType(7);
+        public static readonly ObjectType Device = new ObjectType(8);
+        public static readonly ObjectType EventEnrollment = new ObjectType(9);
+        public static readonly ObjectType File = new ObjectType(10);
+        public static readonly ObjectType Group = new ObjectType(11);
+        public static readonly ObjectType Loop = new ObjectType(12);
+        public static readonly ObjectType MultiStateInput = new ObjectType(13);
+        public static readonly ObjectType MultiStateOutput = new ObjectType(14);
+        public static readonly ObjectType NotificationClass = new ObjectType(15);
+        public static readonly ObjectType Program = new ObjectType(16);
+        public static readonly ObjectType Schedule = new ObjectType(17);
+        public static readonly ObjectType Averaging = new ObjectType(18);
+        public static readonly ObjectType MultiStateValue = new ObjectType(19);
+        public static readonly ObjectType TrendLog = new ObjectType(20);
+        public static readonly ObjectType LifeSafetyPoint = new ObjectType(21);
+        public static readonly ObjectType LifeSafetyZone = new ObjectType(22);
+        public static readonly ObjectType Accumulator = new ObjectType(23);
+        public static readonly ObjectType PulseConverter = new ObjectType(24);
+        public static readonly ObjectType EventLog = new ObjectType(25);
 
-        public static readonly ObjectType globalGroup = new ObjectType(26);
+        public static readonly ObjectType GlobalGroup = new ObjectType(26);
 
-        public static readonly ObjectType trendLogMultiple = new ObjectType(27);
-        public static readonly ObjectType loadControl = new ObjectType(28);
-        public static readonly ObjectType structuredView = new ObjectType(29);
-        public static readonly ObjectType accessDoor = new ObjectType(30);
+        public static readonly ObjectType TrendLogMultiple = new ObjectType(27);
+        public static readonly ObjectType LoadControl = new ObjectType(28);
+        public static readonly ObjectType StructuredView = new ObjectType(29);
+        public static readonly ObjectType AccessDoor = new ObjectType(30);
 
-        public static readonly ObjectType timer = new ObjectType(31);
-        public static readonly ObjectType accessCredential = new ObjectType(32);
-        public static readonly ObjectType accessPoint = new ObjectType(33);
-        public static readonly ObjectType accessRights = new ObjectType(34);
-        public static readonly ObjectType accessUser = new ObjectType(35);
-        public static readonly ObjectType accessZone = new ObjectType(36);
-        public static readonly ObjectType credentialDataInput = new ObjectType(37);
-        public static readonly ObjectType networkSecurity = new ObjectType(38);
-        public static readonly ObjectType bitStringValue = new ObjectType(39);
-        public static readonly ObjectType characterStringValue = new ObjectType(40);
-        public static readonly ObjectType datePatternValue = new ObjectType(41);
-        public static readonly ObjectType dateValue = new ObjectType(42);
-        public static readonly ObjectType dateTimePatternValue = new ObjectType(43);
-        public static readonly ObjectType dateTimeValue = new ObjectType(44);
-        public static readonly ObjectType integerValue = new ObjectType(45);
-        public static readonly ObjectType largeAnalogValue = new ObjectType(46);
-        public static readonly ObjectType octetStringValue = new ObjectType(47);
-        public static readonly ObjectType positiveIntegerValue = new ObjectType(48);
-        public static readonly ObjectType timePatternValue = new ObjectType(49);
-        public static readonly ObjectType timeValue = new ObjectType(50);
-        public static readonly ObjectType notificationForwarder = new ObjectType(51);
-        public static readonly ObjectType alertEnrollment = new ObjectType(52);
-        public static readonly ObjectType channel = new ObjectType(53);
-        public static readonly ObjectType lightingOutput = new ObjectType(54);
-        public static readonly ObjectType binaryLightingOutput = new ObjectType(55);
-        public static readonly ObjectType networkPort = new ObjectType(56);
+        public static readonly ObjectType Timer = new ObjectType(31);
+        public static readonly ObjectType AccessCredential = new ObjectType(32);
+        public static readonly ObjectType AccessPoint = new ObjectType(33);
+        public static readonly ObjectType AccessRights = new ObjectType(34);
+        public static readonly ObjectType AccessUser = new ObjectType(35);
+        public static readonly ObjectType AccessZone = new ObjectType(36);
+        public static readonly ObjectType CredentialDataInput = new ObjectType(37);
+        public static readonly ObjectType NetworkSecurity = new ObjectType(38);
+        public static readonly ObjectType BitStringValue = new ObjectType(39);
+        public static readonly ObjectType CharacterStringValue = new ObjectType(40);
+        public static readonly ObjectType DatePatternValue = new ObjectType(41);
+        public static readonly ObjectType DateValue = new ObjectType(42);
+        public static readonly ObjectType DateTimePatternValue = new ObjectType(43);
+        public static readonly ObjectType DateTimeValue = new ObjectType(44);
+        public static readonly ObjectType IntegerValue = new ObjectType(45);
+        public static readonly ObjectType LargeAnalogValue = new ObjectType(46);
+        public static readonly ObjectType OctetStringValue = new ObjectType(47);
+        public static readonly ObjectType PositiveIntegerValue = new ObjectType(48);
+        public static readonly ObjectType TimePatternValue = new ObjectType(49);
+        public static readonly ObjectType TimeValue = new ObjectType(50);
+        public static readonly ObjectType NotificationForwarder = new ObjectType(51);
+        public static readonly ObjectType AlertEnrollment = new ObjectType(52);
+        public static readonly ObjectType Channel = new ObjectType(53);
+        public static readonly ObjectType LightingOutput = new ObjectType(54);
+        public static readonly ObjectType BinaryLightingOutput = new ObjectType(55);
+        public static readonly ObjectType NetworkPort = new ObjectType(56);
 
-        public static readonly ObjectType[] ALL = { analogInput, analogOutput, analogValue, binaryInput, binaryOutput,
-            binaryValue, calendar, command, device, eventEnrollment, file, group, loop, multiStateInput,
-            multiStateOutput, notificationClass, program, schedule, averaging, multiStateValue, trendLog,
-            lifeSafetyPoint, lifeSafetyZone, accumulator, pulseConverter, eventLog, trendLogMultiple, loadControl,
-            structuredView, accessDoor, };
+        public static readonly ObjectType[] All = { AnalogInput, AnalogOutput, AnalogValue, BinaryInput, BinaryOutput,
+            BinaryValue, Calendar, Command, Device, EventEnrollment, File, Group, Loop, MultiStateInput,
+            MultiStateOutput, NotificationClass, Program, Schedule, Averaging, MultiStateValue, TrendLog,
+            LifeSafetyPoint, LifeSafetyZone, Accumulator, PulseConverter, EventLog, TrendLogMultiple, LoadControl,
+            StructuredView, AccessDoor, };
 
     public ObjectType(uint value) : base(value) { }
 
@@ -75,66 +77,66 @@ namespace BACnetDataTypes.Enumerated
 
     public override string ToString()
     {
-        uint type = intValue();
-        if (type == analogInput.intValue())
+        uint type = ((UnsignedInteger) this).Value;
+        if (type == ((UnsignedInteger) AnalogInput).Value)
             return "Analog Input";
-        if (type == analogOutput.intValue())
+        if (type == ((UnsignedInteger) AnalogOutput).Value)
             return "Analog Output";
-        if (type == analogValue.intValue())
+        if (type == ((UnsignedInteger) AnalogValue).Value)
             return "Analog Value";
-        if (type == binaryInput.intValue())
+        if (type == ((UnsignedInteger) BinaryInput).Value)
             return "Binary Input";
-        if (type == binaryOutput.intValue())
+        if (type == ((UnsignedInteger) BinaryOutput).Value)
             return "Binary Output";
-        if (type == binaryValue.intValue())
+        if (type == ((UnsignedInteger) BinaryValue).Value)
             return "Binary Value";
-        if (type == calendar.intValue())
+        if (type == ((UnsignedInteger) Calendar).Value)
             return "Calendar";
-        if (type == command.intValue())
+        if (type == ((UnsignedInteger) Command).Value)
             return "Command";
-        if (type == device.intValue())
+        if (type == ((UnsignedInteger) Device).Value)
             return "Device";
-        if (type == eventEnrollment.intValue())
+        if (type == ((UnsignedInteger) EventEnrollment).Value)
             return "Event Enrollment";
-        if (type == file.intValue())
+        if (type == ((UnsignedInteger) File).Value)
             return "File";
-        if (type == group.intValue())
+        if (type == ((UnsignedInteger) Group).Value)
             return "Group";
-        if (type == loop.intValue())
+        if (type == ((UnsignedInteger) Loop).Value)
             return "Loop";
-        if (type == multiStateInput.intValue())
+        if (type == ((UnsignedInteger) MultiStateInput).Value)
             return "Multi-state Input";
-        if (type == multiStateOutput.intValue())
+        if (type == ((UnsignedInteger) MultiStateOutput).Value)
             return "Multi-state Output";
-        if (type == notificationClass.intValue())
+        if (type == ((UnsignedInteger) NotificationClass).Value)
             return "Notification Class";
-        if (type == program.intValue())
+        if (type == ((UnsignedInteger) Program).Value)
             return "Program";
-        if (type == schedule.intValue())
+        if (type == ((UnsignedInteger) Schedule).Value)
             return "Schedule";
-        if (type == averaging.intValue())
+        if (type == ((UnsignedInteger) Averaging).Value)
             return "Averaging";
-        if (type == multiStateValue.intValue())
+        if (type == ((UnsignedInteger) MultiStateValue).Value)
             return "Multi-state Value";
-        if (type == trendLog.intValue())
+        if (type == ((UnsignedInteger) TrendLog).Value)
             return "Trend Log";
-        if (type == lifeSafetyPoint.intValue())
+        if (type == ((UnsignedInteger) LifeSafetyPoint).Value)
             return "Life Safety Point";
-        if (type == lifeSafetyZone.intValue())
+        if (type == ((UnsignedInteger) LifeSafetyZone).Value)
             return "Life Safety Zone";
-        if (type == accumulator.intValue())
+        if (type == ((UnsignedInteger) Accumulator).Value)
             return "Accumulator";
-        if (type == pulseConverter.intValue())
+        if (type == ((UnsignedInteger) PulseConverter).Value)
             return "Pulse Converter";
-        if (type == eventLog.intValue())
+        if (type == ((UnsignedInteger) EventLog).Value)
             return "Event Log";
-        if (type == trendLogMultiple.intValue())
+        if (type == ((UnsignedInteger) TrendLogMultiple).Value)
             return "Trend Log Multiple";
-        if (type == loadControl.intValue())
+        if (type == ((UnsignedInteger) LoadControl).Value)
             return "Load Control";
-        if (type == structuredView.intValue())
+        if (type == ((UnsignedInteger) StructuredView).Value)
             return "Structured View";
-        if (type == accessDoor.intValue())
+        if (type == ((UnsignedInteger) AccessDoor).Value)
             return "Access Door";
         return "Vendor Specific (" + type + ")";
     }

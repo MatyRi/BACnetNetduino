@@ -10,11 +10,9 @@ namespace BACnetDataTypes.Primitive
 
         public static readonly byte TYPE_ID = 6;
 
-        private readonly byte[] value;
-
         public OctetString(byte[] value)
         {
-            this.value = value;
+            this.Bytes = value;
         }
 
         public OctetString(string dottedString) : this(dottedString, DEFAULT_PORT) { }
@@ -27,14 +25,14 @@ namespace BACnetDataTypes.Primitive
             {
                 byte[] b = BACnetUtils.dottedStringToBytes(dottedString);
                 if (b.Length == 4)
-                    value = toBytes(b, defaultPort);
+                    Bytes = toBytes(b, defaultPort);
                 else
-                    value = b;
+                    Bytes = b;
             }
             else {
                 byte[] ip = BACnetUtils.dottedStringToBytes(dottedString.Substring(0, colon));
                 int port = int.Parse(dottedString.Substring(colon + 1));
-                value = toBytes(ip, port);
+                Bytes = toBytes(ip, port);
             }
         }
 
@@ -46,7 +44,7 @@ namespace BACnetDataTypes.Primitive
          */
         public OctetString(byte station)
         {
-            value = new byte[] { station };
+            Bytes = new byte[] { station };
         }
 
         /**
@@ -57,15 +55,12 @@ namespace BACnetDataTypes.Primitive
          */
         public OctetString(byte[] ipAddress, int port)
         {
-            value = toBytes(ipAddress, port);
+            Bytes = toBytes(ipAddress, port);
         }
 
         public OctetString(IPEndPoint addr) : this(addr.Address.GetAddressBytes(), addr.Port) { }
 
-        public byte[] getBytes()
-        {
-            return value;
-        }
+        public byte[] Bytes { get; }
 
         private static byte[] toBytes(byte[] ipAddress, int port)
         {
@@ -83,56 +78,50 @@ namespace BACnetDataTypes.Primitive
         //
         // I/P convenience
         //
-        public string getMacAddressDottedString()
+        public string MacAddressDottedString => BACnetUtils.bytesToDottedString(Bytes);
+
+        public IPAddress InetAddress => new IPAddress(IpBytes);
+
+        public IPEndPoint InetSocketAddress => new IPEndPoint(InetAddress, Port);
+
+        public int Port
         {
-            return BACnetUtils.bytesToDottedString(value);
+            get
+            {
+                if (Bytes.Length == 6)
+                    return ((Bytes[4] & 0xff) << 8) | (Bytes[5] & 0xff);
+                return -1;
+            }
         }
 
-        public IPAddress getInetAddress()
+        public string ToIpString()
         {
-            return new IPAddress(getIpBytes());
+            return InetAddress.ToString();
         }
 
-        public IPEndPoint getInetSocketAddress()
+        public string ToIpPortString()
         {
-            return new IPEndPoint(getInetAddress(), getPort());
+            return ToIpString() + ":" + Port;
         }
 
-        public int getPort()
+        public byte[] IpBytes
         {
-            if (value.Length == 6)
-                return ((value[4] & 0xff) << 8) | (value[5] & 0xff);
-            return -1;
-        }
+            get
+            {
+                if (Bytes.Length == 4)
+                    return Bytes;
 
-        public string toIpString()
-        {
-            return getInetAddress().ToString();
-        }
-
-        public string toIpPortString()
-        {
-            return toIpString() + ":" + getPort();
-        }
-
-        public byte[] getIpBytes()
-        {
-            if (value.Length == 4)
-                return value;
-
-            byte[] b = new byte[4];
-            Array.Copy(value, 0, b, 0, 4);
-            return b;
+                byte[] b = new byte[4];
+                Array.Copy(Bytes, 0, b, 0, 4);
+                return b;
+            }
         }
 
         //
         //
         // MS/TP convenience
         //
-        public byte getMstpAddress()
-        {
-            return value[0];
-        }
+        public byte MstpAddress => Bytes[0];
 
         //
         // Reading and writing
@@ -140,45 +129,40 @@ namespace BACnetDataTypes.Primitive
         public OctetString(ByteStream queue)
         {
             int length = (int)readTag(queue);
-            value = new byte[length];
-            queue.pop(value);
+            Bytes = new byte[length];
+            queue.pop(Bytes);
         }
 
-        
+
         /*public override void writeImpl(ByteStream queue)
         {
             queue.push(value);
         }*/
 
-        protected override long getLength()
-        {
-            return value.Length;
-        }
+        protected override long Length => Bytes.Length;
 
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
-
+        protected override byte TypeId => TYPE_ID;
 
         public override string ToString()
         {
-            return getInetSocketAddress().ToString();
+            return InetSocketAddress.ToString();
         }
 
-        public string getDescription()
+        public string Description
         {
-            StringBuilder sb = new StringBuilder();
-            if (value.Length == 1)
-                // Assume an MS/TP address
-                sb.Append(getMstpAddress() & 0xff);
-            else if (value.Length == 6)
-                // Assume an I/P address
-                sb.Append(toIpPortString());
-            else
-                sb.Append(ToString());
-            return sb.ToString();
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                if (Bytes.Length == 1)
+                    // Assume an MS/TP address
+                    sb.Append(MstpAddress & 0xff);
+                else if (Bytes.Length == 6)
+                    // Assume an I/P address
+                    sb.Append(ToIpPortString());
+                else
+                    sb.Append(ToString());
+                return sb.ToString();
+            }
         }
-
     }
 }

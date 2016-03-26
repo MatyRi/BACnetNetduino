@@ -6,17 +6,12 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 3;
 
-        private int internalValue;
-
         public SignedInteger(int value)
         {
-            internalValue = value;
+            Value = value;
         }
 
-        public int intValue()
-        {
-            return internalValue;
-        }
+        public int Value { get; }
 
         //
         // Reading and writing
@@ -30,7 +25,7 @@ namespace BACnetDataTypes.Primitive
             queue.pop(bytes);
 
             if (length < 5)
-                internalValue = BitConverter.ToInt32(bytes, 0);
+                Value = BitConverter.ToInt32(bytes, 0);
             else
                 throw new NotImplementedException();
         }
@@ -47,32 +42,29 @@ namespace BACnetDataTypes.Primitive
                 queue.push(bigValue.toByteArray());
         }*/
 
-        protected override long getLength()
+        protected override long Length
         {
-            //if (bigValue == null)
-            //{
+            get
+            {
+                //if (bigValue == null)
+                //{
                 int length;
-                if (internalValue < byte.MaxValue && internalValue > byte.MinValue)
+                if (Value < byte.MaxValue && Value > byte.MinValue)
                     length = 1;
-                else if (internalValue < short.MaxValue && internalValue > short.MinValue)
+                else if (Value < short.MaxValue && Value > short.MinValue)
                     length = 2;
-                else if (internalValue < 8388607 && internalValue > -8388608)
+                else if (Value < 8388607 && Value > -8388608)
                     length = 3;
                 else
                     length = 4;
                 return length;
-            //}
-            //return bigValue.toByteArray().length;
+                //}
+                //return bigValue.toByteArray().length;
+            }
         }
 
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override byte TypeId => TYPE_ID;
 
-        public override string ToString()
-        {
-            return internalValue.ToString();
-        }
+        public override string ToString() => Value.ToString();
     }
 }

@@ -5,9 +5,9 @@ namespace BACnetDataTypes.Constructed
 {
     public class Recipient : BaseType
     {
-        private readonly Choice choice;
+        private readonly Choice _choice;
 
-        private static IList classes = new ArrayList()
+        private static readonly IList Classes = new ArrayList()
         {
             typeof (ObjectIdentifier),
             typeof (Address),
@@ -15,33 +15,21 @@ namespace BACnetDataTypes.Constructed
 
         public Recipient(ObjectIdentifier device)
         {
-            choice = new Choice(0, device);
+            _choice = new Choice(0, device);
         }
 
         public Recipient(Address address)
         {
-            choice = new Choice(1, address);
+            _choice = new Choice(1, address);
         }
 
-        public bool isObjectIdentifier()
-        {
-            return choice.ContextId == 0;
-        }
+        public bool IsObjectIdentifier => _choice.ContextId == 0;
 
-        public ObjectIdentifier getObjectIdentifier()
-        {
-            return (ObjectIdentifier) choice.Datum;
-        }
+        public ObjectIdentifier ObjectIdentifier => (ObjectIdentifier)_choice.Data;
 
-        public bool isAddress()
-        {
-            return choice.ContextId == 1;
-        }
+        public bool IsAddress => _choice.ContextId == 1;
 
-        public Address getAddress()
-        {
-            return (Address) choice.Datum;
-        }
+        public Address Address => (Address)_choice.Data;
 
         /*public override void write(ByteQueue queue)
         {
@@ -50,7 +38,7 @@ namespace BACnetDataTypes.Constructed
 
         public Recipient(ByteStream queue)
         {
-            choice = new Choice(queue, classes);
+            _choice = new Choice(queue, Classes);
         }
     }
 }

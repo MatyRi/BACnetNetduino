@@ -1,107 +1,109 @@
+using BACnetDataTypes.Primitive;
+
 namespace BACnetDataTypes.Enumerated
 {
     public class ErrorCode : Primitive.Enumerated
     {
-        public static readonly ErrorCode other = new ErrorCode(0);
-        public static readonly ErrorCode authenticationFailed = new ErrorCode(1);
-        public static readonly ErrorCode configurationInProgress = new ErrorCode(2);
-        public static readonly ErrorCode deviceBusy = new ErrorCode(3);
-        public static readonly ErrorCode dynamicCreationNotSupported = new ErrorCode(4);
-        public static readonly ErrorCode fileAccessDenied = new ErrorCode(5);
-        public static readonly ErrorCode incompatibleSecurityLevels = new ErrorCode(6);
-        public static readonly ErrorCode inconsistentParameters = new ErrorCode(7);
-        public static readonly ErrorCode inconsistentSelectionCriterion = new ErrorCode(8);
-        public static readonly ErrorCode invalidDataType = new ErrorCode(9);
-        public static readonly ErrorCode invalidFileAccessMethod = new ErrorCode(10);
-        public static readonly ErrorCode invalidFileStartPosition = new ErrorCode(11);
-        public static readonly ErrorCode invalidOperatorName = new ErrorCode(12);
-        public static readonly ErrorCode invalidParameterDataType = new ErrorCode(13);
-        public static readonly ErrorCode invalidTimeStamp = new ErrorCode(14);
-        public static readonly ErrorCode keyGenerationError = new ErrorCode(15);
-        public static readonly ErrorCode missingRequiredParameter = new ErrorCode(16);
-        public static readonly ErrorCode noObjectsOfSpecifiedType = new ErrorCode(17);
-        public static readonly ErrorCode noSpaceForObject = new ErrorCode(18);
-        public static readonly ErrorCode noSpaceToAddListElement = new ErrorCode(19);
-        public static readonly ErrorCode noSpaceToWriteProperty = new ErrorCode(20);
-        public static readonly ErrorCode noVtSessionsAvailable = new ErrorCode(21);
-        public static readonly ErrorCode propertyIsNotAList = new ErrorCode(22);
-        public static readonly ErrorCode objectDeletionNotPermitted = new ErrorCode(23);
-        public static readonly ErrorCode objectIdentifierAlreadyExists = new ErrorCode(24);
-        public static readonly ErrorCode operationalProblem = new ErrorCode(25);
-        public static readonly ErrorCode passwordFailure = new ErrorCode(26);
-        public static readonly ErrorCode readAccessDenied = new ErrorCode(27);
-        public static readonly ErrorCode securityNotSupported = new ErrorCode(28);
-        public static readonly ErrorCode serviceRequestDenied = new ErrorCode(29);
-        public static readonly ErrorCode timeout = new ErrorCode(30);
-        public static readonly ErrorCode unknownObject = new ErrorCode(31);
-        public static readonly ErrorCode unknownProperty = new ErrorCode(32);
-        public static readonly ErrorCode unknownVtClass = new ErrorCode(34);
-        public static readonly ErrorCode unknownVtSession = new ErrorCode(35);
-        public static readonly ErrorCode unsupportedObjectType = new ErrorCode(36);
-        public static readonly ErrorCode valueOutOfRange = new ErrorCode(37);
-        public static readonly ErrorCode vtSessionAlreadyClosed = new ErrorCode(38);
-        public static readonly ErrorCode vtSessionTerminationFailure = new ErrorCode(39);
-        public static readonly ErrorCode writeAccessDenied = new ErrorCode(40);
-        public static readonly ErrorCode characterSetNotSupported = new ErrorCode(41);
-        public static readonly ErrorCode invalidArrayIndex = new ErrorCode(42);
-        public static readonly ErrorCode covSubscriptionFailed = new ErrorCode(43);
-        public static readonly ErrorCode notCovProperty = new ErrorCode(44);
-        public static readonly ErrorCode optionalFunctionalityNotSupported = new ErrorCode(45);
-        public static readonly ErrorCode invalidConfigurationData = new ErrorCode(46);
-        public static readonly ErrorCode datatypeNotSupported = new ErrorCode(47);
-        public static readonly ErrorCode duplicateName = new ErrorCode(48);
-        public static readonly ErrorCode duplicateObjectId = new ErrorCode(49);
-        public static readonly ErrorCode propertyIsNotAnArray = new ErrorCode(50);
-        public static readonly ErrorCode abortBufferOverflow = new ErrorCode(51);
-        public static readonly ErrorCode abortInvalidApduInThisState = new ErrorCode(52);
-        public static readonly ErrorCode abortPreemptedByHigherPriorityTask = new ErrorCode(53);
-        public static readonly ErrorCode abortSegmentationNotSupported = new ErrorCode(54);
-        public static readonly ErrorCode abortProprietary = new ErrorCode(55);
-        public static readonly ErrorCode abortOther = new ErrorCode(56);
-        public static readonly ErrorCode invalidTag = new ErrorCode(57);
-        public static readonly ErrorCode networkDown = new ErrorCode(58);
-        public static readonly ErrorCode rejectBufferOverflow = new ErrorCode(59);
-        public static readonly ErrorCode rejectInconsistentParameters = new ErrorCode(60);
-        public static readonly ErrorCode rejectInvalidParameterDataType = new ErrorCode(61);
-        public static readonly ErrorCode rejectInvalidTag = new ErrorCode(62);
-        public static readonly ErrorCode rejectMissingRequiredParameter = new ErrorCode(63);
-        public static readonly ErrorCode rejectParameterOutOfRange = new ErrorCode(64);
-        public static readonly ErrorCode rejectTooManyArguments = new ErrorCode(65);
-        public static readonly ErrorCode rejectUndefinedEnumeration = new ErrorCode(66);
-        public static readonly ErrorCode rejectUnrecognizedService = new ErrorCode(67);
-        public static readonly ErrorCode rejectProprietary = new ErrorCode(68);
-        public static readonly ErrorCode rejectOther = new ErrorCode(69);
-        public static readonly ErrorCode unknownDevice = new ErrorCode(70);
-        public static readonly ErrorCode unknownRoute = new ErrorCode(71);
-        public static readonly ErrorCode valueNotInitialized = new ErrorCode(72);
-        public static readonly ErrorCode invalidEventState = new ErrorCode(73);
-        public static readonly ErrorCode noAlarmConfigured = new ErrorCode(74);
-        public static readonly ErrorCode logBufferFull = new ErrorCode(75);
-        public static readonly ErrorCode loggedValuePurged = new ErrorCode(76);
-        public static readonly ErrorCode noPropertySpecified = new ErrorCode(77);
-        public static readonly ErrorCode notConfiguredForTriggeredLogging = new ErrorCode(78);
-        public static readonly ErrorCode communicationDisabled = new ErrorCode(83);
-        public static readonly ErrorCode unknownFileSize = new ErrorCode(122);
+        public static readonly ErrorCode Other = new ErrorCode(0);
+        public static readonly ErrorCode AuthenticationFailed = new ErrorCode(1);
+        public static readonly ErrorCode ConfigurationInProgress = new ErrorCode(2);
+        public static readonly ErrorCode DeviceBusy = new ErrorCode(3);
+        public static readonly ErrorCode DynamicCreationNotSupported = new ErrorCode(4);
+        public static readonly ErrorCode FileAccessDenied = new ErrorCode(5);
+        public static readonly ErrorCode IncompatibleSecurityLevels = new ErrorCode(6);
+        public static readonly ErrorCode InconsistentParameters = new ErrorCode(7);
+        public static readonly ErrorCode InconsistentSelectionCriterion = new ErrorCode(8);
+        public static readonly ErrorCode InvalidDataType = new ErrorCode(9);
+        public static readonly ErrorCode InvalidFileAccessMethod = new ErrorCode(10);
+        public static readonly ErrorCode InvalidFileStartPosition = new ErrorCode(11);
+        public static readonly ErrorCode InvalidOperatorName = new ErrorCode(12);
+        public static readonly ErrorCode InvalidParameterDataType = new ErrorCode(13);
+        public static readonly ErrorCode InvalidTimeStamp = new ErrorCode(14);
+        public static readonly ErrorCode KeyGenerationError = new ErrorCode(15);
+        public static readonly ErrorCode MissingRequiredParameter = new ErrorCode(16);
+        public static readonly ErrorCode NoObjectsOfSpecifiedType = new ErrorCode(17);
+        public static readonly ErrorCode NoSpaceForObject = new ErrorCode(18);
+        public static readonly ErrorCode NoSpaceToAddListElement = new ErrorCode(19);
+        public static readonly ErrorCode NoSpaceToWriteProperty = new ErrorCode(20);
+        public static readonly ErrorCode NoVtSessionsAvailable = new ErrorCode(21);
+        public static readonly ErrorCode PropertyIsNotAList = new ErrorCode(22);
+        public static readonly ErrorCode ObjectDeletionNotPermitted = new ErrorCode(23);
+        public static readonly ErrorCode ObjectIdentifierAlreadyExists = new ErrorCode(24);
+        public static readonly ErrorCode OperationalProblem = new ErrorCode(25);
+        public static readonly ErrorCode PasswordFailure = new ErrorCode(26);
+        public static readonly ErrorCode ReadAccessDenied = new ErrorCode(27);
+        public static readonly ErrorCode SecurityNotSupported = new ErrorCode(28);
+        public static readonly ErrorCode ServiceRequestDenied = new ErrorCode(29);
+        public static readonly ErrorCode Timeout = new ErrorCode(30);
+        public static readonly ErrorCode UnknownObject = new ErrorCode(31);
+        public static readonly ErrorCode UnknownProperty = new ErrorCode(32);
+        public static readonly ErrorCode UnknownVtClass = new ErrorCode(34);
+        public static readonly ErrorCode UnknownVtSession = new ErrorCode(35);
+        public static readonly ErrorCode UnsupportedObjectType = new ErrorCode(36);
+        public static readonly ErrorCode ValueOutOfRange = new ErrorCode(37);
+        public static readonly ErrorCode VtSessionAlreadyClosed = new ErrorCode(38);
+        public static readonly ErrorCode VtSessionTerminationFailure = new ErrorCode(39);
+        public static readonly ErrorCode WriteAccessDenied = new ErrorCode(40);
+        public static readonly ErrorCode CharacterSetNotSupported = new ErrorCode(41);
+        public static readonly ErrorCode InvalidArrayIndex = new ErrorCode(42);
+        public static readonly ErrorCode CovSubscriptionFailed = new ErrorCode(43);
+        public static readonly ErrorCode NotCovProperty = new ErrorCode(44);
+        public static readonly ErrorCode OptionalFunctionalityNotSupported = new ErrorCode(45);
+        public static readonly ErrorCode InvalidConfigurationData = new ErrorCode(46);
+        public static readonly ErrorCode DatatypeNotSupported = new ErrorCode(47);
+        public static readonly ErrorCode DuplicateName = new ErrorCode(48);
+        public static readonly ErrorCode DuplicateObjectId = new ErrorCode(49);
+        public static readonly ErrorCode PropertyIsNotAnArray = new ErrorCode(50);
+        public static readonly ErrorCode AbortBufferOverflow = new ErrorCode(51);
+        public static readonly ErrorCode AbortInvalidApduInThisState = new ErrorCode(52);
+        public static readonly ErrorCode AbortPreemptedByHigherPriorityTask = new ErrorCode(53);
+        public static readonly ErrorCode AbortSegmentationNotSupported = new ErrorCode(54);
+        public static readonly ErrorCode AbortProprietary = new ErrorCode(55);
+        public static readonly ErrorCode AbortOther = new ErrorCode(56);
+        public static readonly ErrorCode InvalidTag = new ErrorCode(57);
+        public static readonly ErrorCode NetworkDown = new ErrorCode(58);
+        public static readonly ErrorCode RejectBufferOverflow = new ErrorCode(59);
+        public static readonly ErrorCode RejectInconsistentParameters = new ErrorCode(60);
+        public static readonly ErrorCode RejectInvalidParameterDataType = new ErrorCode(61);
+        public static readonly ErrorCode RejectInvalidTag = new ErrorCode(62);
+        public static readonly ErrorCode RejectMissingRequiredParameter = new ErrorCode(63);
+        public static readonly ErrorCode RejectParameterOutOfRange = new ErrorCode(64);
+        public static readonly ErrorCode RejectTooManyArguments = new ErrorCode(65);
+        public static readonly ErrorCode RejectUndefinedEnumeration = new ErrorCode(66);
+        public static readonly ErrorCode RejectUnrecognizedService = new ErrorCode(67);
+        public static readonly ErrorCode RejectProprietary = new ErrorCode(68);
+        public static readonly ErrorCode RejectOther = new ErrorCode(69);
+        public static readonly ErrorCode UnknownDevice = new ErrorCode(70);
+        public static readonly ErrorCode UnknownRoute = new ErrorCode(71);
+        public static readonly ErrorCode ValueNotInitialized = new ErrorCode(72);
+        public static readonly ErrorCode InvalidEventState = new ErrorCode(73);
+        public static readonly ErrorCode NoAlarmConfigured = new ErrorCode(74);
+        public static readonly ErrorCode LogBufferFull = new ErrorCode(75);
+        public static readonly ErrorCode LoggedValuePurged = new ErrorCode(76);
+        public static readonly ErrorCode NoPropertySpecified = new ErrorCode(77);
+        public static readonly ErrorCode NotConfiguredForTriggeredLogging = new ErrorCode(78);
+        public static readonly ErrorCode CommunicationDisabled = new ErrorCode(83);
+        public static readonly ErrorCode UnknownFileSize = new ErrorCode(122);
 
-        public static readonly ErrorCode[] ALL = { other, authenticationFailed, configurationInProgress, deviceBusy,
-            dynamicCreationNotSupported, fileAccessDenied, incompatibleSecurityLevels, inconsistentParameters,
-            inconsistentSelectionCriterion, invalidDataType, invalidFileAccessMethod, invalidFileStartPosition,
-            invalidOperatorName, invalidParameterDataType, invalidTimeStamp, keyGenerationError,
-            missingRequiredParameter, noObjectsOfSpecifiedType, noSpaceForObject, noSpaceToAddListElement,
-            noSpaceToWriteProperty, noVtSessionsAvailable, propertyIsNotAList, objectDeletionNotPermitted,
-            objectIdentifierAlreadyExists, operationalProblem, passwordFailure, readAccessDenied, securityNotSupported,
-            serviceRequestDenied, timeout, unknownObject, unknownProperty, unknownVtClass, unknownVtSession,
-            unsupportedObjectType, valueOutOfRange, vtSessionAlreadyClosed, vtSessionTerminationFailure,
-            writeAccessDenied, characterSetNotSupported, invalidArrayIndex, covSubscriptionFailed, notCovProperty,
-            optionalFunctionalityNotSupported, invalidConfigurationData, datatypeNotSupported, duplicateName,
-            duplicateObjectId, propertyIsNotAnArray, abortBufferOverflow, abortInvalidApduInThisState,
-            abortPreemptedByHigherPriorityTask, abortSegmentationNotSupported, abortProprietary, abortOther,
-            invalidTag, networkDown, rejectBufferOverflow, rejectInconsistentParameters,
-            rejectInvalidParameterDataType, rejectInvalidTag, rejectMissingRequiredParameter,
-            rejectParameterOutOfRange, rejectTooManyArguments, rejectUndefinedEnumeration, rejectUnrecognizedService,
-            rejectProprietary, rejectOther, unknownDevice, unknownRoute, valueNotInitialized, invalidEventState,
-            noAlarmConfigured, logBufferFull, loggedValuePurged, noPropertySpecified, notConfiguredForTriggeredLogging,
-            communicationDisabled, unknownFileSize, };
+        public static readonly ErrorCode[] All = { Other, AuthenticationFailed, ConfigurationInProgress, DeviceBusy,
+            DynamicCreationNotSupported, FileAccessDenied, IncompatibleSecurityLevels, InconsistentParameters,
+            InconsistentSelectionCriterion, InvalidDataType, InvalidFileAccessMethod, InvalidFileStartPosition,
+            InvalidOperatorName, InvalidParameterDataType, InvalidTimeStamp, KeyGenerationError,
+            MissingRequiredParameter, NoObjectsOfSpecifiedType, NoSpaceForObject, NoSpaceToAddListElement,
+            NoSpaceToWriteProperty, NoVtSessionsAvailable, PropertyIsNotAList, ObjectDeletionNotPermitted,
+            ObjectIdentifierAlreadyExists, OperationalProblem, PasswordFailure, ReadAccessDenied, SecurityNotSupported,
+            ServiceRequestDenied, Timeout, UnknownObject, UnknownProperty, UnknownVtClass, UnknownVtSession,
+            UnsupportedObjectType, ValueOutOfRange, VtSessionAlreadyClosed, VtSessionTerminationFailure,
+            WriteAccessDenied, CharacterSetNotSupported, InvalidArrayIndex, CovSubscriptionFailed, NotCovProperty,
+            OptionalFunctionalityNotSupported, InvalidConfigurationData, DatatypeNotSupported, DuplicateName,
+            DuplicateObjectId, PropertyIsNotAnArray, AbortBufferOverflow, AbortInvalidApduInThisState,
+            AbortPreemptedByHigherPriorityTask, AbortSegmentationNotSupported, AbortProprietary, AbortOther,
+            InvalidTag, NetworkDown, RejectBufferOverflow, RejectInconsistentParameters,
+            RejectInvalidParameterDataType, RejectInvalidTag, RejectMissingRequiredParameter,
+            RejectParameterOutOfRange, RejectTooManyArguments, RejectUndefinedEnumeration, RejectUnrecognizedService,
+            RejectProprietary, RejectOther, UnknownDevice, UnknownRoute, ValueNotInitialized, InvalidEventState,
+            NoAlarmConfigured, LogBufferFull, LoggedValuePurged, NoPropertySpecified, NotConfiguredForTriggeredLogging,
+            CommunicationDisabled, UnknownFileSize, };
 
     public ErrorCode(uint value) : base(value) { }
 
@@ -109,166 +111,166 @@ namespace BACnetDataTypes.Enumerated
 
         public override string ToString()
     {
-        uint type = intValue();
-        if (type == other.intValue())
+        uint type = ((UnsignedInteger) this).Value;
+        if (type == ((UnsignedInteger) Other).Value)
             return "Other";
-        if (type == authenticationFailed.intValue())
+        if (type == ((UnsignedInteger) AuthenticationFailed).Value)
             return "Authentication failed";
-        if (type == configurationInProgress.intValue())
+        if (type == ((UnsignedInteger) ConfigurationInProgress).Value)
             return "Configuration in progress";
-        if (type == deviceBusy.intValue())
+        if (type == ((UnsignedInteger) DeviceBusy).Value)
             return "Device busy";
-        if (type == dynamicCreationNotSupported.intValue())
+        if (type == ((UnsignedInteger) DynamicCreationNotSupported).Value)
             return "Dynamic creation not supported";
-        if (type == fileAccessDenied.intValue())
+        if (type == ((UnsignedInteger) FileAccessDenied).Value)
             return "File access denied";
-        if (type == incompatibleSecurityLevels.intValue())
+        if (type == ((UnsignedInteger) IncompatibleSecurityLevels).Value)
             return "Incompatible security levels";
-        if (type == inconsistentParameters.intValue())
+        if (type == ((UnsignedInteger) InconsistentParameters).Value)
             return "Inconsistent parameters";
-        if (type == inconsistentSelectionCriterion.intValue())
+        if (type == ((UnsignedInteger) InconsistentSelectionCriterion).Value)
             return "Inconsistent selection criterion";
-        if (type == invalidDataType.intValue())
+        if (type == ((UnsignedInteger) InvalidDataType).Value)
             return "Invalid data type";
-        if (type == invalidFileAccessMethod.intValue())
+        if (type == ((UnsignedInteger) InvalidFileAccessMethod).Value)
             return "Invalid file access method";
-        if (type == invalidFileStartPosition.intValue())
+        if (type == ((UnsignedInteger) InvalidFileStartPosition).Value)
             return "Invalid file start position";
-        if (type == invalidOperatorName.intValue())
+        if (type == ((UnsignedInteger) InvalidOperatorName).Value)
             return "Invalid operator name";
-        if (type == invalidParameterDataType.intValue())
+        if (type == ((UnsignedInteger) InvalidParameterDataType).Value)
             return "Invalid parameter data type";
-        if (type == invalidTimeStamp.intValue())
+        if (type == ((UnsignedInteger) InvalidTimeStamp).Value)
             return "Invalid time stamp";
-        if (type == keyGenerationError.intValue())
+        if (type == ((UnsignedInteger) KeyGenerationError).Value)
             return "Key generation error";
-        if (type == missingRequiredParameter.intValue())
+        if (type == ((UnsignedInteger) MissingRequiredParameter).Value)
             return "Missing required parameter";
-        if (type == noObjectsOfSpecifiedType.intValue())
+        if (type == ((UnsignedInteger) NoObjectsOfSpecifiedType).Value)
             return "No objects of specified type";
-        if (type == noSpaceForObject.intValue())
+        if (type == ((UnsignedInteger) NoSpaceForObject).Value)
             return "No space for object";
-        if (type == noSpaceToAddListElement.intValue())
+        if (type == ((UnsignedInteger) NoSpaceToAddListElement).Value)
             return "No space to add list element";
-        if (type == noSpaceToWriteProperty.intValue())
+        if (type == ((UnsignedInteger) NoSpaceToWriteProperty).Value)
             return "No space to write property";
-        if (type == noVtSessionsAvailable.intValue())
+        if (type == ((UnsignedInteger) NoVtSessionsAvailable).Value)
             return "No VT sessions available";
-        if (type == propertyIsNotAList.intValue())
+        if (type == ((UnsignedInteger) PropertyIsNotAList).Value)
             return "Property is not a list";
-        if (type == objectDeletionNotPermitted.intValue())
+        if (type == ((UnsignedInteger) ObjectDeletionNotPermitted).Value)
             return "Object deletion not permitted";
-        if (type == objectIdentifierAlreadyExists.intValue())
+        if (type == ((UnsignedInteger) ObjectIdentifierAlreadyExists).Value)
             return "Object identifier already exists";
-        if (type == operationalProblem.intValue())
+        if (type == ((UnsignedInteger) OperationalProblem).Value)
             return "Operational problem";
-        if (type == passwordFailure.intValue())
+        if (type == ((UnsignedInteger) PasswordFailure).Value)
             return "Password failure";
-        if (type == readAccessDenied.intValue())
+        if (type == ((UnsignedInteger) ReadAccessDenied).Value)
             return "Read access denied";
-        if (type == securityNotSupported.intValue())
+        if (type == ((UnsignedInteger) SecurityNotSupported).Value)
             return "Security not supported";
-        if (type == serviceRequestDenied.intValue())
+        if (type == ((UnsignedInteger) ServiceRequestDenied).Value)
             return "Service request denied";
-        if (type == timeout.intValue())
+        if (type == ((UnsignedInteger) Timeout).Value)
             return "Timeout";
-        if (type == unknownObject.intValue())
+        if (type == ((UnsignedInteger) UnknownObject).Value)
             return "Unknown object";
-        if (type == unknownProperty.intValue())
+        if (type == ((UnsignedInteger) UnknownProperty).Value)
             return "Unknown property";
-        if (type == unknownVtClass.intValue())
+        if (type == ((UnsignedInteger) UnknownVtClass).Value)
             return "Unknown VT class";
-        if (type == unknownVtSession.intValue())
+        if (type == ((UnsignedInteger) UnknownVtSession).Value)
             return "Unknown VT session";
-        if (type == unsupportedObjectType.intValue())
+        if (type == ((UnsignedInteger) UnsupportedObjectType).Value)
             return "Unsupported object type";
-        if (type == valueOutOfRange.intValue())
+        if (type == ((UnsignedInteger) ValueOutOfRange).Value)
             return "Value out of range";
-        if (type == vtSessionAlreadyClosed.intValue())
+        if (type == ((UnsignedInteger) VtSessionAlreadyClosed).Value)
             return "VT session already closed";
-        if (type == vtSessionTerminationFailure.intValue())
+        if (type == ((UnsignedInteger) VtSessionTerminationFailure).Value)
             return "VT session termination failure";
-        if (type == writeAccessDenied.intValue())
+        if (type == ((UnsignedInteger) WriteAccessDenied).Value)
             return "Write access denied";
-        if (type == characterSetNotSupported.intValue())
+        if (type == ((UnsignedInteger) CharacterSetNotSupported).Value)
             return "Character set not supported";
-        if (type == invalidArrayIndex.intValue())
+        if (type == ((UnsignedInteger) InvalidArrayIndex).Value)
             return "Invalid array index";
-        if (type == covSubscriptionFailed.intValue())
+        if (type == ((UnsignedInteger) CovSubscriptionFailed).Value)
             return "Cov subscription failed";
-        if (type == notCovProperty.intValue())
+        if (type == ((UnsignedInteger) NotCovProperty).Value)
             return "Not COV property";
-        if (type == optionalFunctionalityNotSupported.intValue())
+        if (type == ((UnsignedInteger) OptionalFunctionalityNotSupported).Value)
             return "Optional functionality not supported";
-        if (type == invalidConfigurationData.intValue())
+        if (type == ((UnsignedInteger) InvalidConfigurationData).Value)
             return "Invalid configuration data";
-        if (type == datatypeNotSupported.intValue())
+        if (type == ((UnsignedInteger) DatatypeNotSupported).Value)
             return "Data type not supported";
-        if (type == duplicateName.intValue())
+        if (type == ((UnsignedInteger) DuplicateName).Value)
             return "Duplicate name";
-        if (type == duplicateObjectId.intValue())
+        if (type == ((UnsignedInteger) DuplicateObjectId).Value)
             return "Duplicate object id";
-        if (type == propertyIsNotAnArray.intValue())
+        if (type == ((UnsignedInteger) PropertyIsNotAnArray).Value)
             return "Property is not an array";
-        if (type == abortBufferOverflow.intValue())
+        if (type == ((UnsignedInteger) AbortBufferOverflow).Value)
             return "Abort Buffer Overflow";
-        if (type == abortInvalidApduInThisState.intValue())
+        if (type == ((UnsignedInteger) AbortInvalidApduInThisState).Value)
             return "Abort Invalid Apdu In This State";
-        if (type == abortPreemptedByHigherPriorityTask.intValue())
+        if (type == ((UnsignedInteger) AbortPreemptedByHigherPriorityTask).Value)
             return "Abort Preempted By Higher Priority Task";
-        if (type == abortSegmentationNotSupported.intValue())
+        if (type == ((UnsignedInteger) AbortSegmentationNotSupported).Value)
             return "Abort Segmentation Not Supported";
-        if (type == abortProprietary.intValue())
+        if (type == ((UnsignedInteger) AbortProprietary).Value)
             return "Abort Proprietary";
-        if (type == abortOther.intValue())
+        if (type == ((UnsignedInteger) AbortOther).Value)
             return "Abort Other";
-        if (type == invalidTag.intValue())
+        if (type == ((UnsignedInteger) InvalidTag).Value)
             return "Invalid Tag";
-        if (type == networkDown.intValue())
+        if (type == ((UnsignedInteger) NetworkDown).Value)
             return "Network Down";
-        if (type == rejectBufferOverflow.intValue())
+        if (type == ((UnsignedInteger) RejectBufferOverflow).Value)
             return "Reject Buffer Overflow";
-        if (type == rejectInconsistentParameters.intValue())
+        if (type == ((UnsignedInteger) RejectInconsistentParameters).Value)
             return "Reject Inconsistent Parameters";
-        if (type == rejectInvalidParameterDataType.intValue())
+        if (type == ((UnsignedInteger) RejectInvalidParameterDataType).Value)
             return "Reject Invalid Parameter Data Type";
-        if (type == rejectInvalidTag.intValue())
+        if (type == ((UnsignedInteger) RejectInvalidTag).Value)
             return "Reject Invalid Tag";
-        if (type == rejectMissingRequiredParameter.intValue())
+        if (type == ((UnsignedInteger) RejectMissingRequiredParameter).Value)
             return "Reject Missing Required Parameter";
-        if (type == rejectParameterOutOfRange.intValue())
+        if (type == ((UnsignedInteger) RejectParameterOutOfRange).Value)
             return "Reject Parameter Out Of Range";
-        if (type == rejectTooManyArguments.intValue())
+        if (type == ((UnsignedInteger) RejectTooManyArguments).Value)
             return "Reject Too Many Arguments";
-        if (type == rejectUndefinedEnumeration.intValue())
+        if (type == ((UnsignedInteger) RejectUndefinedEnumeration).Value)
             return "Reject Undefined Enumeration";
-        if (type == rejectUnrecognizedService.intValue())
+        if (type == ((UnsignedInteger) RejectUnrecognizedService).Value)
             return "Reject Unrecognized Service";
-        if (type == rejectProprietary.intValue())
+        if (type == ((UnsignedInteger) RejectProprietary).Value)
             return "Reject Proprietary";
-        if (type == rejectOther.intValue())
+        if (type == ((UnsignedInteger) RejectOther).Value)
             return "Reject Other";
-        if (type == unknownDevice.intValue())
+        if (type == ((UnsignedInteger) UnknownDevice).Value)
             return "Unknown Device";
-        if (type == unknownRoute.intValue())
+        if (type == ((UnsignedInteger) UnknownRoute).Value)
             return "Unknown Route";
-        if (type == valueNotInitialized.intValue())
+        if (type == ((UnsignedInteger) ValueNotInitialized).Value)
             return "Value Not Initialized";
-        if (type == invalidEventState.intValue())
+        if (type == ((UnsignedInteger) InvalidEventState).Value)
             return "Invalid Event State";
-        if (type == noAlarmConfigured.intValue())
+        if (type == ((UnsignedInteger) NoAlarmConfigured).Value)
             return "No Alarm Configured";
-        if (type == logBufferFull.intValue())
+        if (type == ((UnsignedInteger) LogBufferFull).Value)
             return "Log Buffer Full";
-        if (type == loggedValuePurged.intValue())
+        if (type == ((UnsignedInteger) LoggedValuePurged).Value)
             return "Logged Value Purged";
-        if (type == noPropertySpecified.intValue())
+        if (type == ((UnsignedInteger) NoPropertySpecified).Value)
             return "No Property Specified";
-        if (type == notConfiguredForTriggeredLogging.intValue())
+        if (type == ((UnsignedInteger) NotConfiguredForTriggeredLogging).Value)
             return "Not Configured For Triggered Logging";
-        if (type == communicationDisabled.intValue())
+        if (type == ((UnsignedInteger) CommunicationDisabled).Value)
             return "Communication Disabled";
-        if (type == unknownFileSize.intValue())
+        if (type == ((UnsignedInteger) UnknownFileSize).Value)
             return "Unknown File Size";
         return "Unknown: " + type;
     }

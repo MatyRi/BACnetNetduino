@@ -4,17 +4,12 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 5;
 
-        private readonly double value;
-
         public BDouble(double value)
         {
-            this.value = value;
+            this.Value = value;
         }
 
-        public double doubleValue()
-        {
-            return value;
-        }
+        public double Value { get; }
 
         //
         // Reading and writing
@@ -22,7 +17,7 @@ namespace BACnetDataTypes.Primitive
         public BDouble(ByteStream queue)
         {
             readTag(queue);
-            value = queue.ReadDouble();
+            Value = queue.ReadDouble();
         }
 
 
@@ -32,21 +27,14 @@ namespace BACnetDataTypes.Primitive
         }*/
 
 
-        protected override long getLength()
-        {
-            return 8;
-        }
+        protected override long Length { get; } = 8;
 
-
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override byte TypeId => TYPE_ID;
 
 
         public override string ToString()
         {
-            return value.ToString();
+            return Value.ToString();
         }
     }
 }

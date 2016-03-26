@@ -9,20 +9,20 @@ namespace BACnetDataTypes.Constructed
 
         public PriorityArray() : base(new ArrayList())
         {
-            ensureLength();
+            EnsureLength();
         }
 
         public PriorityArray(IList priorityValues) : base(priorityValues)
         {
-            ensureLength();
+            EnsureLength();
         }
 
         public PriorityArray(ByteStream queue, int contextId) : base(queue, typeof (PriorityValue), contextId)
         {
-            ensureLength();
+            EnsureLength();
         }
 
-        private void ensureLength()
+        private void EnsureLength()
         {
             while (getCount() < LENGTH)
                 add(new PriorityValue(new Null()));

@@ -2,33 +2,28 @@ namespace BACnetDataTypes.Primitive
 {
     public class BitString : Primitive
     {
-        public static readonly byte TYPE_ID = 8;
+        public bool[] Value { get; }
 
-        private bool[] value;
+        public static readonly byte TYPE_ID = 8;
 
         public BitString(bool[] value)
         {
-            this.value = value;
+            this.Value = value;
         }
 
         public BitString(int size, bool defaultValue)
         {
-            value = new bool[size];
+            Value = new bool[size];
             if (defaultValue)
             {
                 for (int i = 0; i < size; i++)
-                    value[i] = true;
+                    Value[i] = true;
             }
-        }
-
-        public bool[] getValue()
-        {
-            return value;
         }
 
         public void setAll(bool value)
         {
-            bool[] values = getValue();
+            bool[] values = Value;
             for (int i = 0; i < values.Length; i++)
                 values[i] = value;
         }
@@ -42,7 +37,7 @@ namespace BACnetDataTypes.Primitive
             int remainder = queue.popU1B();
 
             if (Length == 0)
-                value = new bool[0];
+                Value = new bool[0];
             else {
                 byte[] data = new byte[Length];
                 queue.pop(data);
@@ -63,24 +58,22 @@ namespace BACnetDataTypes.Primitive
             }
         }*/
 
-        
-    protected override long getLength()
+
+        protected override long Length
         {
-            if (value.Length == 0)
-                return 1;
-            return (value.Length - 1) / 8 + 2;
+            get
+            {
+                if (Value.Length == 0)
+                    return 1;
+                return (Value.Length - 1) / 8 + 2;
+            }
         }
 
-        
-    protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override byte TypeId => TYPE_ID;
 
-        
-    public override string ToString()
+        public override string ToString()
         {
-            return value.ToString();
+            return Value.ToString();
         }
     }
 }

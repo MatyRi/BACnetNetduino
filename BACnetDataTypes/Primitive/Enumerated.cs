@@ -8,10 +8,7 @@ namespace BACnetDataTypes.Primitive
 
         //public Enumerated(BitArray value) : base(value) { }
 
-        public byte byteValue()
-        {
-            return (byte)intValue();
-        }
+        public byte Value => (byte) base.Value;
 
         /*public bool equals(Enumerated that)
         {
@@ -25,9 +22,6 @@ namespace BACnetDataTypes.Primitive
         //
         public Enumerated(ByteStream queue) : base(queue) { }
 
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override byte TypeId => TYPE_ID;
     }
 }

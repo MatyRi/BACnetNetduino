@@ -5,22 +5,23 @@ namespace BACnetDataTypes.Constructed
 {
     public class ObjectPropertyReference : BaseType
     {
-        private readonly ObjectIdentifier objectIdentifier;
-        private readonly PropertyIdentifier propertyIdentifier;
-        private UnsignedInteger propertyArrayIndex;
+
+        public ObjectIdentifier ObjectIdentifier { get; }
+        public PropertyIdentifier PropertyIdentifier { get; }
+        public UnsignedInteger PropertyArrayIndex { get; }
 
         public ObjectPropertyReference(ObjectIdentifier objectIdentifier, PropertyIdentifier propertyIdentifier)
         {
-            this.objectIdentifier = objectIdentifier;
-            this.propertyIdentifier = propertyIdentifier;
+            this.ObjectIdentifier = objectIdentifier;
+            this.PropertyIdentifier = propertyIdentifier;
         }
 
         public ObjectPropertyReference(ObjectIdentifier objectIdentifier, PropertyIdentifier propertyIdentifier,
                 UnsignedInteger propertyArrayIndex)
         {
-            this.objectIdentifier = objectIdentifier;
-            this.propertyIdentifier = propertyIdentifier;
-            this.propertyArrayIndex = propertyArrayIndex;
+            this.ObjectIdentifier = objectIdentifier;
+            this.PropertyIdentifier = propertyIdentifier;
+            this.PropertyArrayIndex = propertyArrayIndex;
         }
 
         /*public override void write(ByteStream queue)
@@ -37,25 +38,10 @@ namespace BACnetDataTypes.Constructed
             // TODO propertyArrayIndex = readOptional(queue, UnsignedInteger.class, 2);
         }
 
-    public ObjectIdentifier getObjectIdentifier()
+        public override string ToString()
     {
-        return objectIdentifier;
-    }
-
-    public PropertyIdentifier getPropertyIdentifier()
-    {
-        return propertyIdentifier;
-    }
-
-    public UnsignedInteger getPropertyArrayIndex()
-    {
-        return propertyArrayIndex;
-    }
-
-    public override string ToString()
-    {
-        return "ObjectPropertyReference(objectIdentifier=" + objectIdentifier + ", propertyIdentifier="
-                + propertyIdentifier + ", propertyArrayIndex=" + propertyArrayIndex + ")";
+        return "ObjectPropertyReference(objectIdentifier=" + ObjectIdentifier + ", propertyIdentifier="
+                + PropertyIdentifier + ", propertyArrayIndex=" + PropertyArrayIndex + ")";
     }
 
 }

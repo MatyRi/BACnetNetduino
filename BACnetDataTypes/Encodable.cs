@@ -18,43 +18,40 @@ namespace BACnetDataTypes
             throw new NotImplementedException();
         }
 
-        public override string ToString()
-        {
-            return "Encodable(" + GetType().Name + ")";
-        }
+        public override string ToString() => "Encodable(" + GetType().Name + ")";
 
         protected static void popTagData(ByteStream source, TagData tagData)
         {
             peekTagData(source, tagData);
-            source.pop(tagData.tagLength);
+            source.pop(tagData.TagLength);
         }
 
         protected static void peekTagData(ByteStream source, TagData tagData)
         {
             long peekIndexStart = source.Position;
             byte b = source.ReadByte();
-            tagData.tagNumber = (b & 0xff) >> 4;
-            tagData.contextSpecific = (b & 8) != 0;
-            tagData.length = (b & 7);
+            tagData.TagNumber = (b & 0xff) >> 4;
+            tagData.ContextSpecific = (b & 8) != 0;
+            tagData.Length = (b & 7);
 
-            if (tagData.tagNumber == 0xf)
+            if (tagData.TagNumber == 0xf)
                 // Extended tag.
-                tagData.tagNumber = BACnetUtils.toInt(source.ReadByte());
+                tagData.TagNumber = BACnetUtils.toInt(source.ReadByte());
 
-            if (tagData.length == 5)
+            if (tagData.Length == 5)
             {
-                tagData.length = BACnetUtils.toInt(source.ReadByte());
-                if (tagData.length == 254)
-                    tagData.length = (BACnetUtils.toInt(source.ReadByte()) << 8)
+                tagData.Length = BACnetUtils.toInt(source.ReadByte());
+                if (tagData.Length == 254)
+                    tagData.Length = (BACnetUtils.toInt(source.ReadByte()) << 8)
                             | BACnetUtils.toInt(source.ReadByte());
-                else if (tagData.length == 255)
-                    tagData.length = (BACnetUtils.toLong(source.ReadByte()) << 24)
+                else if (tagData.Length == 255)
+                    tagData.Length = (BACnetUtils.toLong(source.ReadByte()) << 24)
                             | (BACnetUtils.toLong(source.ReadByte()) << 16)
                             | (BACnetUtils.toLong(source.ReadByte()) << 8)
                             | BACnetUtils.toLong(source.ReadByte());
             }
 
-            tagData.tagLength = (int) (source.Position - peekIndexStart);
+            tagData.TagLength = (int) (source.Position - peekIndexStart);
             source.Position = peekIndexStart;
         }
 
@@ -119,7 +116,7 @@ namespace BACnetDataTypes
         protected static void popStart(ByteStream source, int contextId) //throws BACnetErrorException
         {
         if (popStart(source) != contextId)
-            throw new BACnetErrorException(ErrorClass.property, ErrorCode.missingRequiredParameter);
+            throw new BACnetErrorException(ErrorClass.Property, ErrorCode.MissingRequiredParameter);
     }
 
     //
@@ -140,7 +137,7 @@ namespace BACnetDataTypes
     {
         if (readEnd(source) != contextId)
         {
-                throw new BACnetErrorException(ErrorClass.property, ErrorCode.missingRequiredParameter);
+                throw new BACnetErrorException(ErrorClass.Property, ErrorCode.MissingRequiredParameter);
         }
         source.ReadByte();
         if (contextId > 14)
@@ -192,7 +189,7 @@ namespace BACnetDataTypes
     protected static Encodable read(ByteStream source, Type type, int contextId)
     {
         if (!matchNonEndTag(source, contextId))
-            throw new BACnetErrorException(ErrorClass.property, ErrorCode.missingRequiredParameter);
+            throw new BACnetErrorException(ErrorClass.Property, ErrorCode.MissingRequiredParameter);
 
         if (type.IsInstanceOfType(typeof (Primitive.Primitive)))
             return read(source, type);

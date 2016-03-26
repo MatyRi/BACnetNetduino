@@ -15,7 +15,7 @@ namespace BACnetServices.Service.Confirmed
             return;
         if (type == ConfirmedCovNotificationRequest.TYPE_ID && services.isConfirmedCovNotification()) // 1
             return;
-        if (type == ConfirmedEventNotificationRequest.TYPE_ID && services.isConfirmedEventNotification()) // 2
+        if (type == ConfirmedEventNotificationRequest.TYPE_ID && services.ConfirmedEventNotification()) // 2
             return;
         if (type == GetAlarmSummaryRequest.TYPE_ID && services.isGetAlarmSummary()) // 3
             return;
@@ -72,7 +72,7 @@ namespace BACnetServices.Service.Confirmed
         if (type == GetEventInformation.TYPE_ID && services.isGetEventInformation()) // 29
             return;
             */
-        throw new BACnetErrorException(ErrorClass.device, ErrorCode.serviceRequestDenied);
+        throw new BACnetErrorException(ErrorClass.Device, ErrorCode.ServiceRequestDenied);
     }
 
     public static ConfirmedRequestService createConfirmedRequestService(byte type, ByteStream queue)
@@ -139,7 +139,7 @@ namespace BACnetServices.Service.Confirmed
         if (type == GetEventInformation.TYPE_ID) // 29
             return new GetEventInformation(queue);
             */
-        throw new BACnetErrorException(ErrorClass.device, ErrorCode.serviceRequestDenied);
+        throw new BACnetErrorException(ErrorClass.Device, ErrorCode.ServiceRequestDenied);
 }
 
         public abstract AcknowledgementService handle(/*LocalDevice localDevice,*/ Address from, OctetString linkService);

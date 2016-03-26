@@ -5,25 +5,20 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 1;
 
-        protected bool value;
-
         public BBoolean(bool value)
         {
-            this.value = value;
+            this.Value = value;
         }
 
-        public bool booleanValue()
-        {
-            return value;
-        }
+        public bool Value { get; }
 
         public BBoolean(ByteStream queue)
         {
             long length = readTag(queue);
             if (contextSpecific)
-                value = queue.ReadByte() == 1;
+                Value = queue.ReadByte() == 1;
             else
-                value = length == 1;
+                Value = length == 1;
         }
 
         /*public override void writeImpl(ByteStream queue)
@@ -32,21 +27,18 @@ namespace BACnetDataTypes.Primitive
                 queue.push((byte)(value ? 1 : 0));
         }*/
 
-        protected override long getLength()
+        protected override long Length
         {
-            if (contextSpecific)
-                return 1;
-            return (byte)(value ? 1 : 0);
+            get
+            {
+                if (contextSpecific)
+                    return 1;
+                return (byte)(Value ? 1 : 0);
+            }
         }
 
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override byte TypeId => TYPE_ID;
 
-        public override string ToString()
-        {
-            return value.ToString();
-        }
+        public override string ToString() => Value.ToString();
     }
 }

@@ -86,8 +86,8 @@ namespace BACnetNetwork.NPDU
             if (destination != null)
             {
                 control.IsDestinationSpecific = true;
-                destinationNetworkAddress = (ushort) destination.NetworkNumber.intValue();
-                destinationAddress = destination.MACAddress.getBytes();
+                destinationNetworkAddress = (ushort) destination.NetworkNumber.Value;
+                destinationAddress = destination.MACAddress.Bytes;
                 if (destinationAddress != null)
                     destinationMacLyerAddressLength = (byte) destinationAddress.Length;
                 hopCount = 0xFF;
@@ -112,8 +112,8 @@ namespace BACnetNetwork.NPDU
             if (source != null)
             {
                 control.IsSourceSpecific = true;
-                sourceNetworkAddress = (ushort) source.NetworkNumber.intValue();
-                sourceAddress = source.MACAddress.getBytes();
+                sourceNetworkAddress = (ushort) source.NetworkNumber.Value;
+                sourceAddress = source.MACAddress.Bytes;
                 sourceMacLyerAddressLength = (byte) sourceAddress.Length;
             }
         }

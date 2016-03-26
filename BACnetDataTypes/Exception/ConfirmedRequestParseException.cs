@@ -2,21 +2,16 @@ namespace BACnetDataTypes.Exception
 {
     class ConfirmedRequestParseException : BACnetException
     {
-        private readonly int originalInvokeId;
-
         public ConfirmedRequestParseException(int originalInvokeId)
         {
-            this.originalInvokeId = originalInvokeId;
+            this.OriginalInvokeId = originalInvokeId;
         }
 
         public ConfirmedRequestParseException(int originalInvokeId, System.Exception cause) : base(cause)
         {
-            this.originalInvokeId = originalInvokeId;
+            this.OriginalInvokeId = originalInvokeId;
         }
 
-        public int getOriginalInvokeId()
-        {
-            return originalInvokeId;
-        }
+        public int OriginalInvokeId { get; }
     }
 }

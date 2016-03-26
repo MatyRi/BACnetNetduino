@@ -6,13 +6,11 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 2;
 
-        private uint internalValue;
-
         public UnsignedInteger(uint value)
         {
             if (value < 0)
                 throw new ArgumentException("Value cannot be less than zero");
-            internalValue = value;
+            Value = value;
         }
 
         /*public UnsignedInteger(long value)
@@ -27,10 +25,7 @@ namespace BACnetDataTypes.Primitive
             bigValue = value;
         }*/
 
-        public uint intValue()
-        {
-            return internalValue;
-        }
+        public uint Value { get; }
 
         /*public long longValue()
         {
@@ -55,7 +50,7 @@ namespace BACnetDataTypes.Primitive
             if (length < 4)
             {
                 while (length > 0)
-                    internalValue |= (uint)(queue.popU1B() & 0xff) << (--length * 8);
+                    Value |= (uint)(queue.popU1B() & 0xff) << (--length * 8);
             }
             else {
                 byte[] bytes = new byte[length + 1];
@@ -70,7 +65,7 @@ namespace BACnetDataTypes.Primitive
             if (length < 4)
             {
                 while (length > 0)
-                    internalValue |= (uint)(queue.popU1B() & 0xff) << (--length * 8);
+                    Value |= (uint)(queue.popU1B() & 0xff) << (--length * 8);
             }
             else {
                 byte[] bytes = new byte[length + 1];
@@ -84,11 +79,11 @@ namespace BACnetDataTypes.Primitive
 
         protected override void writeImpl(ByteStream queue)
             {
-                int length = (int)getLength();
+                int length = (int)Length;
                 if (bigValue == null)
                 {
                     while (length > 0)
-                        queue.WriteByte((byte) (internalValue >> (--length * 8)));
+                        queue.WriteByte((byte) (Value >> (--length * 8)));
                 }
                 else {
                     byte[] bytes = new byte[length];
@@ -103,37 +98,33 @@ namespace BACnetDataTypes.Primitive
                 }
             }
 
-        protected override long getLength()
+        protected override long Length
         {
-            //if (bigValue == null)
-            //{
+            get
+            {
+                //if (bigValue == null)
+                //{
                 int length;
-                if (internalValue < 0x100)
+                if (Value < 0x100)
                     length = 1;
-                else if (internalValue < 0x10000)
+                else if (Value < 0x10000)
                     length = 2;
-                else if (internalValue < 0x1000000)
+                else if (Value < 0x1000000)
                     length = 3;
                 else
                     length = 4;
 
                 return length;
-            //}
+                //}
 
-            //if (bigValue.intValue() == 0)
-            //    return 1;
-            //return (bigValue.bitLength() + 7) / 8;
+                //if (bigValue.intValue() == 0)
+                //    return 1;
+                //return (bigValue.bitLength() + 7) / 8;
+            }
         }
 
-    protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override byte TypeId => TYPE_ID;
 
-    public override string ToString()
-        {
-            return internalValue.ToString();
-
-        }
+        public override string ToString() => Value.ToString();
     }
 }

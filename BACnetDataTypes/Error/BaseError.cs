@@ -26,12 +26,11 @@ namespace BACnetDataTypes.Error
         }
 
         protected byte choice;
-        protected BACnetError error;
 
         public BaseError(byte choice, BACnetError error)
         {
             this.choice = choice;
-            this.error = error;
+            this.Error = error;
         }
 
         /*public override void write(ByteStream queue)
@@ -43,23 +42,20 @@ namespace BACnetDataTypes.Error
         public BaseError(byte choice, ByteStream queue) // throws BACnetException
         {
             this.choice = choice;
-            error = new BACnetError(queue);
+            Error = new BACnetError(queue);
         }
 
         public BaseError(byte choice, ByteStream queue, int contextId) // throws BACnetException
         {
             this.choice = choice;
-            error = new BACnetError(queue);
+            Error = new BACnetError(queue);
         }
 
         public override string ToString()
         {
-            return "choice=" + (choice & 0xff) + ", " + error;
+            return "choice=" + (choice & 0xff) + ", " + Error;
         }
 
-        public BACnetError getError()
-        {
-            return error;
-        }
+        public BACnetError Error { get; }
     }
 }

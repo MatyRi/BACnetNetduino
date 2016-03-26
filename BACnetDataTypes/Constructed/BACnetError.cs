@@ -5,45 +5,42 @@ namespace BACnetDataTypes.Constructed
 {
     public class BACnetError : BaseType
     {
-        private readonly ErrorClass errorClass;
-        private readonly ErrorCode errorCode;
+
+        public ErrorClass ErrorClass { get; }
+        public ErrorCode ErrorCode { get; }
 
         public BACnetError(ErrorClass errorClass, ErrorCode errorCode)
         {
-            this.errorClass = errorClass;
-            this.errorCode = errorCode;
+            this.ErrorClass = errorClass;
+            this.ErrorCode = errorCode;
         }
 
         public BACnetError(BACnetServiceException e)
         {
-            errorClass = e.ErrorClass;
-            errorCode = e.ErrorCode;
+            ErrorClass = e.ErrorClass;
+            ErrorCode = e.ErrorCode;
         }
 
         public override void write(ByteStream queue)
         {
-            write(queue, errorClass);
-            write(queue, errorCode);
+            write(queue, ErrorClass);
+            write(queue, ErrorCode);
         }
 
         public BACnetError(ByteStream queue) // throws BACnetException
         {
-            errorClass = new ErrorClass(queue);
-            errorCode = new ErrorCode(queue);
+            ErrorClass = new ErrorClass(queue);
+            ErrorCode = new ErrorCode(queue);
         }
-
-        public ErrorClass ErrorClass => errorClass;
-
-        public ErrorCode ErrorCode => errorCode;
 
         public bool equals(ErrorClass errorClass, ErrorCode errorCode)
         {
-            return this.errorClass.Equals(errorClass) && this.errorCode.Equals(errorCode);
+            return this.ErrorClass.Equals(errorClass) && this.ErrorCode.Equals(errorCode);
         }
 
         public override string ToString()
         {
-            return "errorClass=" + errorClass + ", errorCode=" + errorCode;
+            return "errorClass=" + ErrorClass + ", errorCode=" + ErrorCode;
         }
     }
 }

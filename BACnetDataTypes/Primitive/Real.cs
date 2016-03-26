@@ -4,17 +4,12 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 4;
 
-        private readonly float value;
-
         public Real(float value)
         {
-            this.value = value;
+            this.Value = value;
         }
 
-        public float floatValue()
-        {
-            return value;
-        }
+        public float Value { get; }
 
         //
         // Reading and writing
@@ -22,24 +17,14 @@ namespace BACnetDataTypes.Primitive
         public Real(ByteStream queue)
         {
             readTag(queue);
-            value = queue.ReadFloat();
+            Value = queue.ReadFloat();
         }
 
-       
-        protected override long getLength()
-        {
-            return 4;
-        }
 
-        
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override long Length => 4;
 
-        public override string ToString()
-        {
-            return value.ToString();
-        }
+        protected override byte TypeId => TYPE_ID;
+
+        public override string ToString() => Value.ToString();
     }
 }

@@ -6,30 +6,32 @@ namespace BACnetDataTypes.Constructed
     {
         private readonly System.DateTime datetime;
 
-        private readonly Date date;
-        private readonly Time time;
+
+        public Date Date { get; }
+        public Time Time { get; }
+
 
         public DateTime() : this(System.DateTime.Now) { }
 
         public DateTime(Date date, Time time)
         {
             // TODO make a DateTime ...
-            this.date = date;
-            this.time = time;
+            this.Date = date;
+            this.Time = time;
         }
 
         public DateTime(long millis)
         {
             datetime = new System.DateTime(millis);
-            date = new Date(datetime);
-            time = new Time(datetime);
+            Date = new Date(datetime);
+            Time = new Time(datetime);
         }
 
         public DateTime(System.DateTime dt)
         {
             datetime = dt;
-            date = new Date(datetime);
-            time = new Time(datetime);
+            Date = new Date(datetime);
+            Time = new Time(datetime);
         }
 
         /*public override void write(ByteStream queue)
@@ -40,21 +42,13 @@ namespace BACnetDataTypes.Constructed
 
         public DateTime(ByteStream queue)
         {
-            date = (Date) read(queue, typeof(Date));
-            time = (Time) read(queue, typeof(Time));
+            Date = (Date) read(queue, typeof(Date));
+            Time = (Time) read(queue, typeof(Time));
         }
 
-    public Date getDate()
-    {
-        return date;
-    }
 
-    public Time getTime()
-    {
-        return time;
-    }
 
-    public long getTimeMillis()
+        public long getTimeMillis()
     {
         /*GregorianCalendar gc = new GregorianCalendar(date.getCenturyYear(), date.getMonth().getId() - 1, date.getDay(),
                 time.getHour(), time.getMinute(), time.getSecond());*/

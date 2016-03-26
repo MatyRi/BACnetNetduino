@@ -5,16 +5,17 @@ namespace BACnetDataTypes.Constructed
 {
     public class Address : BaseType
     {
+
+        public OctetString MACAddress { get; }
+        public Unsigned16 NetworkNumber { get; }
+
         public static readonly ushort LOCAL_NETWORK = 0;
         public static readonly Address GLOBAL = new Address((ushort)0xFFFF, new byte[] {});
 
-        private readonly Unsigned16 networkNumber;
-        private readonly OctetString macAddress;
-
         public Address(ushort networkNumber, OctetString macAddress)
         {
-            this.networkNumber = new Unsigned16(networkNumber);
-            this.macAddress = macAddress;
+            this.NetworkNumber = new Unsigned16(networkNumber);
+            this.MACAddress = macAddress;
         }
 
         public Address(ushort networkNum, byte[] macAddress)
@@ -33,22 +34,17 @@ namespace BACnetDataTypes.Constructed
 
         public Address(uint networkNumber, byte[] ipAddress, int port)
         {
-            this.networkNumber = new Unsigned16(networkNumber);
+            this.NetworkNumber = new Unsigned16(networkNumber);
 
             byte[] ipMacAddress = new byte[ipAddress.Length + 2];
             Array.Copy(ipAddress, 0, ipMacAddress, 0, ipAddress.Length);
             ipMacAddress[ipAddress.Length] = (byte)(port >> 8);
             ipMacAddress[ipAddress.Length + 1] = (byte)port;
-            macAddress = new OctetString(ipMacAddress);
+            MACAddress = new OctetString(ipMacAddress);
         }
 
-        public OctetString MACAddress => macAddress;
 
-        public Unsigned16 NetworkNumber => networkNumber;
 
-        public bool isGlobal()
-        {
-            return networkNumber.intValue() == ushort.MaxValue;
-        }
+        public bool IsGlobal => NetworkNumber.Value== ushort.MaxValue;
     }
 }

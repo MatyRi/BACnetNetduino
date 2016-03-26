@@ -18,13 +18,10 @@ namespace BACnetDataTypes.Primitive
             ISO_8859_1 = 5
         }
 
-        private readonly Encodings encoding;
-        private readonly string value;
-
         public CharacterString(string value)
         {
-            encoding = Encodings.ANSI_X3_4;
-            this.value = value;
+            Encoding = Encodings.ANSI_X3_4;
+            this.Value = value;
         }
 
         public CharacterString(Encodings encoding, string value)
@@ -38,111 +35,94 @@ namespace BACnetDataTypes.Primitive
                 // This is an API constructor, so it doesn't need to throw checked exceptions. Convert to runtime.
                 throw new BACnetRuntimeException(e);
             }
-            this.encoding = encoding;
-            this.value = value;
+            this.Encoding = encoding;
+            this.Value = value;
         }
 
-        public Encodings getEncoding()
-        {
-            return encoding;
-        }
+        public Encodings Encoding { get; }
 
-        public string getValue()
-        {
-            return value;
-        }
+        public string Value { get; }
 
         //
         // Reading and writing
         //
         public CharacterString(ByteStream queue)
         {
-            int length = (int)readTag(queue);
+            int length = (int) readTag(queue);
 
             byte enc = queue.ReadByte();
-            encoding = Encodings.ANSI_X3_4;
+            Encoding = Encodings.ANSI_X3_4;
             validateEncoding();
 
             byte[] bytes = new byte[length - 1];
             queue.pop(bytes);
 
-            value = decode(encoding, bytes);
-          
+            Value = decode(Encoding, bytes);
         }
 
-    
-    /*public override void writeImpl(ByteStream queue)
-    {
-        queue.push(encoding);
-        queue.push(encode(encoding, value));
-    }*/
 
-    
-    protected override long getLength()
-    {
-        return encode(encoding, value).Length + 1;
-    }
-
-    
-    protected override byte getTypeId()
-    {
-        return TYPE_ID;
-    }
-
-    private static byte[] encode(Encodings encoding, string value)
-    {
-        switch (encoding)
+        /*public override void writeImpl(ByteStream queue)
         {
-            case Encodings.ISO_10646_UCS_2:
+            queue.push(encoding);
+            queue.push(encode(encoding, value));
+        }*/
+
+
+        protected override long Length => encode(Encoding, Value).Length + 1;
+
+        protected override byte TypeId => TYPE_ID;
+
+        private static byte[] encode(Encodings encoding, string value)
+        {
+            switch (encoding)
+            {
+                case Encodings.ISO_10646_UCS_2:
                 // TODO return value.getBytes("UTF-16");
-            case Encodings.ISO_8859_1:
+                case Encodings.ISO_8859_1:
                 // TODO return value.getBytes("ISO-8859-1");
                 case Encodings.ANSI_X3_4:
                 default:
-                    return Encoding.UTF8.GetBytes(value);
+                    return System.Text.Encoding.UTF8.GetBytes(value);
             }
-    }
+        }
 
-    private static string decode(Encodings encoding, byte[] bytes)
-    {
-        /*try
+        private static string decode(Encodings encoding, byte[] bytes)
+        {
+            /*try
         {*/
             switch (encoding)
             {
-
                 case Encodings.ISO_10646_UCS_2:
-                    // TODO return new string(bytes, "UTF-16");
+                // TODO return new string(bytes, "UTF-16");
                 case Encodings.ISO_8859_1:
-                    // TODO return new string(bytes, "ISO-8859-1");
+                // TODO return new string(bytes, "ISO-8859-1");
                 case Encodings.ANSI_X3_4:
                 default:
                     //AdK
                     //return new string(bytes, "UTF-8");
-                    return new string(Encoding.UTF8.GetChars(bytes));
+                    return new string(System.Text.Encoding.UTF8.GetChars(bytes));
             }
-        /*}
+            /*}
         catch (UnsupportedEncodingException e)
         {
             // Should never happen, so convert to a runtime exception.
             throw new RuntimeException(e);
         }
         return null;*/
+        }
+
+        private void validateEncoding()
+        {
+            if (Encoding != Encodings.ANSI_X3_4 && Encoding != Encodings.ISO_10646_UCS_2
+                && Encoding != Encodings.ISO_8859_1)
+                throw new BACnetErrorException(ErrorClass.Property, ErrorCode.CharacterSetNotSupported,
+                    Encoding.ToString());
+        }
+
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
-
-    private void validateEncoding()
-    {
-        if (encoding != Encodings.ANSI_X3_4 && encoding != Encodings.ISO_10646_UCS_2
-                && encoding != Encodings.ISO_8859_1)
-            throw new BACnetErrorException(ErrorClass.property, ErrorCode.characterSetNotSupported, encoding.ToString());
-    }
-
-
-
-    public override string ToString()
-    {
-        return value;
-    }
-
-}
-
 }

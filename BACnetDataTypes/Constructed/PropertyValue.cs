@@ -5,10 +5,12 @@ namespace BACnetDataTypes.Constructed
 {
     public class PropertyValue : BaseType
     {
-        private readonly PropertyIdentifier propertyIdentifier; // 0
-        private readonly UnsignedInteger propertyArrayIndex; // 1 optional
-        private Encodable value; // 2
-        private readonly UnsignedInteger priority; // 3 optional
+
+        public UnsignedInteger Priority { get; }
+        public UnsignedInteger PropertyArrayIndex { get; }
+        public PropertyIdentifier PropertyIdentifier { get; }
+        public Encodable Value { get; set; }
+
 
         public PropertyValue(PropertyIdentifier propertyIdentifier, Encodable value)
             : this(propertyIdentifier, null, value, null)
@@ -19,36 +21,12 @@ namespace BACnetDataTypes.Constructed
         public PropertyValue(PropertyIdentifier propertyIdentifier, UnsignedInteger propertyArrayIndex, Encodable value,
             UnsignedInteger priority)
         {
-            this.propertyIdentifier = propertyIdentifier;
-            this.propertyArrayIndex = propertyArrayIndex;
-            this.value = value;
-            this.priority = priority;
+            this.PropertyIdentifier = propertyIdentifier;
+            this.PropertyArrayIndex = propertyArrayIndex;
+            this.Value = value;
+            this.Priority = priority;
         }
 
-        public UnsignedInteger getPriority()
-        {
-            return priority;
-        }
-
-        public UnsignedInteger getPropertyArrayIndex()
-        {
-            return propertyArrayIndex;
-        }
-
-        public PropertyIdentifier getPropertyIdentifier()
-        {
-            return propertyIdentifier;
-        }
-
-        public Encodable getValue()
-        {
-            return value;
-        }
-
-        public void setValue(Encodable value)
-        {
-            this.value = value;
-        }
 
 
         /*public override void write(ByteStream queue)
@@ -70,9 +48,9 @@ namespace BACnetDataTypes.Constructed
 
         public override string ToString()
         {
-            return "PropertyValue(propertyIdentifier=" + propertyIdentifier + ", propertyArrayIndex=" +
-                   propertyArrayIndex
-                   + ", value=" + value + ", priority=" + priority + ")";
+            return "PropertyValue(propertyIdentifier=" + PropertyIdentifier + ", propertyArrayIndex=" +
+                   PropertyArrayIndex
+                   + ", value=" + Value + ", priority=" + Priority + ")";
         }
     }
 }

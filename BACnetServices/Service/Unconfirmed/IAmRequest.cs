@@ -34,7 +34,7 @@ namespace BACnetServices.Service.Unconfirmed
 
         public override void handle(LocalDevice localDevice, Address from, OctetString linkService)
         {
-            if (!ObjectType.device.Equals(iAmDeviceIdentifier.getObjectType()))
+            if (!ObjectType.Device.Equals(iAmDeviceIdentifier.ObjectType))
             {
                 //LOGGER.warning("Received IAm from an object that is not a device.");
                 Debug.Print("Received IAm from an object that is not a device.");
@@ -43,7 +43,7 @@ namespace BACnetServices.Service.Unconfirmed
 
             // Make sure we're not hearing from ourselves.
             uint myDoi = localDevice.Configuration.getInstanceId();
-            uint remoteDoi = iAmDeviceIdentifier.getInstanceNumber();
+            uint remoteDoi = iAmDeviceIdentifier.InstanceNumber;
             if (remoteDoi == myDoi)
             {
                 // Get my bacnet address and compare the addresses
@@ -53,15 +53,15 @@ namespace BACnetServices.Service.Unconfirmed
                         // This is a local address, so ignore.
                         return;
                     //LOGGER.warning("Another instance with my device instance ID found!");
-                    Debug.Print("Another instance with my device instance ID found! Here: " + from.MACAddress.getMacAddressDottedString());
+                    Debug.Print("Another instance with my device instance ID found! Here: " + from.MACAddress.MacAddressDottedString);
                 }
             }
 
             // Register the device in the list of known devices.
             RemoteDevice d = BACnetStack.CreateRemoteDevice(remoteDoi, from, linkService);
-            d.MaxAPDULengthAccepted = maxAPDULengthAccepted.intValue();
+            d.MaxAPDULengthAccepted = maxAPDULengthAccepted.Value;
             d.SegmentationSupported = segmentationSupported;
-            d.VendorID = vendorId.intValue();
+            d.VendorID = vendorId.Value;
 
             // Fire the appropriate event.
             // TODO localDevice.getEventHandler().fireIAmReceived(d);

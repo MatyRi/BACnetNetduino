@@ -134,17 +134,17 @@ namespace BACnetServices
                     }
                     catch (BACnetErrorException e)
                     {
-                        network.sendAPDU(address, linkService, new Error(invokeId, e.getError()), false);
+                        network.sendAPDU(address, linkService, new Error(invokeId, e.Error), false);
                     }
                     catch (BACnetRejectException e)
                     {
-                        network.sendAPDU(address, linkService, new Reject(invokeId, e.getRejectReason()), false);
+                        network.sendAPDU(address, linkService, new Reject(invokeId, e.RejectReason), false);
                     }
                     catch (BACnetException e)
                     {
                         Error error = new Error(confAPDU.getInvokeId(),
                             new BaseError((byte) 127,
-                                new BACnetError(ErrorClass.services, ErrorCode.inconsistentParameters)));
+                                new BACnetError(ErrorClass.Services, ErrorCode.InconsistentParameters)));
                         network.sendAPDU(address, linkService, error, false);
                         // TODO ExceptionDispatch.fireReceivedException(e);
                     }

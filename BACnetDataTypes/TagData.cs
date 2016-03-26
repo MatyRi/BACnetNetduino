@@ -1,35 +1,32 @@
 namespace BACnetDataTypes
 {
     public class TagData
-    { 
-        public int tagNumber;
-        public bool contextSpecific;
-        public long length;
-        public int tagLength;
+    {
+        public int TagNumber;
+        public bool ContextSpecific;
+        public long Length;
+        public int TagLength;
 
-        public int getTotalLength()
+        public int TotalLength => (int)(Length + TagLength);
+
+        public bool IsStartTag()
         {
-            return (int)(length + tagLength);
+            return ContextSpecific && ((Length & 6) == 6);
         }
 
-        public bool isStartTag()
+        public bool IsStartTag(int contextId)
         {
-            return contextSpecific && ((length & 6) == 6);
+            return IsStartTag() && TagNumber == contextId;
         }
 
-        public bool isStartTag(int contextId)
+        public bool IsEndTag()
         {
-            return isStartTag() && tagNumber == contextId;
+            return ContextSpecific && ((Length & 7) == 7);
         }
 
-        public bool isEndTag()
+        public bool IsEndTag(int contextId)
         {
-            return contextSpecific && ((length & 7) == 7);
-        }
-
-        public bool isEndTag(int contextId)
-        {
-            return isEndTag() && tagNumber == contextId;
+            return IsEndTag() && TagNumber == contextId;
         }
     }
 }

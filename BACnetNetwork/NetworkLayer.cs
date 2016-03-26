@@ -112,12 +112,12 @@ namespace BACnetNetwork
             queue.Write(apduStream);
 
             IPEndPoint isa;
-            if (recipient.isGlobal())
-                isa = LocalBroadcastAddress.MACAddress.getInetSocketAddress();
+            if (recipient.IsGlobal)
+                isa = LocalBroadcastAddress.MACAddress.InetSocketAddress;
             else if (link != null)
-                isa = link.getInetSocketAddress();
+                isa = link.InetSocketAddress;
             else
-                isa = recipient.MACAddress.getInetSocketAddress();
+                isa = recipient.MACAddress.InetSocketAddress;
 
             this.link.SendPacket(isa, queue.ReadToEnd());
         }
@@ -134,7 +134,7 @@ namespace BACnetNetwork
         protected void writeNpci(ByteStream queue, Address recipient, OctetString link, IAPDU apdu)
         {
             NPDU.NPDU npci;
-            if (recipient.isGlobal())
+            if (recipient.IsGlobal)
                 npci = new NPDU.NPDU((Address) null);
             else if (isLocal(recipient))
             {
@@ -154,7 +154,7 @@ namespace BACnetNetwork
 
         protected bool isLocal(Address recipient)
         {
-            uint nn = recipient.NetworkNumber.intValue();
+            uint nn = recipient.NetworkNumber.Value;
             return nn == Address.LOCAL_NETWORK || nn == localNetworkNumber;
         }
     }

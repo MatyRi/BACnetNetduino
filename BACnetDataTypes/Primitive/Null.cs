@@ -19,16 +19,10 @@ namespace BACnetDataTypes.Primitive
             // no op
         }*/
 
-        
-        protected override long getLength()
-        {
-            return 0;
-        }
 
-        protected override byte getTypeId()
-        {
-            return TYPE_ID;
-        }
+        protected override long Length => 0;
+
+        protected override byte TypeId => TYPE_ID;
 
         public override string ToString()
         {

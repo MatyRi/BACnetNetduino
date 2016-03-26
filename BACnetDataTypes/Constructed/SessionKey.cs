@@ -4,13 +4,13 @@ namespace BACnetDataTypes.Constructed
 {
     public class SessionKey : BaseType
     {
-        private readonly OctetString sessionKey;
-    private readonly Address peerAddress;
+        public OctetString SessionKeyValue { get; }
+        public Address PeerAddress { get; }
 
-    public SessionKey(OctetString sessionKey, Address peerAddress)
+        public SessionKey(OctetString sessionKey, Address peerAddress)
         {
-            this.sessionKey = sessionKey;
-            this.peerAddress = peerAddress;
+            this.SessionKeyValue = sessionKey;
+            this.PeerAddress = peerAddress;
         }
 
         /*public override void write(ByteStream queue)
@@ -21,18 +21,10 @@ namespace BACnetDataTypes.Constructed
 
         public SessionKey(ByteStream queue)
         {
-            sessionKey = (OctetString) read(queue, typeof(OctetString));
-           peerAddress = (Address) read(queue, typeof(Address));
+            SessionKeyValue = (OctetString) read(queue, typeof(OctetString));
+           PeerAddress = (Address) read(queue, typeof(Address));
     }
 
-    public OctetString getSessionKey()
-    {
-        return sessionKey;
-    }
 
-    public Address getPeerAddress()
-    {
-        return peerAddress;
     }
-}
 }
