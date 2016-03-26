@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>BACnetServices</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BACnetServices</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CEC7FA9E-F003-4D4A-A042-6F894C55202B}</ProjectGuid>
+    <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="APDU\Abort.cs" />
+    <Compile Include="APDU\AckAPDU.cs" />
+    <Compile Include="APDU\APDU.cs" />
+    <Compile Include="APDU\ComplexACK.cs" />
+    <Compile Include="APDU\ConfirmedRequest.cs" />
+    <Compile Include="APDU\Error.cs" />
+    <Compile Include="APDU\ISegmentable.cs" />
+    <Compile Include="APDU\Reject.cs" />
+    <Compile Include="APDU\SegmentACK.cs" />
+    <Compile Include="APDU\SimpleACK.cs" />
+    <Compile Include="APDU\UnconfirmedRequest.cs" />
+    <Compile Include="ApplicationLayer.cs" />
+    <Compile Include="BACnetStack.cs" />
+    <Compile Include="Exception\AbortAPDUException.cs" />
+    <Compile Include="Exception\ErrorAPDUException.cs" />
+    <Compile Include="Exception\RejectAPDUException.cs" />
+    <Compile Include="Exception\SegmentedMessageAbortedException.cs" />
+    <Compile Include="LocalDevice.cs" />
+    <Compile Include="Objects\BACnetObject.cs" />
+    <Compile Include="Objects\ObjectProperties.cs" />
+    <Compile Include="Objects\PropertyTypeDefinition.cs" />
+    <Compile Include="Objects\RemoteDevice.cs" />
+    <Compile Include="Objects\RemoteObject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Acknowledgement\AcknowledgementService.cs" />
+    <Compile Include="Service\Confirmed\ConfirmedRequestService.cs" />
+    <Compile Include="Service\Service.cs" />
+    <Compile Include="Service\Unconfirmed\IAmRequest.cs" />
+    <Compile Include="Service\Unconfirmed\IHaveRequest.cs" />
+    <Compile Include="Service\Unconfirmed\UnconfirmedRequestService.cs" />
+    <Compile Include="Service\Unconfirmed\WhoIsRequest.cs" />
+    <Compile Include="Service\VendorServiceKey.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native" />
+    <Reference Include="System" />
+    <Reference Include="System.IO" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BACnetDataTypes\BACnetDataTypes.csproj">
+      <Project>{21AE8FA7-11B6-4CA4-9C74-226D2123A504}</Project>
+      <Name>BACnetDataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BACnetNetwork\BACnetNetwork.csproj">
+      <Project>{614335CF-009F-4A97-88A4-B75EECABE475}</Project>
+      <Name>BACnetNetwork</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
+  <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

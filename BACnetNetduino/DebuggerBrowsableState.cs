@@ -1,7 +1,4 @@
-using System;
-using Microsoft.SPOT;
-
-namespace System.Diagnostics
+namespace BACnetNetduino
 {
     public enum DebuggerBrowsableState
     {

@@ -1,21 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <AssemblyName>BACnetNetduino</AssemblyName>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>BACnetNetduino</RootNamespace>
+    <AssemblyName>BACnetNetwork</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BACnetNetwork</RootNamespace>
     <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2284E1BD-6560-4A8F-B710-040C8591273A}</ProjectGuid>
+    <ProjectGuid>{614335CF-009F-4A97-88A4-B75EECABE475}</ProjectGuid>
     <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
     <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
-    <DeployDevice>Netduino</DeployDevice>
-    <DeployTransport>USB</DeployTransport>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,18 +33,23 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
-    <Compile Include="BitArray.cs" />
-    <Compile Include="DebuggerBrowsableState.cs" />
+    <Compile Include="BVLC\BVLC.cs" />
+    <Compile Include="BVLC\BVLCEnums.cs" />
+    <Compile Include="Enums\BVCLEnums.cs" />
+    <Compile Include="Enums\MaxApduLength.cs" />
+    <Compile Include="Enums\MaxSegments.cs" />
+    <Compile Include="IAPDU.cs" />
+    <Compile Include="LinkLayer.cs" />
+    <Compile Include="NetworkLayer.cs" />
+    <Compile Include="NPDU\MessageValidationAssertionException.cs" />
+    <Compile Include="NPDU\NLPCI.cs" />
+    <Compile Include="NPDU\NPDU.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.SPOT.Hardware" />
     <Reference Include="Microsoft.SPOT.Native" />
     <Reference Include="Microsoft.SPOT.Net" />
-    <Reference Include="SecretLabs.NETMF.Hardware.Netduino" />
     <Reference Include="System" />
     <Reference Include="System.IO" />
   </ItemGroup>
@@ -54,16 +58,7 @@
       <Project>{21AE8FA7-11B6-4CA4-9C74-226D2123A504}</Project>
       <Name>BACnetDataTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BACnetNetwork\BACnetNetwork.csproj">
-      <Project>{614335CF-009F-4A97-88A4-B75EECABE475}</Project>
-      <Name>BACnetNetwork</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BACnetServices\BACnetServices.csproj">
-      <Project>{CEC7FA9E-F003-4D4A-A042-6F894C55202B}</Project>
-      <Name>BACnetServices</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
+  <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
+  <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

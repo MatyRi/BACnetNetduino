@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>BACnetDataTypes</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BACnetDataTypes</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{21AE8FA7-11B6-4CA4-9C74-226D2123A504}</ProjectGuid>
+    <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AmbiguousValue.cs" />
+    <Compile Include="BACnetUtils.cs" />
+    <Compile Include="ByteStream.cs" />
+    <Compile Include="Constructed\Address.cs" />
+    <Compile Include="Constructed\AddressBinding.cs" />
+    <Compile Include="Constructed\BACnetError.cs" />
+    <Compile Include="Constructed\BaseType.cs" />
+    <Compile Include="Constructed\Choice.cs" />
+    <Compile Include="Constructed\CovSubscription.cs" />
+    <Compile Include="Constructed\DateTime.cs" />
+    <Compile Include="Constructed\ObjectPropertyReference.cs" />
+    <Compile Include="Constructed\ObjectTypesSupported.cs" />
+    <Compile Include="Constructed\PriorityArray.cs" />
+    <Compile Include="Constructed\PriorityValue.cs" />
+    <Compile Include="Constructed\PropertyValue.cs" />
+    <Compile Include="Constructed\Recipient.cs" />
+    <Compile Include="Constructed\RecipientProcess.cs" />
+    <Compile Include="Constructed\SequenceOf.cs" />
+    <Compile Include="Constructed\ServicesSupported.cs" />
+    <Compile Include="Constructed\SessionKey.cs" />
+    <Compile Include="Constructed\TimeStamp.cs" />
+    <Compile Include="Constructed\VtSession.cs" />
+    <Compile Include="Encodable.cs" />
+    <Compile Include="Enumerated\BackupState.cs" />
+    <Compile Include="Enumerated\BinaryPV.cs" />
+    <Compile Include="Enumerated\DeviceStatus.cs" />
+    <Compile Include="Enumerated\EnableDisable.cs" />
+    <Compile Include="Enumerated\ErrorClass.cs" />
+    <Compile Include="Enumerated\ErrorCode.cs" />
+    <Compile Include="Enumerated\ObjectType.cs" />
+    <Compile Include="Enumerated\PropertyIdentifier.cs" />
+    <Compile Include="Enumerated\RejectReason.cs" />
+    <Compile Include="Enumerated\RestartReason.cs" />
+    <Compile Include="Enumerated\Segmentation.cs" />
+    <Compile Include="Enumerated\VtClass.cs" />
+    <Compile Include="Error\BaseError.cs" />
+    <Compile Include="Error\ChangeListError.cs" />
+    <Compile Include="Error\ConfirmedPrivateTransferError.cs" />
+    <Compile Include="Error\CreateObjectError.cs" />
+    <Compile Include="Error\VTCloseError.cs" />
+    <Compile Include="Error\WritePropertyMultipleError.cs" />
+    <Compile Include="Exception\BACnetErrorException.cs" />
+    <Compile Include="Exception\BACnetException.cs" />
+    <Compile Include="Exception\BACnetRejectException.cs" />
+    <Compile Include="Exception\BACnetRuntimeException.cs" />
+    <Compile Include="Exception\BACnetServiceException.cs" />
+    <Compile Include="Exception\BACnetTimeoutException.cs" />
+    <Compile Include="Exception\ConfirmedRequestParseException.cs" />
+    <Compile Include="Exception\IllegalPduTypeException.cs" />
+    <Compile Include="Exception\PropertyValueException.cs" />
+    <Compile Include="Exception\ReflectionException.cs" />
+    <Compile Include="Primitive\BBoolean.cs" />
+    <Compile Include="Primitive\BDouble.cs" />
+    <Compile Include="Primitive\BitString.cs" />
+    <Compile Include="Primitive\CharacterString.cs" />
+    <Compile Include="Primitive\Date.cs" />
+    <Compile Include="Primitive\Enumerated.cs" />
+    <Compile Include="Primitive\Null.cs" />
+    <Compile Include="Primitive\ObjectIdentifier.cs" />
+    <Compile Include="Primitive\OctetString.cs" />
+    <Compile Include="Primitive\Primitive.cs" />
+    <Compile Include="Primitive\Real.cs" />
+    <Compile Include="Primitive\SignedInteger.cs" />
+    <Compile Include="Primitive\Time.cs" />
+    <Compile Include="Primitive\Unsigned16.cs" />
+    <Compile Include="Primitive\UnsignedInteger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceDefinition.cs" />
+    <Compile Include="TagData.cs" />
+    <Compile Include="ThreadLocalObjectTypeStack.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native" />
+    <Reference Include="System" />
+    <Reference Include="System.IO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventParameter\" />
+    <Folder Include="NotificationParameter\" />
+  </ItemGroup>
+  <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
+  <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
