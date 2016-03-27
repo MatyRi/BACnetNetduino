@@ -33,27 +33,29 @@ namespace BACnetDataTypes.Primitive
 
     public class Time : Primitive
     {
-    public static readonly byte TYPE_ID = 11;
+        public static readonly byte TYPE_ID = 11;
 
 
         public Time(int hour, int minute, int second, int hundredth)
-    {
-        this.Hour = hour;
-        this.Minute = minute;
-        this.GetSecond = second;
-        this.Hundredth = hundredth;
-    }
+        {
+            Hour = hour;
+            Minute = minute;
+            Second = second;
+            Hundredth = hundredth;
+        }
 
-    public Time() : this(DateTime.Now) { }
+        public Time() : this(DateTime.Now)
+        {
+        }
 
 
-    public Time(DateTime now)
-    {
-        Hour = now.Hour;
-        Minute = now.Minute;
-        GetSecond = now.Second;
-        Hundredth = now.Millisecond / 10;
-    }
+        public Time(DateTime now)
+        {
+            Hour = now.Hour;
+            Minute = now.Minute;
+            Second = now.Second;
+            Hundredth = now.Millisecond/10;
+        }
 
         public bool IsHourUnspecified => Hour == 255;
 
@@ -63,9 +65,9 @@ namespace BACnetDataTypes.Primitive
 
         public int Minute { get; }
 
-        public bool IsSecondUnspecified => GetSecond == 255;
+        public bool IsSecondUnspecified => Second == 255;
 
-        public int GetSecond { get; }
+        public int Second { get; }
 
         public bool IsHundredthUnspecified => Hundredth == 255;
 
@@ -76,101 +78,103 @@ namespace BACnetDataTypes.Primitive
          *            The time with which to compare this
          * @return true if this < that.
          */
+
         public bool before(Time that)
-    {
-        if (!IsHourUnspecified&& !that.IsHourUnspecified)
         {
-            if (Hour < that.Hour)
-                return true;
-            if (Hour > that.Hour)
+            if (!IsHourUnspecified && !that.IsHourUnspecified)
+            {
+                if (Hour < that.Hour)
+                    return true;
+                if (Hour > that.Hour)
+                    return false;
+            }
+
+            if (!IsMinuteUnspecified && !that.IsMinuteUnspecified)
+            {
+                if (Minute < that.Minute)
+                    return true;
+                if (Minute > that.Minute)
+                    return false;
+            }
+
+            if (!IsSecondUnspecified && !that.IsSecondUnspecified)
+            {
+                if (Second < that.Second)
+                    return true;
+                if (Second > that.Second)
+                    return false;
+            }
+
+            if (IsHundredthUnspecified || that.IsHundredthUnspecified)
                 return false;
+
+            return Hundredth < that.Hundredth;
         }
 
-        if (!IsMinuteUnspecified&& !that.IsMinuteUnspecified)
-        {
-            if (Minute < that.Minute)
-                return true;
-            if (Minute > that.Minute)
-                return false;
-        }
-
-        if (!IsSecondUnspecified&& !that.IsSecondUnspecified)
-        {
-            if (GetSecond < that.GetSecond)
-                return true;
-            if (GetSecond > that.GetSecond)
-                return false;
-        }
-
-        if (IsHundredthUnspecified|| that.IsHundredthUnspecified)
-            return false;
-
-        return Hundredth < that.Hundredth;
-    }
-
-    /**
+        /**
      * @param that
      *            The time with which to compare this
      * @return true if this >= that
      */
-    public bool after(Time that)
-    {
-        if (!IsHourUnspecified&& !that.IsHourUnspecified)
+
+        public bool after(Time that)
         {
-            if (Hour > that.Hour)
+            if (!IsHourUnspecified && !that.IsHourUnspecified)
+            {
+                if (Hour > that.Hour)
+                    return true;
+                if (Hour < that.Hour)
+                    return false;
+            }
+
+            if (!IsMinuteUnspecified && !that.IsMinuteUnspecified)
+            {
+                if (Minute > that.Minute)
+                    return true;
+                if (Minute < that.Minute)
+                    return false;
+            }
+
+            if (!IsSecondUnspecified && !that.IsSecondUnspecified)
+            {
+                if (Second > that.Second)
+                    return true;
+                if (Second < that.Second)
+                    return false;
+            }
+
+            if (IsHundredthUnspecified || that.IsHundredthUnspecified)
                 return true;
-            if (Hour < that.Hour)
-                return false;
+
+            return Hundredth >= that.Hundredth;
         }
 
-        if (!IsMinuteUnspecified&& !that.IsMinuteUnspecified)
+        //
+        // Reading and writing
+        //
+        public Time(ByteStream queue)
         {
-            if (Minute > that.Minute)
-                return true;
-            if (Minute < that.Minute)
-                return false;
+            readTag(queue);
+            Hour = queue.popU1B();
+            Minute = queue.popU1B();
+            Second = queue.popU1B();
+            Hundredth = queue.popU1B();
         }
 
-        if (!IsSecondUnspecified&& !that.IsSecondUnspecified)
+
+        protected override void WriteImpl(ByteStream queue)
         {
-            if (GetSecond > that.GetSecond)
-                return true;
-            if (GetSecond < that.GetSecond)
-                return false;
+            queue.WriteByte((byte)Hour);
+            queue.WriteByte((byte)Minute);
+            queue.WriteByte((byte)Second);
+            queue.WriteByte((byte)Hundredth);
         }
-
-        if (IsHundredthUnspecified|| that.IsHundredthUnspecified)
-            return true;
-
-        return Hundredth >= that.Hundredth;
-    }
-
-    //
-    // Reading and writing
-    //
-    public Time(ByteStream queue)
-    {
-        readTag(queue);
-        Hour = queue.popU1B();
-        Minute = queue.popU1B();
-        GetSecond = queue.popU1B();
-        Hundredth = queue.popU1B();
-    }
-
-
-        /*public override void writeImpl(ByteStream queue)
-        {
-            queue.push((byte)hour);
-            queue.push((byte)minute);
-            queue.push((byte)second);
-            queue.push((byte)hundredth);
-        }*/
 
 
         protected override long Length { get; } = 4;
 
         protected override byte TypeId => TYPE_ID;
 
-        public override string ToString() => Hour + ":" + Minute + ":" + GetSecond + "." + Hundredth;
+        public override string ToString() => Hour + ":" + Minute + ":" + Second + "." + Hundredth;
     }
 }

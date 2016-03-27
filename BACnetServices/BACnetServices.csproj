@@ -53,8 +53,6 @@
     <Compile Include="Exception\SegmentedMessageAbortedException.cs" />
     <Compile Include="LocalDevice.cs" />
     <Compile Include="Objects\BACnetObject.cs" />
-    <Compile Include="Objects\ObjectProperties.cs" />
-    <Compile Include="Objects\PropertyTypeDefinition.cs" />
     <Compile Include="Objects\RemoteDevice.cs" />
     <Compile Include="Objects\RemoteObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

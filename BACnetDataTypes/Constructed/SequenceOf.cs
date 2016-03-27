@@ -49,6 +49,12 @@ namespace BACnetDataTypes.Constructed
                 
         }
 
+        public SequenceOf(Type type)
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
+
         public Encodable Get(int indexBase1)
         {
             return (Encodable) Values[indexBase1 - 1];

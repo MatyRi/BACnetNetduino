@@ -4,12 +4,13 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 4;
 
+        public float Value { get; }
+
         public Real(float value)
         {
-            this.Value = value;
+            Value = value;
         }
 
-        public float Value { get; }
 
         //
         // Reading and writing
@@ -20,6 +21,11 @@ namespace BACnetDataTypes.Primitive
             Value = queue.ReadFloat();
         }
 
+        protected override void WriteImpl(ByteStream queue)
+        {
+            queue.WriteInt((int) Value);
+            //BACnetUtils.pushInt(queue, Float.floatToIntBits(value));
+        }
 
         protected override long Length => 4;
 

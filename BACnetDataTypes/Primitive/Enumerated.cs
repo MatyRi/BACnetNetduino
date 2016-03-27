@@ -6,16 +6,16 @@ namespace BACnetDataTypes.Primitive
 
         public Enumerated(uint value) : base(value) { }
 
-        //public Enumerated(BitArray value) : base(value) { }
+        //public Enumerated(Decimal value) : base(value) { }
 
-        public byte Value => (byte) base.Value;
+        //public virtual byte Value => (byte) base.Value;
 
-        /*public bool equals(Enumerated that)
+        public bool Equals(Enumerated that)
         {
             //AdK
             if (that == null) return false;
-            return intValue() == that.intValue();
-        }*/
+            return Value == that.Value;
+        }
 
         //
         // Reading and writing

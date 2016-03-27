@@ -21,7 +21,7 @@ namespace BACnetDataTypes.Primitive
         public CharacterString(string value)
         {
             Encoding = Encodings.ANSI_X3_4;
-            this.Value = value;
+            Value = value;
         }
 
         public CharacterString(Encodings encoding, string value)
@@ -35,8 +35,8 @@ namespace BACnetDataTypes.Primitive
                 // This is an API constructor, so it doesn't need to throw checked exceptions. Convert to runtime.
                 throw new BACnetRuntimeException(e);
             }
-            this.Encoding = encoding;
-            this.Value = value;
+            Encoding = encoding;
+            Value = value;
         }
 
         public Encodings Encoding { get; }
@@ -50,22 +50,23 @@ namespace BACnetDataTypes.Primitive
         {
             int length = (int) readTag(queue);
 
-            byte enc = queue.ReadByte();
-            Encoding = Encodings.ANSI_X3_4;
+            //byte enc = queue.ReadByte();
+            //Encoding = Encodings.ANSI_X3_4;
+            Encoding = (Encodings) queue.ReadByte();
             validateEncoding();
 
             byte[] bytes = new byte[length - 1];
-            queue.pop(bytes);
+            queue.Read(bytes);
 
             Value = decode(Encoding, bytes);
         }
 
 
-        /*public override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
-            queue.push(encoding);
-            queue.push(encode(encoding, value));
-        }*/
+            queue.WriteByte((byte) Encoding);
+            queue.Write(encode(Encoding, Value));
+        }
 
 
         protected override long Length => encode(Encoding, Value).Length + 1;
@@ -120,9 +121,6 @@ namespace BACnetDataTypes.Primitive
         }
 
 
-        public override string ToString()
-        {
-            return Value;
-        }
+        public override string ToString() => Value;
     }
 }

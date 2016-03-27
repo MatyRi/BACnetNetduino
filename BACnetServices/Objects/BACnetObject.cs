@@ -4,6 +4,7 @@ using BACnetDataTypes;
 using BACnetDataTypes.Constructed;
 using BACnetDataTypes.Enumerated;
 using BACnetDataTypes.Exception;
+using BACnetDataTypes.Objects;
 using BACnetDataTypes.Primitive;
 
 namespace BACnetServices.Objects

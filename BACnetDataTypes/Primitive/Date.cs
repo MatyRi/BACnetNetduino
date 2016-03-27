@@ -50,39 +50,40 @@ namespace BACnetDataTypes.Primitive
 
     public class Date : Primitive
     {
-    public static readonly byte TYPE_ID = 10;
+        public static readonly byte TYPE_ID = 10;
 
         public Date(int year, int month, int day, DayOfWeek dayOfWeek)
-    {
-        if (year > 1900)
-            year -= 1900;
-        else if (year == -1)
-            year = 255;
-        if (day == -1)
-            day = 255;
+        {
+            if (year > 1900)
+                year -= 1900;
+            else if (year == -1)
+                year = 255;
+            if (day == -1)
+                day = 255;
 
-        this.Year = year;
-        this.Month = month;
-        this.Day = day;
-        this.DayOfWeek = dayOfWeek;
-    }
+            Year = year;
+            Month = month;
+            Day = day;
+            DayOfWeek = dayOfWeek;
+        }
 
-    public Date() : this(DateTime.Now) { }
+        public Date() : this(DateTime.Now)
+        {
+        }
 
-    public Date(DateTime now)
-    {
-        Year = now.Year;
-        Month = now.Month;
-        Day = now.Day;
-        DayOfWeek = now.DayOfWeek;
+        public Date(DateTime now)
+        {
+            Year = now.Year;
+            Month = now.Month;
+            Day = now.Day;
+            DayOfWeek = now.DayOfWeek;
 
 
-
-        /*this.year = now.get(Calendar.YEAR) - 1900;
+            /*this.year = now.get(Calendar.YEAR) - 1900;
         this.month = Month.valueOf((byte)(now.get(Calendar.MONTH) + 1));
         this.day = now.get(Calendar.DATE);
         this.dayOfWeek = DayOfWeek.valueOf((byte)(((now.get(Calendar.DAY_OF_WEEK) + 5) % 7) + 1));*/
-    }
+        }
 
         public bool IsYearUnspecified => Year == 255;
 
@@ -104,34 +105,28 @@ namespace BACnetDataTypes.Primitive
         // Reading and writing
         //
         public Date(ByteStream queue)
-    {
-        readTag(queue);
-        Year = queue.popU1B();
-        Month = queue.popU1B();
-        Day = queue.popU1B();
-        // TODO dayOfWeek = DayOfWeek.valueOf(queue.pop());
-        DayOfWeek = DayOfWeek.Monday;
-        
-    }
-
-
-        /*public override void writeImpl(ByteStream queue)
         {
-            queue.push(year);
-            queue.push(month.getId());
-            queue.push((byte)day);
-            queue.push(dayOfWeek.getId());
-        }*/
+            readTag(queue);
+            Year = queue.popU1B();
+            Month = queue.popU1B();
+            Day = queue.popU1B();
+            // TODO dayOfWeek = DayOfWeek.valueOf(queue.pop());
+            // DayOfWeek = DayOfWeek.Monday;
+            DayOfWeek = (DayOfWeek)queue.ReadByte(); // TODO test
+        }
 
+        protected override void WriteImpl(ByteStream queue)
+        {
+            queue.WriteInt(Year);
+            queue.WriteByte((byte) Month);
+            queue.WriteByte((byte) Day);
+            queue.WriteByte((byte) DayOfWeek); // TODO test
+        }
 
         protected override long Length { get; } = 4;
 
         protected override byte TypeId => TYPE_ID;
 
-        public override string ToString()
-        {
-            return DayOfWeek + " " + Month + " " + Day + ", " + Year;
-        }
-        
+        public override string ToString() => DayOfWeek + " " + Month + " " + Day + ", " + Year;
     }
 }

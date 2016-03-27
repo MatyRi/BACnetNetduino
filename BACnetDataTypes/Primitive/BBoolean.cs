@@ -7,7 +7,7 @@ namespace BACnetDataTypes.Primitive
 
         public BBoolean(bool value)
         {
-            this.Value = value;
+            Value = value;
         }
 
         public bool Value { get; }
@@ -15,23 +15,23 @@ namespace BACnetDataTypes.Primitive
         public BBoolean(ByteStream queue)
         {
             long length = readTag(queue);
-            if (contextSpecific)
+            if (ContextSpecific)
                 Value = queue.ReadByte() == 1;
             else
                 Value = length == 1;
         }
 
-        /*public override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
-            if (contextSpecific)
-                queue.push((byte)(value ? 1 : 0));
-        }*/
+            if (ContextSpecific)
+                queue.WriteByte((byte)(Value ? 1 : 0));
+        }
 
         protected override long Length
         {
             get
             {
-                if (contextSpecific)
+                if (ContextSpecific)
                     return 1;
                 return (byte)(Value ? 1 : 0);
             }

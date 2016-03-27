@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace BACnetDataTypes
 {
-    class SequenceDefinition
+    public class SequenceDefinition
     {
         //private readonly List<ElementSpecification> elements;
 

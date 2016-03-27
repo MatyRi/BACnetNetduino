@@ -8,8 +8,6 @@ namespace BACnetServices.Objects
     public class RemoteDevice
     {
         private readonly uint instanceNumber;
-        private readonly Address address;
-        private readonly OctetString linkService;
         private uint maxAPDULengthAccepted;
         private Segmentation segmentationSupported;
         private uint vendorId;
@@ -27,24 +25,24 @@ namespace BACnetServices.Objects
         public RemoteDevice(uint instanceNumber, Address address, OctetString linkService)
         {
             this.instanceNumber = instanceNumber;
-            this.address = address;
-            this.linkService = linkService;
+            this.Address = address;
+            this.LinkService = linkService;
         }
 
         public ObjectIdentifier ObjectIdentifier => new ObjectIdentifier(ObjectType.Device, instanceNumber);
         
         public override string ToString()
         {
-            return "RemoteDevice(instanceNumber=" + instanceNumber + ", address=" + address + ", linkServiceAddress="
-                    + linkService + ")";
+            return "RemoteDevice(instanceNumber=" + instanceNumber + ", address=" + Address + ", linkServiceAddress="
+                    + LinkService + ")";
         }
 
         public string ToExtendedString()
         {
             return "RemoteDevice \n" +
                     " - instanceNumber = " + instanceNumber + ", \n" +
-                    " - address = " + address + ", \n" +
-                    " - linkServiceAddress = " + linkService + ", \n" +
+                    " - address = " + Address + ", \n" +
+                    " - linkServiceAddress = " + LinkService + ", \n" +
                     " - maxAPDULengthAccepted = " + maxAPDULengthAccepted + ", \n" +
                     " - segmentationSupported = " + segmentationSupported + ", \n" +
                     " - vendorId = " + vendorId + ", \n" +
@@ -71,9 +69,9 @@ namespace BACnetServices.Objects
             objects.Clear();
         }
 
-        public Address Address => address;
+        public Address Address { get; }
 
-        public OctetString LinkService => linkService;
+        public OctetString LinkService { get; }
 
         public uint MaxAPDULengthAccepted
         {

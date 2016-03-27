@@ -21,7 +21,7 @@ namespace BACnetDataTypes.Primitive
             }
         }
 
-        public void setAll(bool value)
+        public void SetAll(bool value)
         {
             bool[] values = Value;
             for (int i = 0; i < values.Length; i++)
@@ -41,22 +41,22 @@ namespace BACnetDataTypes.Primitive
             else {
                 byte[] data = new byte[Length];
                 queue.pop(data);
-                // TODO value = BACnetUtils.convertToBooleans(data, Length * 8 - remainder);
+                Value = BACnetUtils.convertToBooleans(data, Length * 8 - remainder);
             }
         }
 
-        /*public override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
-            if (value.Length == 0)
-                queue.push((byte)0);
+            if (Value.Length == 0)
+                queue.WriteByte((byte)0);
             else {
-                int remainder = value.Length % 8;
+                int remainder = Value.Length % 8;
                 if (remainder > 0)
                     remainder = 8 - remainder;
-                queue.push((byte)remainder);
-                queue.push(BACnetUtils.convertToBytes(value));
+                queue.WriteByte((byte)remainder);
+                queue.Write(BACnetUtils.convertToBytes(Value));
             }
-        }*/
+        }
 
 
         protected override long Length
@@ -71,9 +71,6 @@ namespace BACnetDataTypes.Primitive
 
         protected override byte TypeId => TYPE_ID;
 
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
+        public override string ToString() => Value.ToString();
     }
 }

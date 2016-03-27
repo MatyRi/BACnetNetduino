@@ -21,7 +21,7 @@ namespace BACnetServices
  */
     public class LocalDevice
     {
-        private static readonly uint VENDOR_ID = 888; // Safecontrol Vendor ID
+        private static readonly ushort VENDOR_ID = 888; // Safecontrol Vendor ID
         private static readonly string VENDOR_STRING = "MatyRi Soft";
 
         private static readonly string FIRMWARE_REVISION = "1.0.0";
@@ -71,7 +71,7 @@ namespace BACnetServices
 
                 // Set up the supported services indicators. Remove lines as services get implemented.
                 ServicesSupported servicesSupported = new ServicesSupported();
-                servicesSupported.setAll(false);
+                servicesSupported.SetAll(false);
                 servicesSupported.AcknowledgeAlarm = true;
                 servicesSupported.ConfirmedCovNotification = true;
                 servicesSupported.ConfirmedEventNotification = true;

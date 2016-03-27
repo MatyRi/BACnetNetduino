@@ -1,14 +1,13 @@
 using System;
 using System.Collections;
-using BACnetDataTypes;
 using BACnetDataTypes.Constructed;
 using BACnetDataTypes.Enumerated;
 using BACnetDataTypes.Exception;
 using BACnetDataTypes.Primitive;
 
-namespace BACnetServices.Objects
+namespace BACnetDataTypes.Objects
 {
-    class ObjectProperties
+    public class ObjectProperties
     {
 
         private ObjectProperties INSTANCE = new ObjectProperties();

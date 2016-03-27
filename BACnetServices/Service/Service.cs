@@ -12,7 +12,7 @@ namespace BACnetServices.Service
         //protected static T Read<T>(ByteStream queue, T type) where T : Address
         //{
         /*if (type == Primitive.class)
-            return (T) Primitive.createPrimitive(queue);
+            return (T) Primitive.CreatePrimitive(queue);
 
         try {
             var instance = System.Activator.CreateInstance(typeof(T), new object[] { null, null });

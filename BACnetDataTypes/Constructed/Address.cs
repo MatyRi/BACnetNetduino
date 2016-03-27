@@ -32,7 +32,7 @@ namespace BACnetDataTypes.Constructed
 
         public Address(byte[] ipAddress, int port) : this(LOCAL_NETWORK, ipAddress, port) { }
 
-        public Address(uint networkNumber, byte[] ipAddress, int port)
+        public Address(ushort networkNumber, byte[] ipAddress, int port)
         {
             this.NetworkNumber = new Unsigned16(networkNumber);
 

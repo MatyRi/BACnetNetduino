@@ -10,14 +10,16 @@ namespace BACnetDataTypes.Primitive
 
         public static readonly byte TYPE_ID = 6;
 
+        public byte[] Bytes { get; }
+
         public OctetString(byte[] value)
         {
-            this.Bytes = value;
+            Bytes = value;
         }
 
         public OctetString(string dottedString) : this(dottedString, DEFAULT_PORT) { }
 
-        public OctetString(string dottedString, int defaultPort)
+        public OctetString(string dottedString, int portArg)
         {
             dottedString = dottedString.Trim();
             int colon = dottedString.IndexOf(":");
@@ -25,7 +27,7 @@ namespace BACnetDataTypes.Primitive
             {
                 byte[] b = BACnetUtils.dottedStringToBytes(dottedString);
                 if (b.Length == 4)
-                    Bytes = toBytes(b, defaultPort);
+                    Bytes = toBytes(b, portArg);
                 else
                     Bytes = b;
             }
@@ -44,7 +46,7 @@ namespace BACnetDataTypes.Primitive
          */
         public OctetString(byte station)
         {
-            Bytes = new byte[] { station };
+            Bytes = new[] { station };
         }
 
         /**
@@ -59,8 +61,6 @@ namespace BACnetDataTypes.Primitive
         }
 
         public OctetString(IPEndPoint addr) : this(addr.Address.GetAddressBytes(), addr.Port) { }
-
-        public byte[] Bytes { get; }
 
         private static byte[] toBytes(byte[] ipAddress, int port)
         {
@@ -94,15 +94,9 @@ namespace BACnetDataTypes.Primitive
             }
         }
 
-        public string ToIpString()
-        {
-            return InetAddress.ToString();
-        }
+        public string ToIpString() => InetAddress.ToString();
 
-        public string ToIpPortString()
-        {
-            return ToIpString() + ":" + Port;
-        }
+        public string ToIpPortString() => ToIpString() + ":" + Port;
 
         public byte[] IpBytes
         {
@@ -130,23 +124,20 @@ namespace BACnetDataTypes.Primitive
         {
             int length = (int)readTag(queue);
             Bytes = new byte[length];
-            queue.pop(Bytes);
+            queue.Read(Bytes);
         }
 
 
-        /*public override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
-            queue.push(value);
-        }*/
+            queue.Write(Bytes);
+        }
 
         protected override long Length => Bytes.Length;
 
         protected override byte TypeId => TYPE_ID;
 
-        public override string ToString()
-        {
-            return InetSocketAddress.ToString();
-        }
+        public override string ToString() => InetSocketAddress.ToString();
 
         public string Description
         {

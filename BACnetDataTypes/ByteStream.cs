@@ -202,7 +202,7 @@ namespace BACnetDataTypes
             source.WriteByte((byte)(0xff & value));
         }
 
-        public void WriteLong(short value)
+        public void WriteLong(long value)
         {
             source.WriteByte((byte)(0xff & (value >> 56)));
             source.WriteByte((byte)(0xff & (value >> 48)));

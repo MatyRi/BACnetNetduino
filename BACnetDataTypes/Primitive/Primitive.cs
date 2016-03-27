@@ -6,16 +6,15 @@ namespace BACnetDataTypes.Primitive
 {
     public abstract class Primitive : Encodable
     {
-        public static Primitive createPrimitive(ByteStream queue) //throws BACnetErrorException
+        public static Primitive CreatePrimitive(ByteStream queue)
         {
             // Get the first byte. The 4 high-order bits will tell us what the data type is.
             byte type = queue.PeekFromHere(0);
             type = (byte) ((type & 0xff) >> 4);
-            return createPrimitive(type, queue);
+            return CreatePrimitive(type, queue);
         }
 
-        public static Primitive createPrimitive(ByteStream queue, int contextId, int typeId)
-            // throws BACnetErrorException
+        public static Primitive CreatePrimitive(ByteStream queue, int contextId, int typeId)
         {
             int tagNumber = peekTagNumber(queue);
 
@@ -24,10 +23,10 @@ namespace BACnetDataTypes.Primitive
             if (tagNumber != contextId)
                 return null;
 
-            return createPrimitive(typeId, queue);
+            return CreatePrimitive(typeId, queue);
         }
 
-        private static Primitive createPrimitive(int typeId, ByteStream queue) // throws BACnetErrorException
+        private static Primitive CreatePrimitive(int typeId, ByteStream queue)
         {
             if (typeId == Null.TYPE_ID)
                 return new Null(queue);
@@ -59,36 +58,33 @@ namespace BACnetDataTypes.Primitive
             throw new BACnetErrorException(ErrorClass.Property, ErrorCode.InvalidParameterDataType);
         }
 
-/**
- * This field is maintained specifically for boolean types, since their encoding differs depending on whether the
- * type is context specific or not.
- */
-        protected bool contextSpecific;
+        /**
+         * This field is maintained specifically for boolean types, since their encoding differs depending on whether the
+         * type is context specific or not.
+         */
+        protected bool ContextSpecific;
 
         public override void write(ByteStream queue)
         {
             writeTag(queue, TypeId, false, Length);
-            writeImpl(queue);
+            WriteImpl(queue);
         }
 
         public override void write(ByteStream queue, int contextId)
         {
-            contextSpecific = true;
+            ContextSpecific = true;
             writeTag(queue, contextId, true, Length);
-            writeImpl(queue);
+            WriteImpl(queue);
         }
 
-        public void writeEncodable(ByteStream queue, int contextId)
+        public void WriteEncodable(ByteStream queue, int contextId)
         {
             writeContextTag(queue, contextId, true);
             write(queue);
             writeContextTag(queue, contextId, false);
         }
 
-        protected virtual void writeImpl(ByteStream queue)
-        {
-            throw new NotImplementedException();
-        }
+        protected abstract void WriteImpl(ByteStream queue);
 
         protected abstract long Length { get; }
 
@@ -142,7 +138,7 @@ namespace BACnetDataTypes.Primitive
         {
             byte b = queue.ReadByte();
             int tagNumber = (b & 0xff) >> 4;
-            contextSpecific = (b & 8) != 0;
+            ContextSpecific = (b & 8) != 0;
             long length = (b & 7);
 
             if (tagNumber == 0xf)

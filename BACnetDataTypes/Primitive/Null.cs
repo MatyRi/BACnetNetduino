@@ -14,19 +14,16 @@ namespace BACnetDataTypes.Primitive
             readTag(queue);
         }
 
-        /*public override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
             // no op
-        }*/
+        }
 
 
         protected override long Length => 0;
 
         protected override byte TypeId => TYPE_ID;
 
-        public override string ToString()
-        {
-            return "Null";
-        }
+        public override string ToString() => "Null";
     }
 }

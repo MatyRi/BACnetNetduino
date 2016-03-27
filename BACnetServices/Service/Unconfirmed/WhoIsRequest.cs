@@ -8,8 +8,8 @@ namespace BACnetServices.Service.Unconfirmed
     {
         public static readonly byte TYPE_ID = 8;
 
-        private UnsignedInteger deviceInstanceRangeLowLimit;
-        private UnsignedInteger deviceInstanceRangeHighLimit;
+        public UnsignedInteger DeviceInstanceRangeLowLimit { get; }
+        public UnsignedInteger DeviceInstanceRangeHighLimit { get; }
 
         public WhoIsRequest()
         {
@@ -18,8 +18,8 @@ namespace BACnetServices.Service.Unconfirmed
 
         public WhoIsRequest(UnsignedInteger deviceInstanceRangeLowLimit, UnsignedInteger deviceInstanceRangeHighLimit)
         {
-            this.deviceInstanceRangeLowLimit = deviceInstanceRangeLowLimit;
-            this.deviceInstanceRangeHighLimit = deviceInstanceRangeHighLimit;
+            DeviceInstanceRangeLowLimit = deviceInstanceRangeLowLimit;
+            DeviceInstanceRangeHighLimit = deviceInstanceRangeHighLimit;
         }
 
         
@@ -79,11 +79,10 @@ namespace BACnetServices.Service.Unconfirmed
 
         internal WhoIsRequest(ByteStream queue)
         {
-            //ASN1.DecodeInteger(new byte[] {0x00, 0x01});
-            deviceInstanceRangeLowLimit = new UnsignedInteger(queue, 0);
-            deviceInstanceRangeHighLimit = new UnsignedInteger(queue, 1);
-            //deviceInstanceRangeLowLimit = readOptional(queue, UnsignedInteger.class, 0);
-            //deviceInstanceRangeHighLimit = readOptional(queue, UnsignedInteger.class, 1);
+            //deviceInstanceRangeLowLimit = new UnsignedInteger(queue, 0);
+            //deviceInstanceRangeHighLimit = new UnsignedInteger(queue, 1);
+            DeviceInstanceRangeLowLimit = (UnsignedInteger) readOptional(queue, typeof(UnsignedInteger), 0);
+            DeviceInstanceRangeHighLimit = (UnsignedInteger) readOptional(queue, typeof(UnsignedInteger), 1);
         }
     }
 }

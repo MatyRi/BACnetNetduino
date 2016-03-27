@@ -6,7 +6,7 @@ namespace BACnetDataTypes.Primitive
 
         public BDouble(double value)
         {
-            this.Value = value;
+            Value = value;
         }
 
         public double Value { get; }
@@ -20,21 +20,16 @@ namespace BACnetDataTypes.Primitive
             Value = queue.ReadDouble();
         }
 
-
-        /*public override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
-            BACnetUtils.pushLong(queue, java.lang.Double.doubleToLongBits(value));
-        }*/
-
+            // TODO java.lang.Double.doubleToLongBits(value)
+            queue.WriteLong((long) Value);
+        }
 
         protected override long Length { get; } = 8;
 
         protected override byte TypeId => TYPE_ID;
 
-
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
+        public override string ToString() => Value.ToString();
     }
 }

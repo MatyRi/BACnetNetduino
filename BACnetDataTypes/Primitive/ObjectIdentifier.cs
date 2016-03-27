@@ -17,18 +17,15 @@ namespace BACnetDataTypes.Primitive
             if (instanceNumber < 0 || instanceNumber > 0x3FFFFF)
                 throw new ArgumentException("Illegal instance number: " + instanceNumber);
 
-            this.ObjectType = objectType;
-            this.InstanceNumber = instanceNumber;
+            ObjectType = objectType;
+            InstanceNumber = instanceNumber;
         }
 
         public ObjectType ObjectType { get; private set; }
 
         public uint InstanceNumber { get; private set; }
 
-        public override string ToString()
-        {
-            return ObjectType.ToString() + " " + InstanceNumber;
-        }
+        public override string ToString() => ObjectType + " " + InstanceNumber;
 
         //
         // Reading and writing
@@ -41,16 +38,16 @@ namespace BACnetDataTypes.Primitive
             uint i = queue.popU1B();
             objectType |= i >> 6;
 
-            this.ObjectType = new ObjectType(objectType);
+            ObjectType = new ObjectType(objectType);
 
             InstanceNumber = (i & 0x3f) << 16;
             InstanceNumber |= (uint)queue.popU1B() << 8;
             InstanceNumber |= queue.popU1B();
         }
 
-        protected override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
-            uint objectType = ((UnsignedInteger) this.ObjectType).Value;
+            uint objectType = ObjectType.Value;
             queue.WriteByte((byte) (objectType >> 2));
             queue.WriteByte((byte) (((objectType & 3) << 6) | (InstanceNumber >> 16)));
             queue.WriteByte((byte) (InstanceNumber >> 8));

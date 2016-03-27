@@ -37,6 +37,7 @@
     <Compile Include="AmbiguousValue.cs" />
     <Compile Include="BACnetUtils.cs" />
     <Compile Include="ByteStream.cs" />
+    <Compile Include="Constructed\AccumulatorRecord.cs" />
     <Compile Include="Constructed\Address.cs" />
     <Compile Include="Constructed\AddressBinding.cs" />
     <Compile Include="Constructed\BACnetError.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Constructed\PropertyValue.cs" />
     <Compile Include="Constructed\Recipient.cs" />
     <Compile Include="Constructed\RecipientProcess.cs" />
+    <Compile Include="Constructed\Sequence.cs" />
     <Compile Include="Constructed\SequenceOf.cs" />
     <Compile Include="Constructed\ServicesSupported.cs" />
     <Compile Include="Constructed\SessionKey.cs" />
@@ -85,6 +87,8 @@
     <Compile Include="Exception\IllegalPduTypeException.cs" />
     <Compile Include="Exception\PropertyValueException.cs" />
     <Compile Include="Exception\ReflectionException.cs" />
+    <Compile Include="Objects\ObjectProperties.cs" />
+    <Compile Include="Objects\PropertyTypeDefinition.cs" />
     <Compile Include="Primitive\BBoolean.cs" />
     <Compile Include="Primitive\BDouble.cs" />
     <Compile Include="Primitive\BitString.cs" />
@@ -99,11 +103,14 @@
     <Compile Include="Primitive\SignedInteger.cs" />
     <Compile Include="Primitive\Time.cs" />
     <Compile Include="Primitive\Unsigned16.cs" />
+    <Compile Include="Primitive\Unsigned32.cs" />
+    <Compile Include="Primitive\Unsigned8.cs" />
     <Compile Include="Primitive\UnsignedInteger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDefinition.cs" />
     <Compile Include="TagData.cs" />
     <Compile Include="ThreadLocalObjectTypeStack.cs" />
+    <Compile Include="VendorServiceKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SPOT.Native" />

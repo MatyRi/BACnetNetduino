@@ -1,11 +1,10 @@
 using System;
-using BACnetDataTypes;
 using BACnetDataTypes.Constructed;
 using BACnetDataTypes.Enumerated;
 
-namespace BACnetServices.Objects
+namespace BACnetDataTypes.Objects
 {
-    internal class PropertyTypeDefinition
+    public class PropertyTypeDefinition
     {
         private readonly ObjectType objectType;
         private readonly PropertyIdentifier propertyIdentifier;

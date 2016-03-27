@@ -6,12 +6,12 @@ namespace BACnetDataTypes.Primitive
     {
         public static readonly byte TYPE_ID = 3;
 
+        public int Value { get; }
+
         public SignedInteger(int value)
         {
             Value = value;
         }
-
-        public int Value { get; }
 
         //
         // Reading and writing
@@ -22,7 +22,7 @@ namespace BACnetDataTypes.Primitive
             int length = (int)readTag(queue);
 
             byte[] bytes = new byte[length];
-            queue.pop(bytes);
+            queue.Read(bytes);
 
             if (length < 5)
                 Value = BitConverter.ToInt32(bytes, 0);
@@ -30,17 +30,17 @@ namespace BACnetDataTypes.Primitive
                 throw new NotImplementedException();
         }
 
-        /*public override void writeImpl(ByteStream queue)
+        protected override void WriteImpl(ByteStream queue)
         {
-            if (bigValue == null)
-            {
-                long length = getLength();
-                while (length > 0)
-                    queue.push(internalValue >> (--length * 8));
-            }
-            else
-                queue.push(bigValue.toByteArray());
-        }*/
+            //if (bigValue == null)
+            //{
+            long length = Length;
+            while (length > 0)
+                queue.WriteByte((byte) (Value >> (int) (--length * 8)));
+            //}
+            //else
+            //    queue.push(bigValue.toByteArray());
+        }
 
         protected override long Length
         {

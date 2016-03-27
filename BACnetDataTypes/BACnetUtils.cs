@@ -36,5 +36,24 @@ namespace BACnetDataTypes
             }
             return sb.ToString();
         }
+
+        public static bool[] convertToBooleans(byte[] data, int length)
+        {
+            bool[] bdata = new bool[length];
+            for (int i = 0; i < bdata.Length; i++)
+                bdata[i] = ((data[i / 8] >> (7 - (i % 8))) & 0x1) == 1;
+            return bdata;
+        }
+
+        public static byte[] convertToBytes(bool[] bdata)
+        {
+            int byteCount = (bdata.Length + 7) / 8;
+            byte[] data = new byte[byteCount];
+            for (int i = 0; i < bdata.Length; i++)
+            {
+                data[i / 8] |= (byte)((bdata[i] ? 1 : 0) << (7 - (i % 8)));
+            }   
+            return data;
+        }
     }
 }
