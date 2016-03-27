@@ -45,10 +45,12 @@
     <Compile Include="Constructed\Choice.cs" />
     <Compile Include="Constructed\CovSubscription.cs" />
     <Compile Include="Constructed\DateTime.cs" />
+    <Compile Include="Constructed\DeviceObjectPropertyReference.cs" />
     <Compile Include="Constructed\ObjectPropertyReference.cs" />
     <Compile Include="Constructed\ObjectTypesSupported.cs" />
     <Compile Include="Constructed\PriorityArray.cs" />
     <Compile Include="Constructed\PriorityValue.cs" />
+    <Compile Include="Constructed\PropertyStates.cs" />
     <Compile Include="Constructed\PropertyValue.cs" />
     <Compile Include="Constructed\Recipient.cs" />
     <Compile Include="Constructed\RecipientProcess.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Constructed\SequenceOf.cs" />
     <Compile Include="Constructed\ServicesSupported.cs" />
     <Compile Include="Constructed\SessionKey.cs" />
+    <Compile Include="Constructed\StatusFlags.cs" />
     <Compile Include="Constructed\TimeStamp.cs" />
     <Compile Include="Constructed\VtSession.cs" />
     <Compile Include="Encodable.cs" />
@@ -65,6 +68,9 @@
     <Compile Include="Enumerated\EnableDisable.cs" />
     <Compile Include="Enumerated\ErrorClass.cs" />
     <Compile Include="Enumerated\ErrorCode.cs" />
+    <Compile Include="Enumerated\LifeSafetyMode.cs" />
+    <Compile Include="Enumerated\LifeSafetyOperation.cs" />
+    <Compile Include="Enumerated\LifeSafetyState.cs" />
     <Compile Include="Enumerated\ObjectType.cs" />
     <Compile Include="Enumerated\PropertyIdentifier.cs" />
     <Compile Include="Enumerated\RejectReason.cs" />
@@ -87,6 +93,18 @@
     <Compile Include="Exception\IllegalPduTypeException.cs" />
     <Compile Include="Exception\PropertyValueException.cs" />
     <Compile Include="Exception\ReflectionException.cs" />
+    <Compile Include="NotificationParameter\BufferReady.cs" />
+    <Compile Include="NotificationParameter\ChangeOfBitString.cs" />
+    <Compile Include="NotificationParameter\ChangeOfLifeSafety.cs" />
+    <Compile Include="NotificationParameter\ChangeOfState.cs" />
+    <Compile Include="NotificationParameter\ChangeOfValue.cs" />
+    <Compile Include="NotificationParameter\CommandFailure.cs" />
+    <Compile Include="NotificationParameter\ComplexEventType.cs" />
+    <Compile Include="NotificationParameter\Extended.cs" />
+    <Compile Include="NotificationParameter\FloatingLimit.cs" />
+    <Compile Include="NotificationParameter\NotificationParameters.cs" />
+    <Compile Include="NotificationParameter\OutOfRange.cs" />
+    <Compile Include="NotificationParameter\UnsignedRange.cs" />
     <Compile Include="Objects\ObjectProperties.cs" />
     <Compile Include="Objects\PropertyTypeDefinition.cs" />
     <Compile Include="Primitive\BBoolean.cs" />
@@ -119,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EventParameter\" />
-    <Folder Include="NotificationParameter\" />
   </ItemGroup>
   <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

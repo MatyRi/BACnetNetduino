@@ -1,6 +1,6 @@
 namespace BACnetDataTypes.Primitive
 {
-    class BDouble : Primitive
+    public class BDouble : Primitive
     {
         public static readonly byte TYPE_ID = 5;
 

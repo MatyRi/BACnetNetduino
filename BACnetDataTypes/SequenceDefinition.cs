@@ -16,7 +16,7 @@ namespace BACnetDataTypes
 
         public SequenceDefinition(IList elements)
         {
-            this.Elements = elements;
+            Elements = elements;
         }
 
         public IList Elements { get; }
@@ -25,20 +25,20 @@ namespace BACnetDataTypes
         {
             public ElementSpecification(string id, Type type, bool sequenceOf, bool optional)
             {
-                this.Id = id;
-                this.Type = type;
+                Id = id;
+                Type = type;
                 ContextId = -1;
-                this.IsSequenceOf = sequenceOf;
-                this.IsOptional = optional;
+                IsSequenceOf = sequenceOf;
+                IsOptional = optional;
             }
 
             public ElementSpecification(string id, Type type, int contextId, bool sequenceOf, bool optional)
             {
-                this.Id = id;
-                this.Type = type;
-                this.ContextId = contextId;
-                this.IsSequenceOf = sequenceOf;
-                this.IsOptional = optional;
+                Id = id;
+                Type = type;
+                ContextId = contextId;
+                IsSequenceOf = sequenceOf;
+                IsOptional = optional;
             }
 
             public string Id { get; }

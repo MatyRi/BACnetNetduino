@@ -33,15 +33,15 @@ namespace BACnetDataTypes.Primitive
         //
         public BitString(ByteStream queue)
         {
-            int Length = (int)readTag(queue) - 1;
+            int length = (int)readTag(queue) - 1;
             int remainder = queue.popU1B();
 
-            if (Length == 0)
+            if (length == 0)
                 Value = new bool[0];
             else {
-                byte[] data = new byte[Length];
-                queue.pop(data);
-                Value = BACnetUtils.convertToBooleans(data, Length * 8 - remainder);
+                byte[] data = new byte[length];
+                queue.Read(data);
+                Value = BACnetUtils.convertToBooleans(data, length * 8 - remainder);
             }
         }
 
