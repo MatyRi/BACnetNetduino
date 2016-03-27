@@ -9,8 +9,8 @@ namespace BACnetDataTypes.Constructed
 
         public AddressBinding(ObjectIdentifier deviceObjectIdentifier, Address deviceAddress)
         {
-            this.DeviceObjectIdentifier = deviceObjectIdentifier;
-            this.DeviceAddress = deviceAddress;
+            DeviceObjectIdentifier = deviceObjectIdentifier;
+            DeviceAddress = deviceAddress;
         }
 
         public override void write(ByteStream queue)

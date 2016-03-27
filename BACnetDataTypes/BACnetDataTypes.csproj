@@ -38,6 +38,8 @@
     <Compile Include="BACnetUtils.cs" />
     <Compile Include="ByteStream.cs" />
     <Compile Include="Constructed\AccumulatorRecord.cs" />
+    <Compile Include="Constructed\ActionCommand.cs" />
+    <Compile Include="Constructed\ActionList.cs" />
     <Compile Include="Constructed\Address.cs" />
     <Compile Include="Constructed\AddressBinding.cs" />
     <Compile Include="Constructed\BACnetError.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Exception\IllegalPduTypeException.cs" />
     <Compile Include="Exception\PropertyValueException.cs" />
     <Compile Include="Exception\ReflectionException.cs" />
+    <Compile Include="InetAddrCache.cs" />
     <Compile Include="NotificationParameter\BufferReady.cs" />
     <Compile Include="NotificationParameter\ChangeOfBitString.cs" />
     <Compile Include="NotificationParameter\ChangeOfLifeSafety.cs" />

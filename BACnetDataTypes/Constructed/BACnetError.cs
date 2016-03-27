@@ -11,8 +11,8 @@ namespace BACnetDataTypes.Constructed
 
         public BACnetError(ErrorClass errorClass, ErrorCode errorCode)
         {
-            this.ErrorClass = errorClass;
-            this.ErrorCode = errorCode;
+            ErrorClass = errorClass;
+            ErrorCode = errorCode;
         }
 
         public BACnetError(BACnetServiceException e)
@@ -27,7 +27,7 @@ namespace BACnetDataTypes.Constructed
             write(queue, ErrorCode);
         }
 
-        public BACnetError(ByteStream queue) // throws BACnetException
+        public BACnetError(ByteStream queue)
         {
             ErrorClass = new ErrorClass(queue);
             ErrorCode = new ErrorCode(queue);
@@ -35,12 +35,9 @@ namespace BACnetDataTypes.Constructed
 
         public bool equals(ErrorClass errorClass, ErrorCode errorCode)
         {
-            return this.ErrorClass.Equals(errorClass) && this.ErrorCode.Equals(errorCode);
+            return ErrorClass.Equals(errorClass) && ErrorCode.Equals(errorCode);
         }
 
-        public override string ToString()
-        {
-            return "errorClass=" + ErrorClass + ", errorCode=" + ErrorCode;
-        }
+        public override string ToString() => "errorClass=" + ErrorClass + ", errorCode=" + ErrorCode;
     }
 }

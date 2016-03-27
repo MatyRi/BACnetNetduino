@@ -5,24 +5,23 @@ namespace BACnetDataTypes.Constructed
 {
     class Choice : BaseType
     {
-
         public int ContextId { get; }
         public Encodable Data { get; }
 
         public Choice(int contextId, Encodable data)
         {
-            this.ContextId = contextId;
-            this.Data = data;
+            ContextId = contextId;
+            Data = data;
         }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            write(queue, Data, contextId);
-        }*/
+            write(queue, Data, ContextId);
+        }
 
         public Choice(ByteStream queue, IList types)
         {
-            Choice c = (Choice) read(queue, types);
+            Choice c = read(queue, types);
             ContextId = c.ContextId;
             Data = c.Data;
         }
@@ -32,7 +31,7 @@ namespace BACnetDataTypes.Constructed
             popStart(queue, contextId);
             Choice c = read(queue, types);
             popEnd(queue, contextId);
-            this.ContextId = c.ContextId;
+            ContextId = c.ContextId;
             Data = c.Data;
         }
 
@@ -42,5 +41,7 @@ namespace BACnetDataTypes.Constructed
             Encodable tDatum = read(queue, (Type) types[tContextId], tContextId);
             return new Choice(tContextId, tDatum);
         }
+
+        public override string ToString() => Data.ToString();
     }
 }
