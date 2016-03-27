@@ -4,35 +4,32 @@ namespace BACnetDataTypes.Exception
 {
     public class BACnetServiceException : System.Exception
     {
-        private readonly ErrorClass errorClass;
-        private readonly ErrorCode errorCode;
-
         public BACnetServiceException(ErrorClass errorClass, ErrorCode errorCode)
         {
-            this.errorClass = errorClass;
-            this.errorCode = errorCode;
+            ErrorClass = errorClass;
+            ErrorCode = errorCode;
         }
 
         public BACnetServiceException(ErrorClass errorClass, ErrorCode errorCode, string message) : base(message)
         {
-            this.errorClass = errorClass;
-            this.errorCode = errorCode;
+            ErrorClass = errorClass;
+            ErrorCode = errorCode;
         }
 
-        public ErrorClass ErrorClass => errorClass;
+        public ErrorClass ErrorClass { get; }
 
-        public ErrorCode ErrorCode => errorCode;
+        public ErrorCode ErrorCode { get; }
 
         public bool equals(ErrorClass errorClass, ErrorCode errorCode)
         {
-            return this.errorClass.Equals(errorClass) && this.errorCode.Equals(errorCode);
+            return ErrorClass.Equals(errorClass) && ErrorCode.Equals(errorCode);
         }
 
         public override string Message
         {
             get
             {
-                string message = "class=" + errorClass + ", code=" + errorCode;
+                string message = "class=" + ErrorClass + ", code=" + ErrorCode;
                 string userDesc = base.Message;
                 if (userDesc != null)
                     message += ", message=" + userDesc;

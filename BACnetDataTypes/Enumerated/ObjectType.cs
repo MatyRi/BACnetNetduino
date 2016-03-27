@@ -1,5 +1,3 @@
-using BACnetDataTypes.Primitive;
-
 namespace BACnetDataTypes.Enumerated
 {
     public class ObjectType : Primitive.Enumerated
@@ -65,80 +63,87 @@ namespace BACnetDataTypes.Enumerated
         public static readonly ObjectType BinaryLightingOutput = new ObjectType(55);
         public static readonly ObjectType NetworkPort = new ObjectType(56);
 
-        public static readonly ObjectType[] All = { AnalogInput, AnalogOutput, AnalogValue, BinaryInput, BinaryOutput,
+        public static readonly ObjectType[] All =
+        {
+            AnalogInput, AnalogOutput, AnalogValue, BinaryInput, BinaryOutput,
             BinaryValue, Calendar, Command, Device, EventEnrollment, File, Group, Loop, MultiStateInput,
             MultiStateOutput, NotificationClass, Program, Schedule, Averaging, MultiStateValue, TrendLog,
             LifeSafetyPoint, LifeSafetyZone, Accumulator, PulseConverter, EventLog, TrendLogMultiple, LoadControl,
-            StructuredView, AccessDoor, };
+            StructuredView, AccessDoor
+        };
 
-    public ObjectType(uint value) : base(value) { }
+        public ObjectType(uint value) : base(value)
+        {
+        }
 
-    public ObjectType(ByteStream queue) : base(queue) { }
+        public ObjectType(ByteStream queue) : base(queue)
+        {
+        }
 
-    public override string ToString()
-    {
-        uint type = ((UnsignedInteger) this).Value;
-        if (type == ((UnsignedInteger) AnalogInput).Value)
-            return "Analog Input";
-        if (type == ((UnsignedInteger) AnalogOutput).Value)
-            return "Analog Output";
-        if (type == ((UnsignedInteger) AnalogValue).Value)
-            return "Analog Value";
-        if (type == ((UnsignedInteger) BinaryInput).Value)
-            return "Binary Input";
-        if (type == ((UnsignedInteger) BinaryOutput).Value)
-            return "Binary Output";
-        if (type == ((UnsignedInteger) BinaryValue).Value)
-            return "Binary Value";
-        if (type == ((UnsignedInteger) Calendar).Value)
-            return "Calendar";
-        if (type == ((UnsignedInteger) Command).Value)
-            return "Command";
-        if (type == ((UnsignedInteger) Device).Value)
-            return "Device";
-        if (type == ((UnsignedInteger) EventEnrollment).Value)
-            return "Event Enrollment";
-        if (type == ((UnsignedInteger) File).Value)
-            return "File";
-        if (type == ((UnsignedInteger) Group).Value)
-            return "Group";
-        if (type == ((UnsignedInteger) Loop).Value)
-            return "Loop";
-        if (type == ((UnsignedInteger) MultiStateInput).Value)
-            return "Multi-state Input";
-        if (type == ((UnsignedInteger) MultiStateOutput).Value)
-            return "Multi-state Output";
-        if (type == ((UnsignedInteger) NotificationClass).Value)
-            return "Notification Class";
-        if (type == ((UnsignedInteger) Program).Value)
-            return "Program";
-        if (type == ((UnsignedInteger) Schedule).Value)
-            return "Schedule";
-        if (type == ((UnsignedInteger) Averaging).Value)
-            return "Averaging";
-        if (type == ((UnsignedInteger) MultiStateValue).Value)
-            return "Multi-state Value";
-        if (type == ((UnsignedInteger) TrendLog).Value)
-            return "Trend Log";
-        if (type == ((UnsignedInteger) LifeSafetyPoint).Value)
-            return "Life Safety Point";
-        if (type == ((UnsignedInteger) LifeSafetyZone).Value)
-            return "Life Safety Zone";
-        if (type == ((UnsignedInteger) Accumulator).Value)
-            return "Accumulator";
-        if (type == ((UnsignedInteger) PulseConverter).Value)
-            return "Pulse Converter";
-        if (type == ((UnsignedInteger) EventLog).Value)
-            return "Event Log";
-        if (type == ((UnsignedInteger) TrendLogMultiple).Value)
-            return "Trend Log Multiple";
-        if (type == ((UnsignedInteger) LoadControl).Value)
-            return "Load Control";
-        if (type == ((UnsignedInteger) StructuredView).Value)
-            return "Structured View";
-        if (type == ((UnsignedInteger) AccessDoor).Value)
-            return "Access Door";
-        return "Vendor Specific (" + type + ")";
+        public override string ToString()
+        {
+            uint type = Value;
+            if (type == AnalogInput.Value)
+                return "Analog Input";
+            if (type == AnalogOutput.Value)
+                return "Analog Output";
+            if (type == AnalogValue.Value)
+                return "Analog Value";
+            if (type == BinaryInput.Value)
+                return "Binary Input";
+            if (type == BinaryOutput.Value)
+                return "Binary Output";
+            if (type == BinaryValue.Value)
+                return "Binary Value";
+            if (type == Calendar.Value)
+                return "Calendar";
+            if (type == Command.Value)
+                return "Command";
+            if (type == Device.Value)
+                return "Device";
+            if (type == EventEnrollment.Value)
+                return "Event Enrollment";
+            if (type == File.Value)
+                return "File";
+            if (type == Group.Value)
+                return "Group";
+            if (type == Loop.Value)
+                return "Loop";
+            if (type == MultiStateInput.Value)
+                return "Multi-state Input";
+            if (type == MultiStateOutput.Value)
+                return "Multi-state Output";
+            if (type == NotificationClass.Value)
+                return "Notification Class";
+            if (type == Program.Value)
+                return "Program";
+            if (type == Schedule.Value)
+                return "Schedule";
+            if (type == Averaging.Value)
+                return "Averaging";
+            if (type == MultiStateValue.Value)
+                return "Multi-state Value";
+            if (type == TrendLog.Value)
+                return "Trend Log";
+            if (type == LifeSafetyPoint.Value)
+                return "Life Safety Point";
+            if (type == LifeSafetyZone.Value)
+                return "Life Safety Zone";
+            if (type == Accumulator.Value)
+                return "Accumulator";
+            if (type == PulseConverter.Value)
+                return "Pulse Converter";
+            if (type == EventLog.Value)
+                return "Event Log";
+            if (type == TrendLogMultiple.Value)
+                return "Trend Log Multiple";
+            if (type == LoadControl.Value)
+                return "Load Control";
+            if (type == StructuredView.Value)
+                return "Structured View";
+            if (type == AccessDoor.Value)
+                return "Access Door";
+            return "Vendor Specific (" + type + ")";
+        }
     }
 }
-    }

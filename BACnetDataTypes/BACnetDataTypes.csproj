@@ -62,20 +62,43 @@
     <Compile Include="Constructed\TimeStamp.cs" />
     <Compile Include="Constructed\VtSession.cs" />
     <Compile Include="Encodable.cs" />
+    <Compile Include="Enumerated\AbortReason.cs" />
+    <Compile Include="Enumerated\Action.cs" />
     <Compile Include="Enumerated\BackupState.cs" />
     <Compile Include="Enumerated\BinaryPV.cs" />
     <Compile Include="Enumerated\DeviceStatus.cs" />
+    <Compile Include="Enumerated\DoorAlarmState.cs" />
+    <Compile Include="Enumerated\DoorSecuredStatus.cs" />
+    <Compile Include="Enumerated\DoorStatus.cs" />
+    <Compile Include="Enumerated\DoorValue.cs" />
     <Compile Include="Enumerated\EnableDisable.cs" />
+    <Compile Include="Enumerated\EngineeringUnits.cs" />
     <Compile Include="Enumerated\ErrorClass.cs" />
     <Compile Include="Enumerated\ErrorCode.cs" />
+    <Compile Include="Enumerated\EventState.cs" />
+    <Compile Include="Enumerated\EventType.cs" />
+    <Compile Include="Enumerated\FileAccessMethod.cs" />
     <Compile Include="Enumerated\LifeSafetyMode.cs" />
     <Compile Include="Enumerated\LifeSafetyOperation.cs" />
     <Compile Include="Enumerated\LifeSafetyState.cs" />
+    <Compile Include="Enumerated\LockStatus.cs" />
+    <Compile Include="Enumerated\LoggingType.cs" />
+    <Compile Include="Enumerated\Maintenance.cs" />
+    <Compile Include="Enumerated\MessagePriority.cs" />
+    <Compile Include="Enumerated\NodeType.cs" />
+    <Compile Include="Enumerated\NotifyType.cs" />
     <Compile Include="Enumerated\ObjectType.cs" />
+    <Compile Include="Enumerated\Polarity.cs" />
+    <Compile Include="Enumerated\ProgramError.cs" />
+    <Compile Include="Enumerated\ProgramRequest.cs" />
+    <Compile Include="Enumerated\ProgramState.cs" />
     <Compile Include="Enumerated\PropertyIdentifier.cs" />
     <Compile Include="Enumerated\RejectReason.cs" />
+    <Compile Include="Enumerated\Reliability.cs" />
     <Compile Include="Enumerated\RestartReason.cs" />
     <Compile Include="Enumerated\Segmentation.cs" />
+    <Compile Include="Enumerated\ShedState.cs" />
+    <Compile Include="Enumerated\SilencedState.cs" />
     <Compile Include="Enumerated\VtClass.cs" />
     <Compile Include="Error\BaseError.cs" />
     <Compile Include="Error\ChangeListError.cs" />
@@ -83,6 +106,17 @@
     <Compile Include="Error\CreateObjectError.cs" />
     <Compile Include="Error\VTCloseError.cs" />
     <Compile Include="Error\WritePropertyMultipleError.cs" />
+    <Compile Include="EventParameter\BufferReady.cs" />
+    <Compile Include="EventParameter\ChangeOfBitString.cs" />
+    <Compile Include="EventParameter\ChangeOfLifeSafety.cs" />
+    <Compile Include="EventParameter\ChangeOfState.cs" />
+    <Compile Include="EventParameter\ChangeOfValue.cs" />
+    <Compile Include="EventParameter\CommandFailure.cs" />
+    <Compile Include="EventParameter\EventParameter.cs" />
+    <Compile Include="EventParameter\Extended.cs" />
+    <Compile Include="EventParameter\FloatingLimit.cs" />
+    <Compile Include="EventParameter\OutOfRange.cs" />
+    <Compile Include="EventParameter\UnsignedRange.cs" />
     <Compile Include="Exception\BACnetErrorException.cs" />
     <Compile Include="Exception\BACnetException.cs" />
     <Compile Include="Exception\BACnetRejectException.cs" />
@@ -135,9 +169,7 @@
     <Reference Include="System" />
     <Reference Include="System.IO" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventParameter\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets')" Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

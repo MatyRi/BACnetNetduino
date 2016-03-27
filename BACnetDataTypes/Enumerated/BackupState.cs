@@ -10,11 +10,18 @@ namespace BACnetDataTypes.Enumerated
         public static readonly BackupState BackupFailure = new BackupState(5);
         public static readonly BackupState RestoreFailure = new BackupState(6);
 
-        public static readonly BackupState[] All = { Idle, PreparingForBackup, PreparingForRestore, PerformingABackup,
-            PerformingARestore, BackupFailure, RestoreFailure, };
+        public static readonly BackupState[] All =
+        {
+            Idle, PreparingForBackup, PreparingForRestore, PerformingABackup,
+            PerformingARestore, BackupFailure, RestoreFailure
+        };
 
-    public BackupState(uint value) : base(value) { }
+        public BackupState(uint value) : base(value)
+        {
+        }
 
-    public BackupState(ByteStream queue) : base(queue) { }
-}
+        public BackupState(ByteStream queue) : base(queue)
+        {
+        }
+    }
 }

@@ -1,5 +1,3 @@
-using BACnetDataTypes.Primitive;
-
 namespace BACnetDataTypes.Enumerated
 {
     public class ErrorClass : Primitive.Enumerated
@@ -13,7 +11,7 @@ namespace BACnetDataTypes.Enumerated
         public static readonly ErrorClass Vt = new ErrorClass(6);
         public static readonly ErrorClass Communication = new ErrorClass(7);
 
-        public static readonly ErrorClass[] All = { Device, ObjectClass, Property, Resources, Security, Services, Vt, Communication, };
+        public static readonly ErrorClass[] All = { Device, ObjectClass, Property, Resources, Security, Services, Vt, Communication };
 
     public ErrorClass(uint value) : base(value) { }
 
@@ -21,22 +19,22 @@ namespace BACnetDataTypes.Enumerated
 
     public override string ToString()
     {
-        uint type = ((UnsignedInteger) this).Value;
-        if (type == ((UnsignedInteger) Device).Value)
+        uint type = Value;
+        if (type == Device.Value)
             return "Device";
-        if (type == ((UnsignedInteger) ObjectClass).Value)
+        if (type == ObjectClass.Value)
             return "Object";
-        if (type == ((UnsignedInteger) Property).Value)
+        if (type == Property.Value)
             return "Property";
-        if (type == ((UnsignedInteger) Resources).Value)
+        if (type == Resources.Value)
             return "Resources";
-        if (type == ((UnsignedInteger) Security).Value)
+        if (type == Security.Value)
             return "Security";
-        if (type == ((UnsignedInteger) Services).Value)
+        if (type == Services.Value)
             return "Services";
-        if (type == ((UnsignedInteger) Vt).Value)
+        if (type == Vt.Value)
             return "VT";
-        if (type == ((UnsignedInteger) Communication).Value)
+        if (type == Communication.Value)
             return "Communication";
         return "Unknown: " + type;
     }

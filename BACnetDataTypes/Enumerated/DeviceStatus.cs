@@ -9,11 +9,18 @@ namespace BACnetDataTypes.Enumerated
         public static readonly DeviceStatus NonOperational = new DeviceStatus(4);
         public static readonly DeviceStatus BackupInProgress = new DeviceStatus(5);
 
-        public static readonly DeviceStatus[] All = { Operational, OperationalReadOnly, DownloadRequired, DownloadInProgress,
-            NonOperational, BackupInProgress, };
+        public static readonly DeviceStatus[] All =
+        {
+            Operational, OperationalReadOnly, DownloadRequired, DownloadInProgress,
+            NonOperational, BackupInProgress
+        };
 
-    public DeviceStatus(uint value) : base(value) { }
+        public DeviceStatus(uint value) : base(value)
+        {
+        }
 
-    public DeviceStatus(ByteStream queue) : base(queue) { }
-}
+        public DeviceStatus(ByteStream queue) : base(queue)
+        {
+        }
+    }
 }

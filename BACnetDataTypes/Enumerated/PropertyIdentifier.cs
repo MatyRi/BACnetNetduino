@@ -1,5 +1,3 @@
-using BACnetDataTypes.Primitive;
-
 namespace BACnetDataTypes.Enumerated
 {
     public class PropertyIdentifier : Primitive.Enumerated
@@ -266,7 +264,7 @@ namespace BACnetDataTypes.Enumerated
             ExpectedShedLevel, FullDutyBaseline, RequestedShedLevel, ShedDuration, ShedLevelDescriptions, ShedLevels,
             StateDescription, DoorAlarmState, DoorExtendedPulseTime, DoorMembers, DoorOpenTooLongTime, DoorPulseTime,
             DoorStatus, DoorUnlockDelayTime, LockStatus, MaskedAlarmValues, SecuredStatus, BackupAndRestoreState,
-            BackupPreparationTime, RestoreCompletionTime, RestorePreparationTime, };
+            BackupPreparationTime, RestoreCompletionTime, RestorePreparationTime };
 
     public PropertyIdentifier(uint value) : base(value) { }
 
@@ -274,454 +272,454 @@ namespace BACnetDataTypes.Enumerated
 
         public override string ToString()
     {
-        uint type = ((UnsignedInteger) this).Value;
-        if (type == ((UnsignedInteger) AckedTransitions).Value)
+        uint type = Value;
+        if (type == AckedTransitions.Value)
             return "Acked transitions";
-        if (type == ((UnsignedInteger) AckRequired).Value)
+        if (type == AckRequired.Value)
             return "Ack required";
-        if (type == ((UnsignedInteger) Action).Value)
+        if (type == Action.Value)
             return "Action";
-        if (type == ((UnsignedInteger) ActionText).Value)
+        if (type == ActionText.Value)
             return "Action text";
-        if (type == ((UnsignedInteger) ActiveText).Value)
+        if (type == ActiveText.Value)
             return "Active text";
-        if (type == ((UnsignedInteger) ActiveVtSessions).Value)
+        if (type == ActiveVtSessions.Value)
             return "Active VT sessions";
-        if (type == ((UnsignedInteger) AlarmValue).Value)
+        if (type == AlarmValue.Value)
             return "Alarm value";
-        if (type == ((UnsignedInteger) AlarmValues).Value)
+        if (type == AlarmValues.Value)
             return "Alarm values";
-        if (type == ((UnsignedInteger) all).Value)
+        if (type == all.Value)
             return "All";
-        if (type == ((UnsignedInteger) AllWritesSuccessful).Value)
+        if (type == AllWritesSuccessful.Value)
             return "All writes successful";
-        if (type == ((UnsignedInteger) ApduSegmentTimeout).Value)
+        if (type == ApduSegmentTimeout.Value)
             return "APDU segment timeout";
-        if (type == ((UnsignedInteger) ApduTimeout).Value)
+        if (type == ApduTimeout.Value)
             return "APDU timeout";
-        if (type == ((UnsignedInteger) ApplicationSoftwareVersion).Value)
+        if (type == ApplicationSoftwareVersion.Value)
             return "Application software version";
-        if (type == ((UnsignedInteger) Archive).Value)
+        if (type == Archive.Value)
             return "Archive";
-        if (type == ((UnsignedInteger) Bias).Value)
+        if (type == Bias.Value)
             return "Bias";
-        if (type == ((UnsignedInteger) ChangeOfStateCount).Value)
+        if (type == ChangeOfStateCount.Value)
             return "Change of state count";
-        if (type == ((UnsignedInteger) ChangeOfStateTime).Value)
+        if (type == ChangeOfStateTime.Value)
             return "Change of state time";
-        if (type == ((UnsignedInteger) NotificationClass).Value)
+        if (type == NotificationClass.Value)
             return "Notification class";
-        if (type == ((UnsignedInteger) ControlledVariableReference).Value)
+        if (type == ControlledVariableReference.Value)
             return "Controlled variable reference";
-        if (type == ((UnsignedInteger) ControlledVariableUnits).Value)
+        if (type == ControlledVariableUnits.Value)
             return "Controlled variable units";
-        if (type == ((UnsignedInteger) ControlledVariableValue).Value)
+        if (type == ControlledVariableValue.Value)
             return "Controlled variable value";
-        if (type == ((UnsignedInteger) CovIncrement).Value)
+        if (type == CovIncrement.Value)
             return "COV increment";
-        if (type == ((UnsignedInteger) DateList).Value)
+        if (type == DateList.Value)
             return "Date list";
-        if (type == ((UnsignedInteger) DaylightSavingsStatus).Value)
+        if (type == DaylightSavingsStatus.Value)
             return "Daylight savings status";
-        if (type == ((UnsignedInteger) Deadband).Value)
+        if (type == Deadband.Value)
             return "Deadband";
-        if (type == ((UnsignedInteger) DerivativeConstant).Value)
+        if (type == DerivativeConstant.Value)
             return "Derivative constant";
-        if (type == ((UnsignedInteger) DerivativeConstantUnits).Value)
+        if (type == DerivativeConstantUnits.Value)
             return "Derivative constant units";
-        if (type == ((UnsignedInteger) Description).Value)
+        if (type == Description.Value)
             return "Description";
-        if (type == ((UnsignedInteger) DescriptionOfHalt).Value)
+        if (type == DescriptionOfHalt.Value)
             return "Description of halt";
-        if (type == ((UnsignedInteger) DeviceAddressBinding).Value)
+        if (type == DeviceAddressBinding.Value)
             return "Device address binding";
-        if (type == ((UnsignedInteger) DeviceType).Value)
+        if (type == DeviceType.Value)
             return "Device type";
-        if (type == ((UnsignedInteger) EffectivePeriod).Value)
+        if (type == EffectivePeriod.Value)
             return "Effective period";
-        if (type == ((UnsignedInteger) ElapsedActiveTime).Value)
+        if (type == ElapsedActiveTime.Value)
             return "Elapsed active time";
-        if (type == ((UnsignedInteger) ErrorLimit).Value)
+        if (type == ErrorLimit.Value)
             return "Error limit";
-        if (type == ((UnsignedInteger) EventEnable).Value)
+        if (type == EventEnable.Value)
             return "Event enable";
-        if (type == ((UnsignedInteger) EventState).Value)
+        if (type == EventState.Value)
             return "Event state";
-        if (type == ((UnsignedInteger) EventType).Value)
+        if (type == EventType.Value)
             return "Event type";
-        if (type == ((UnsignedInteger) ExceptionSchedule).Value)
+        if (type == ExceptionSchedule.Value)
             return "Exception schedule";
-        if (type == ((UnsignedInteger) FaultValues).Value)
+        if (type == FaultValues.Value)
             return "Fault values";
-        if (type == ((UnsignedInteger) FeedbackValue).Value)
+        if (type == FeedbackValue.Value)
             return "Feedback value";
-        if (type == ((UnsignedInteger) FileAccessMethod).Value)
+        if (type == FileAccessMethod.Value)
             return "File access method";
-        if (type == ((UnsignedInteger) FileSize).Value)
+        if (type == FileSize.Value)
             return "File size";
-        if (type == ((UnsignedInteger) FileType).Value)
+        if (type == FileType.Value)
             return "File type";
-        if (type == ((UnsignedInteger) FirmwareRevision).Value)
+        if (type == FirmwareRevision.Value)
             return "Firmware revision";
-        if (type == ((UnsignedInteger) HighLimit).Value)
+        if (type == HighLimit.Value)
             return "High limit";
-        if (type == ((UnsignedInteger) InactiveText).Value)
+        if (type == InactiveText.Value)
             return "Inactive text";
-        if (type == ((UnsignedInteger) InProcess).Value)
+        if (type == InProcess.Value)
             return "In process";
-        if (type == ((UnsignedInteger) InstanceOf).Value)
+        if (type == InstanceOf.Value)
             return "Instance of";
-        if (type == ((UnsignedInteger) IntegralConstant).Value)
+        if (type == IntegralConstant.Value)
             return "Integral constant";
-        if (type == ((UnsignedInteger) IntegralConstantUnits).Value)
+        if (type == IntegralConstantUnits.Value)
             return "Integral constant units";
-        if (type == ((UnsignedInteger) LimitEnable).Value)
+        if (type == LimitEnable.Value)
             return "Limit enable";
-        if (type == ((UnsignedInteger) ListOfGroupMembers).Value)
+        if (type == ListOfGroupMembers.Value)
             return "List of group members";
-        if (type == ((UnsignedInteger) ListOfObjectPropertyReferences).Value)
+        if (type == ListOfObjectPropertyReferences.Value)
             return "List of object property references";
-        if (type == ((UnsignedInteger) ListOfSessionKeys).Value)
+        if (type == ListOfSessionKeys.Value)
             return "List of session keys";
-        if (type == ((UnsignedInteger) LocalDate).Value)
+        if (type == LocalDate.Value)
             return "Local date";
-        if (type == ((UnsignedInteger) LocalTime).Value)
+        if (type == LocalTime.Value)
             return "Local time";
-        if (type == ((UnsignedInteger) Location).Value)
+        if (type == Location.Value)
             return "Location";
-        if (type == ((UnsignedInteger) LowLimit).Value)
+        if (type == LowLimit.Value)
             return "Low limit";
-        if (type == ((UnsignedInteger) ManipulatedVariableReference).Value)
+        if (type == ManipulatedVariableReference.Value)
             return "Manipulated variable reference";
-        if (type == ((UnsignedInteger) MaximumOutput).Value)
+        if (type == MaximumOutput.Value)
             return "Maximum output";
-        if (type == ((UnsignedInteger) MaxApduLengthAccepted).Value)
+        if (type == MaxApduLengthAccepted.Value)
             return "Max APDU length accepted";
-        if (type == ((UnsignedInteger) MaxInfoFrames).Value)
+        if (type == MaxInfoFrames.Value)
             return "Max info frames";
-        if (type == ((UnsignedInteger) MaxMaster).Value)
+        if (type == MaxMaster.Value)
             return "Max master";
-        if (type == ((UnsignedInteger) MaxPresValue).Value)
+        if (type == MaxPresValue.Value)
             return "Max pres value";
-        if (type == ((UnsignedInteger) MinimumOffTime).Value)
+        if (type == MinimumOffTime.Value)
             return "Minimum off time";
-        if (type == ((UnsignedInteger) MinimumOnTime).Value)
+        if (type == MinimumOnTime.Value)
             return "Minimum on time";
-        if (type == ((UnsignedInteger) MinimumOutput).Value)
+        if (type == MinimumOutput.Value)
             return "Minimum output";
-        if (type == ((UnsignedInteger) MinPresValue).Value)
+        if (type == MinPresValue.Value)
             return "Min pres value";
-        if (type == ((UnsignedInteger) ModelName).Value)
+        if (type == ModelName.Value)
             return "Model name";
-        if (type == ((UnsignedInteger) ModificationDate).Value)
+        if (type == ModificationDate.Value)
             return "Modification date";
-        if (type == ((UnsignedInteger) NotifyType).Value)
+        if (type == NotifyType.Value)
             return "Notify type";
-        if (type == ((UnsignedInteger) NumberOfApduRetries).Value)
+        if (type == NumberOfApduRetries.Value)
             return "Number of APDU retries";
-        if (type == ((UnsignedInteger) NumberOfStates).Value)
+        if (type == NumberOfStates.Value)
             return "Number of states";
-        if (type == ((UnsignedInteger) ObjectIdentifier).Value)
+        if (type == ObjectIdentifier.Value)
             return "Object identifier";
-        if (type == ((UnsignedInteger) ObjectList).Value)
+        if (type == ObjectList.Value)
             return "Object list";
-        if (type == ((UnsignedInteger) ObjectName).Value)
+        if (type == ObjectName.Value)
             return "Object name";
-        if (type == ((UnsignedInteger) ObjectPropertyReference).Value)
+        if (type == ObjectPropertyReference.Value)
             return "Object property reference";
-        if (type == ((UnsignedInteger) ObjectType).Value)
+        if (type == ObjectType.Value)
             return "Object type";
-        if (type == ((UnsignedInteger) Optional).Value)
+        if (type == Optional.Value)
             return "Optional";
-        if (type == ((UnsignedInteger) OutOfService).Value)
+        if (type == OutOfService.Value)
             return "Out of service";
-        if (type == ((UnsignedInteger) OutputUnits).Value)
+        if (type == OutputUnits.Value)
             return "Output units";
-        if (type == ((UnsignedInteger) EventParameters).Value)
+        if (type == EventParameters.Value)
             return "Event parameters";
-        if (type == ((UnsignedInteger) Polarity).Value)
+        if (type == Polarity.Value)
             return "Polarity";
-        if (type == ((UnsignedInteger) PresentValue).Value)
+        if (type == PresentValue.Value)
             return "Present value";
-        if (type == ((UnsignedInteger) Priority).Value)
+        if (type == Priority.Value)
             return "Priority";
-        if (type == ((UnsignedInteger) PriorityArray).Value)
+        if (type == PriorityArray.Value)
             return "Priority array";
-        if (type == ((UnsignedInteger) PriorityForWriting).Value)
+        if (type == PriorityForWriting.Value)
             return "Priority for writing";
-        if (type == ((UnsignedInteger) ProcessIdentifier).Value)
+        if (type == ProcessIdentifier.Value)
             return "Process identifier";
-        if (type == ((UnsignedInteger) ProgramChange).Value)
+        if (type == ProgramChange.Value)
             return "Program change";
-        if (type == ((UnsignedInteger) ProgramLocation).Value)
+        if (type == ProgramLocation.Value)
             return "Program location";
-        if (type == ((UnsignedInteger) ProgramState).Value)
+        if (type == ProgramState.Value)
             return "Program state";
-        if (type == ((UnsignedInteger) ProportionalConstant).Value)
+        if (type == ProportionalConstant.Value)
             return "Proportional constant";
-        if (type == ((UnsignedInteger) ProportionalConstantUnits).Value)
+        if (type == ProportionalConstantUnits.Value)
             return "Proportional constant units";
-        if (type == ((UnsignedInteger) ProtocolObjectTypesSupported).Value)
+        if (type == ProtocolObjectTypesSupported.Value)
             return "Protocol object types supported";
-        if (type == ((UnsignedInteger) ProtocolServicesSupported).Value)
+        if (type == ProtocolServicesSupported.Value)
             return "Protocol services supported";
-        if (type == ((UnsignedInteger) ProtocolVersion).Value)
+        if (type == ProtocolVersion.Value)
             return "Protocol version";
-        if (type == ((UnsignedInteger) ReadOnly).Value)
+        if (type == ReadOnly.Value)
             return "Read only";
-        if (type == ((UnsignedInteger) ReasonForHalt).Value)
+        if (type == ReasonForHalt.Value)
             return "Reason for halt";
-        if (type == ((UnsignedInteger) RecipientList).Value)
+        if (type == RecipientList.Value)
             return "Recipient list";
-        if (type == ((UnsignedInteger) Reliability).Value)
+        if (type == Reliability.Value)
             return "Reliability";
-        if (type == ((UnsignedInteger) RelinquishDefault).Value)
+        if (type == RelinquishDefault.Value)
             return "Relinquish default";
-        if (type == ((UnsignedInteger) Required).Value)
+        if (type == Required.Value)
             return "Required";
-        if (type == ((UnsignedInteger) Resolution).Value)
+        if (type == Resolution.Value)
             return "Resolution";
-        if (type == ((UnsignedInteger) SegmentationSupported).Value)
+        if (type == SegmentationSupported.Value)
             return "Segmentation supported";
-        if (type == ((UnsignedInteger) Setpoint).Value)
+        if (type == Setpoint.Value)
             return "Setpoint";
-        if (type == ((UnsignedInteger) SetpointReference).Value)
+        if (type == SetpointReference.Value)
             return "Setpoint reference";
-        if (type == ((UnsignedInteger) StateText).Value)
+        if (type == StateText.Value)
             return "State text";
-        if (type == ((UnsignedInteger) StatusFlags).Value)
+        if (type == StatusFlags.Value)
             return "Status flags";
-        if (type == ((UnsignedInteger) SystemStatus).Value)
+        if (type == SystemStatus.Value)
             return "System status";
-        if (type == ((UnsignedInteger) TimeDelay).Value)
+        if (type == TimeDelay.Value)
             return "Time delay";
-        if (type == ((UnsignedInteger) TimeOfActiveTimeReset).Value)
+        if (type == TimeOfActiveTimeReset.Value)
             return "Time of active time reset";
-        if (type == ((UnsignedInteger) TimeOfStateCountReset).Value)
+        if (type == TimeOfStateCountReset.Value)
             return "Time of state count reset";
-        if (type == ((UnsignedInteger) TimeSynchronizationRecipients).Value)
+        if (type == TimeSynchronizationRecipients.Value)
             return "Time synchronization recipients";
-        if (type == ((UnsignedInteger) Units).Value)
+        if (type == Units.Value)
             return "Units";
-        if (type == ((UnsignedInteger) UpdateInterval).Value)
+        if (type == UpdateInterval.Value)
             return "Update interval";
-        if (type == ((UnsignedInteger) UtcOffset).Value)
+        if (type == UtcOffset.Value)
             return "UTC offset";
-        if (type == ((UnsignedInteger) VendorIdentifier).Value)
+        if (type == VendorIdentifier.Value)
             return "Vendor identifier";
-        if (type == ((UnsignedInteger) VendorName).Value)
+        if (type == VendorName.Value)
             return "Vendor name";
-        if (type == ((UnsignedInteger) VtClassesSupported).Value)
+        if (type == VtClassesSupported.Value)
             return "VT classes supported";
-        if (type == ((UnsignedInteger) WeeklySchedule).Value)
+        if (type == WeeklySchedule.Value)
             return "Weekly schedule";
-        if (type == ((UnsignedInteger) AttemptedSamples).Value)
+        if (type == AttemptedSamples.Value)
             return "Attempted samples";
-        if (type == ((UnsignedInteger) AverageValue).Value)
+        if (type == AverageValue.Value)
             return "Average value";
-        if (type == ((UnsignedInteger) BufferSize).Value)
+        if (type == BufferSize.Value)
             return "Buffer size";
-        if (type == ((UnsignedInteger) ClientCovIncrement).Value)
+        if (type == ClientCovIncrement.Value)
             return "Client COV increment";
-        if (type == ((UnsignedInteger) CovResubscriptionInterval).Value)
+        if (type == CovResubscriptionInterval.Value)
             return "COV resubscription interval";
-        if (type == ((UnsignedInteger) EventTimeStamps).Value)
+        if (type == EventTimeStamps.Value)
             return "Event time stamps";
-        if (type == ((UnsignedInteger) LogBuffer).Value)
+        if (type == LogBuffer.Value)
             return "Log buffer";
-        if (type == ((UnsignedInteger) LogDeviceObjectProperty).Value)
+        if (type == LogDeviceObjectProperty.Value)
             return "Log device object property";
-        if (type == ((UnsignedInteger) Enable).Value)
+        if (type == Enable.Value)
             return "enable";
-        if (type == ((UnsignedInteger) LogInterval).Value)
+        if (type == LogInterval.Value)
             return "Log interval";
-        if (type == ((UnsignedInteger) MaximumValue).Value)
+        if (type == MaximumValue.Value)
             return "Maximum value";
-        if (type == ((UnsignedInteger) MinimumValue).Value)
+        if (type == MinimumValue.Value)
             return "Minimum value";
-        if (type == ((UnsignedInteger) NotificationThreshold).Value)
+        if (type == NotificationThreshold.Value)
             return "Notification threshold";
-        if (type == ((UnsignedInteger) ProtocolRevision).Value)
+        if (type == ProtocolRevision.Value)
             return "Protocol revision";
-        if (type == ((UnsignedInteger) RecordsSinceNotification).Value)
+        if (type == RecordsSinceNotification.Value)
             return "Records since notification";
-        if (type == ((UnsignedInteger) RecordCount).Value)
+        if (type == RecordCount.Value)
             return "Record count";
-        if (type == ((UnsignedInteger) StartTime).Value)
+        if (type == StartTime.Value)
             return "Start time";
-        if (type == ((UnsignedInteger) StopTime).Value)
+        if (type == StopTime.Value)
             return "Stop time";
-        if (type == ((UnsignedInteger) StopWhenFull).Value)
+        if (type == StopWhenFull.Value)
             return "Stop when full";
-        if (type == ((UnsignedInteger) TotalRecordCount).Value)
+        if (type == TotalRecordCount.Value)
             return "Total record count";
-        if (type == ((UnsignedInteger) ValidSamples).Value)
+        if (type == ValidSamples.Value)
             return "Valid samples";
-        if (type == ((UnsignedInteger) WindowInterval).Value)
+        if (type == WindowInterval.Value)
             return "Window interval";
-        if (type == ((UnsignedInteger) WindowSamples).Value)
+        if (type == WindowSamples.Value)
             return "Window samples";
-        if (type == ((UnsignedInteger) MaximumValueTimestamp).Value)
+        if (type == MaximumValueTimestamp.Value)
             return "Maximum value timestamp";
-        if (type == ((UnsignedInteger) MinimumValueTimestamp).Value)
+        if (type == MinimumValueTimestamp.Value)
             return "Minimum value timestamp";
-        if (type == ((UnsignedInteger) VarianceValue).Value)
+        if (type == VarianceValue.Value)
             return "Variance value";
-        if (type == ((UnsignedInteger) ActiveCovSubscriptions).Value)
+        if (type == ActiveCovSubscriptions.Value)
             return "Active COV subscriptions";
-        if (type == ((UnsignedInteger) BackupFailureTimeout).Value)
+        if (type == BackupFailureTimeout.Value)
             return "Backup failure timeout";
-        if (type == ((UnsignedInteger) ConfigurationFiles).Value)
+        if (type == ConfigurationFiles.Value)
             return "Configuration files";
-        if (type == ((UnsignedInteger) DatabaseRevision).Value)
+        if (type == DatabaseRevision.Value)
             return "Database revision";
-        if (type == ((UnsignedInteger) DirectReading).Value)
+        if (type == DirectReading.Value)
             return "Direct reading";
-        if (type == ((UnsignedInteger) LastRestoreTime).Value)
+        if (type == LastRestoreTime.Value)
             return "Last restore time";
-        if (type == ((UnsignedInteger) MaintenanceRequired).Value)
+        if (type == MaintenanceRequired.Value)
             return "Maintenance required";
-        if (type == ((UnsignedInteger) MemberOf).Value)
+        if (type == MemberOf.Value)
             return "Member of";
-        if (type == ((UnsignedInteger) Mode).Value)
+        if (type == Mode.Value)
             return "Mode";
-        if (type == ((UnsignedInteger) OperationExpected).Value)
+        if (type == OperationExpected.Value)
             return "Operation expected";
-        if (type == ((UnsignedInteger) Setting).Value)
+        if (type == Setting.Value)
             return "Setting";
-        if (type == ((UnsignedInteger) Silenced).Value)
+        if (type == Silenced.Value)
             return "Silenced";
-        if (type == ((UnsignedInteger) TrackingValue).Value)
+        if (type == TrackingValue.Value)
             return "Tracking value";
-        if (type == ((UnsignedInteger) ZoneMembers).Value)
+        if (type == ZoneMembers.Value)
             return "Zone members";
-        if (type == ((UnsignedInteger) LifeSafetyAlarmValues).Value)
+        if (type == LifeSafetyAlarmValues.Value)
             return "Life safety alarm values";
-        if (type == ((UnsignedInteger) MaxSegmentsAccepted).Value)
+        if (type == MaxSegmentsAccepted.Value)
             return "Max segments accepted";
-        if (type == ((UnsignedInteger) ProfileName).Value)
+        if (type == ProfileName.Value)
             return "Profile name";
-        if (type == ((UnsignedInteger) AutoSlaveDiscovery).Value)
+        if (type == AutoSlaveDiscovery.Value)
             return "Auto slave discovery";
-        if (type == ((UnsignedInteger) ManualSlaveAddressBinding).Value)
+        if (type == ManualSlaveAddressBinding.Value)
             return "Manual slave address binding";
-        if (type == ((UnsignedInteger) SlaveAddressBinding).Value)
+        if (type == SlaveAddressBinding.Value)
             return "Slave address binding";
-        if (type == ((UnsignedInteger) SlaveProxyEnable).Value)
+        if (type == SlaveProxyEnable.Value)
             return "Slave proxy enable";
-        if (type == ((UnsignedInteger) LastNotifyRecord).Value)
+        if (type == LastNotifyRecord.Value)
             return "Last notify record";
-        if (type == ((UnsignedInteger) ScheduleDefault).Value)
+        if (type == ScheduleDefault.Value)
             return "Schedule default";
-        if (type == ((UnsignedInteger) AcceptedModes).Value)
+        if (type == AcceptedModes.Value)
             return "Accepted modes";
-        if (type == ((UnsignedInteger) AdjustValue).Value)
+        if (type == AdjustValue.Value)
             return "Adjust value";
-        if (type == ((UnsignedInteger) Count).Value)
+        if (type == Count.Value)
             return "Count";
-        if (type == ((UnsignedInteger) CountBeforeChange).Value)
+        if (type == CountBeforeChange.Value)
             return "Count before change";
-        if (type == ((UnsignedInteger) CountChangeTime).Value)
+        if (type == CountChangeTime.Value)
             return "Count change time";
-        if (type == ((UnsignedInteger) CovPeriod).Value)
+        if (type == CovPeriod.Value)
             return "COV period";
-        if (type == ((UnsignedInteger) InputReference).Value)
+        if (type == InputReference.Value)
             return "Input reference";
-        if (type == ((UnsignedInteger) LimitMonitoringInterval).Value)
+        if (type == LimitMonitoringInterval.Value)
             return "Limit monitoring interval";
-        if (type == ((UnsignedInteger) LoggingObject).Value)
+        if (type == LoggingObject.Value)
             return "Logging object";
-        if (type == ((UnsignedInteger) LoggingRecord).Value)
+        if (type == LoggingRecord.Value)
             return "Logging record";
-        if (type == ((UnsignedInteger) Prescale).Value)
+        if (type == Prescale.Value)
             return "Prescale";
-        if (type == ((UnsignedInteger) PulseRate).Value)
+        if (type == PulseRate.Value)
             return "Pulse rate";
-        if (type == ((UnsignedInteger) Scale).Value)
+        if (type == Scale.Value)
             return "Scale";
-        if (type == ((UnsignedInteger) ScaleFactor).Value)
+        if (type == ScaleFactor.Value)
             return "Scale factor";
-        if (type == ((UnsignedInteger) UpdateTime).Value)
+        if (type == UpdateTime.Value)
             return "Update time";
-        if (type == ((UnsignedInteger) ValueBeforeChange).Value)
+        if (type == ValueBeforeChange.Value)
             return "Value before change";
-        if (type == ((UnsignedInteger) ValueSet).Value)
+        if (type == ValueSet.Value)
             return "Value set";
-        if (type == ((UnsignedInteger) ValueChangeTime).Value)
+        if (type == ValueChangeTime.Value)
             return "Value change time";
-        if (type == ((UnsignedInteger) AlignIntervals).Value)
+        if (type == AlignIntervals.Value)
             return "Align Intervals";
-        if (type == ((UnsignedInteger) IntervalOffset).Value)
+        if (type == IntervalOffset.Value)
             return "Interval Offset";
-        if (type == ((UnsignedInteger) LastRestartReason).Value)
+        if (type == LastRestartReason.Value)
             return "Last Restart Reason";
-        if (type == ((UnsignedInteger) LoggingType).Value)
+        if (type == LoggingType.Value)
             return "Logging Type";
-        if (type == ((UnsignedInteger) RestartNotificationRecipients).Value)
+        if (type == RestartNotificationRecipients.Value)
             return "Restart Notification Recipients";
-        if (type == ((UnsignedInteger) TimeOfDeviceRestart).Value)
+        if (type == TimeOfDeviceRestart.Value)
             return "Time Of Device Restart";
-        if (type == ((UnsignedInteger) TimeSynchronizationInterval).Value)
+        if (type == TimeSynchronizationInterval.Value)
             return "Time Synchronization Interval";
-        if (type == ((UnsignedInteger) Trigger).Value)
+        if (type == Trigger.Value)
             return "Trigger";
-        if (type == ((UnsignedInteger) UtcTimeSynchronizationRecipients).Value)
+        if (type == UtcTimeSynchronizationRecipients.Value)
             return "UTC Time Synchronization Recipients";
-        if (type == ((UnsignedInteger) NodeSubtype).Value)
+        if (type == NodeSubtype.Value)
             return "Node Subtype";
-        if (type == ((UnsignedInteger) NodeType).Value)
+        if (type == NodeType.Value)
             return "Node Type";
-        if (type == ((UnsignedInteger) StructuredObjectList).Value)
+        if (type == StructuredObjectList.Value)
             return "Structured Object List";
-        if (type == ((UnsignedInteger) SubordinateAnnotations).Value)
+        if (type == SubordinateAnnotations.Value)
             return "Subordinate Annotations";
-        if (type == ((UnsignedInteger) SubordinateList).Value)
+        if (type == SubordinateList.Value)
             return "Subordinate List";
-        if (type == ((UnsignedInteger) ActualShedLevel).Value)
+        if (type == ActualShedLevel.Value)
             return "Actual Shed Level";
-        if (type == ((UnsignedInteger) DutyWindow).Value)
+        if (type == DutyWindow.Value)
             return "Duty Window";
-        if (type == ((UnsignedInteger) ExpectedShedLevel).Value)
+        if (type == ExpectedShedLevel.Value)
             return "Expected Shed Level";
-        if (type == ((UnsignedInteger) FullDutyBaseline).Value)
+        if (type == FullDutyBaseline.Value)
             return "Full Duty Baseline";
-        if (type == ((UnsignedInteger) RequestedShedLevel).Value)
+        if (type == RequestedShedLevel.Value)
             return "Requested Shed Level";
-        if (type == ((UnsignedInteger) ShedDuration).Value)
+        if (type == ShedDuration.Value)
             return "Shed Duration";
-        if (type == ((UnsignedInteger) ShedLevelDescriptions).Value)
+        if (type == ShedLevelDescriptions.Value)
             return "Shed Level Descriptions";
-        if (type == ((UnsignedInteger) ShedLevels).Value)
+        if (type == ShedLevels.Value)
             return "Shed Levels";
-        if (type == ((UnsignedInteger) StateDescription).Value)
+        if (type == StateDescription.Value)
             return "State Description";
-        if (type == ((UnsignedInteger) DoorAlarmState).Value)
+        if (type == DoorAlarmState.Value)
             return "Door Alarm State";
-        if (type == ((UnsignedInteger) DoorExtendedPulseTime).Value)
+        if (type == DoorExtendedPulseTime.Value)
             return "Door Extended Pulse Time";
-        if (type == ((UnsignedInteger) DoorMembers).Value)
+        if (type == DoorMembers.Value)
             return "Door Members";
-        if (type == ((UnsignedInteger) DoorOpenTooLongTime).Value)
+        if (type == DoorOpenTooLongTime.Value)
             return "Door Open Too Long Time";
-        if (type == ((UnsignedInteger) DoorPulseTime).Value)
+        if (type == DoorPulseTime.Value)
             return "Door Pulse Time";
-        if (type == ((UnsignedInteger) DoorStatus).Value)
+        if (type == DoorStatus.Value)
             return "Door Status";
-        if (type == ((UnsignedInteger) DoorUnlockDelayTime).Value)
+        if (type == DoorUnlockDelayTime.Value)
             return "Door Unlock Delay Time";
-        if (type == ((UnsignedInteger) LockStatus).Value)
+        if (type == LockStatus.Value)
             return "Lock Status";
-        if (type == ((UnsignedInteger) MaskedAlarmValues).Value)
+        if (type == MaskedAlarmValues.Value)
             return "Masked Alarm Values";
-        if (type == ((UnsignedInteger) SecuredStatus).Value)
+        if (type == SecuredStatus.Value)
             return "Secured Status";
-        if (type == ((UnsignedInteger) BackupAndRestoreState).Value)
+        if (type == BackupAndRestoreState.Value)
             return "Backup And Restore State";
-        if (type == ((UnsignedInteger) BackupPreparationTime).Value)
+        if (type == BackupPreparationTime.Value)
             return "Backup Preparation Time";
-        if (type == ((UnsignedInteger) RestoreCompletionTime).Value)
+        if (type == RestoreCompletionTime.Value)
             return "Restore Completion Time";
-        if (type == ((UnsignedInteger) RestorePreparationTime).Value)
+        if (type == RestorePreparationTime.Value)
             return "Restore Preparation Time";
         return "Unknown: " + type;
     }

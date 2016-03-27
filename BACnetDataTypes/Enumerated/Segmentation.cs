@@ -1,5 +1,3 @@
-using BACnetDataTypes.Primitive;
-
 namespace BACnetDataTypes.Enumerated
 {
     public class Segmentation : Primitive.Enumerated
@@ -11,7 +9,7 @@ namespace BACnetDataTypes.Enumerated
 
         public static readonly Segmentation[] All =
         {
-            SegmentedBoth, SegmentedTransmit, SegmentedReceive, NoSegmentation,
+            SegmentedBoth, SegmentedTransmit, SegmentedReceive, NoSegmentation
         };
 
         public Segmentation(uint value) : base(value)
@@ -28,14 +26,14 @@ namespace BACnetDataTypes.Enumerated
 
         public override string ToString()
         {
-            uint type = ((UnsignedInteger) this).Value;
-            if (type == ((UnsignedInteger) SegmentedBoth).Value)
+            uint type = Value;
+            if (type == SegmentedBoth.Value)
                 return "both";
-            if (type == ((UnsignedInteger) SegmentedTransmit).Value)
+            if (type == SegmentedTransmit.Value)
                 return "transmit";
-            if (type == ((UnsignedInteger) SegmentedReceive).Value)
+            if (type == SegmentedReceive.Value)
                 return "receive";
-            if (type == ((UnsignedInteger) NoSegmentation).Value)
+            if (type == NoSegmentation.Value)
                 return "none";
             return "Unknown: " + type;
         }

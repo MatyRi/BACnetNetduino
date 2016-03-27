@@ -1,24 +1,27 @@
+using BACnetDataTypes.Constructed;
+using BACnetDataTypes.Primitive;
+
 namespace BACnetDataTypes.Error
 {
     class VTCloseError : BaseError
     {
-        //private readonly SequenceOf<UnsignedInteger> listOfVTSessionIdentifiers;
+        private readonly SequenceOf listOfVTSessionIdentifiers; // UnsignedInteger
 
-        /*public VTCloseError(byte choice, BACnetError error, SequenceOf<UnsignedInteger> listOfVTSessionIdentifiers) : base(choice, error)
+        public VTCloseError(byte choice, BACnetError error, SequenceOf listOfVTSessionIdentifiers) : base(choice, error)
         {
             this.listOfVTSessionIdentifiers = listOfVTSessionIdentifiers;
-        }*/
+        }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            queue.push(choice);
-            write(queue, error, 0);
+            queue.WriteByte(choice);
+            write(queue, Error, 0);
             writeOptional(queue, listOfVTSessionIdentifiers, 1);
-        }*/
+        }
 
-        internal VTCloseError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
+        internal VTCloseError(byte choice, ByteStream queue) : base(choice, queue, 0)
         {
-            // TODO listOfVTSessionIdentifiers = readOptionalSequenceOf(queue, typeof(UnsignedInteger), 1);
+            listOfVTSessionIdentifiers = readOptionalSequenceOf(queue, typeof(UnsignedInteger), 1);
         }
     }
 }

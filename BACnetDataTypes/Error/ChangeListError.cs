@@ -12,16 +12,16 @@ namespace BACnetDataTypes.Error
             this.firstFailedElementNumber = firstFailedElementNumber;
         }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            queue.push(choice);
-            write(queue, error, 0);
+            queue.WriteByte(choice);
+            write(queue, Error, 0);
             write(queue, firstFailedElementNumber, 1);
-        }*/
+        }
 
-        internal ChangeListError(byte choice, ByteStream queue) : base(choice, queue, 0) // throws BACnetException
+        internal ChangeListError(byte choice, ByteStream queue) : base(choice, queue, 0)
         {
-            // TODO firstFailedElementNumber = read(queue, typeof(UnsignedInteger), 1);
+            firstFailedElementNumber = (UnsignedInteger) read(queue, typeof(UnsignedInteger), 1);
         }
     }
 }

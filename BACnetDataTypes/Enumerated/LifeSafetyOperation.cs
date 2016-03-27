@@ -16,7 +16,7 @@ namespace BACnetDataTypes.Enumerated
         public static readonly LifeSafetyOperation[] All =
         {
             None, Silence, SilenceAudible, SilenceVisual, Reset, ResetAlarm,
-            ResetFault, Unsilence, UnsilenceAudible, UnsilenceVisual,
+            ResetFault, Unsilence, UnsilenceAudible, UnsilenceVisual
         };
 
         public LifeSafetyOperation(uint value) : base(value)

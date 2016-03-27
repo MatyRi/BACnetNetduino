@@ -13,12 +13,19 @@ namespace BACnetDataTypes.Enumerated
         public static readonly RejectReason UndefinedEnumeration = new RejectReason(8);
         public static readonly RejectReason UnrecognizedService = new RejectReason(9);
 
-        public static readonly RejectReason[] All = { Other, BufferOverflow, InconsistentParameters, InvalidParameterDataType,
+        public static readonly RejectReason[] All =
+        {
+            Other, BufferOverflow, InconsistentParameters, InvalidParameterDataType,
             InvalidTag, MissingRequiredParameter, ParameterOutOfRange, TooManyArguments, UndefinedEnumeration,
-            UnrecognizedService, };
+            UnrecognizedService
+        };
 
-    public RejectReason(uint value) : base(value) { }
+        public RejectReason(uint value) : base(value)
+        {
+        }
 
-    public RejectReason(ByteStream queue) : base(queue) { }
-}
+        public RejectReason(ByteStream queue) : base(queue)
+        {
+        }
+    }
 }

@@ -21,7 +21,7 @@ namespace BACnetDataTypes.Enumerated
         public static readonly LifeSafetyMode[] All =
         {
             Off, On, Test, Manned, Unmanned, Armed, Disarmed, Prearmed, Slow,
-            Fast, Disconnected, Enabled, Disabled, AutomaticReleaseDisabled, DefaultMode,
+            Fast, Disconnected, Enabled, Disabled, AutomaticReleaseDisabled, DefaultMode
         };
 
         public LifeSafetyMode(uint value) : base(value)

@@ -33,28 +33,25 @@ namespace BACnetDataTypes.Error
             this.Error = error;
         }
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            queue.push(choice);
-            write(queue, error);
-        }*/
+            queue.WriteByte(choice);
+            write(queue, Error);
+        }
 
-        public BaseError(byte choice, ByteStream queue) // throws BACnetException
+        public BaseError(byte choice, ByteStream queue) 
         {
             this.choice = choice;
-            Error = new BACnetError(queue);
+            Error = (BACnetError) read(queue, typeof (BACnetError));
         }
 
-        public BaseError(byte choice, ByteStream queue, int contextId) // throws BACnetException
+        public BaseError(byte choice, ByteStream queue, int contextId)
         {
             this.choice = choice;
-            Error = new BACnetError(queue);
+            Error = (BACnetError) read(queue, typeof(BACnetError), contextId);
         }
 
-        public override string ToString()
-        {
-            return "choice=" + (choice & 0xff) + ", " + Error;
-        }
+        public override string ToString() => "choice=" + (choice & 0xff) + ", " + Error;
 
         public BACnetError Error { get; }
     }

@@ -1,6 +1,3 @@
-using System;
-using Microsoft.SPOT;
-
 namespace BACnetDataTypes.Enumerated
 {
     class LifeSafetyState : Primitive.Enumerated
@@ -34,7 +31,7 @@ namespace BACnetDataTypes.Enumerated
         {
             Quiet, PreAlarm, Alarm, Fault, FaultPreAlarm, FaultAlarm, NotReady,
             Active, Tamper, TestAlarm, TestActive, TestFault, TestFaultAlarm, Holdup, Duress, TamperAlarm, Abnormal,
-            EmergencyPower, Delayed, Blocked, LocalAlarm, GeneralAlarm, Basevisory, Testbasevisory,
+            EmergencyPower, Delayed, Blocked, LocalAlarm, GeneralAlarm, Basevisory, Testbasevisory
         };
 
         public LifeSafetyState(uint value) : base(value)

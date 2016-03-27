@@ -11,11 +11,18 @@ namespace BACnetDataTypes.Enumerated
         public static readonly RestartReason SoftwareWatchdog = new RestartReason(6);
         public static readonly RestartReason Suspended = new RestartReason(7);
 
-        public static readonly RestartReason[] All = { Unknown, Coldstart, Warmstart, DetectedPowerLost, DetectedPoweredOff,
-            HardwareWatchdog, SoftwareWatchdog, Suspended, };
+        public static readonly RestartReason[] All =
+        {
+            Unknown, Coldstart, Warmstart, DetectedPowerLost, DetectedPoweredOff,
+            HardwareWatchdog, SoftwareWatchdog, Suspended
+        };
 
-    public RestartReason(uint value) : base(value) { }
+        public RestartReason(uint value) : base(value)
+        {
+        }
 
-    public RestartReason(ByteStream queue) : base(queue) { }
-}
+        public RestartReason(ByteStream queue) : base(queue)
+        {
+        }
+    }
 }
