@@ -14,32 +14,26 @@ namespace BACnetServices.APDU
 
         public SimpleACK(byte originalInvokeId, int serviceAckChoice)
         {
-            this.originalInvokeId = originalInvokeId;
+            this.OriginalInvokeId = originalInvokeId;
             this.serviceAckChoice = serviceAckChoice;
         }
 
-        public override byte getPduType()
-        {
-            return TYPE_ID;
-        }
+        public override byte PduType => TYPE_ID;
 
-        /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            queue.push(getShiftedTypeId(TYPE_ID));
-            queue.push(originalInvokeId);
-            queue.push(serviceAckChoice);
-        }*/
+            queue.WriteByte(GetShiftedTypeId(TYPE_ID));
+            queue.WriteByte(OriginalInvokeId);
+            queue.WriteByte((byte) serviceAckChoice);
+        }
 
         public SimpleACK(ByteStream queue)
         {
             queue.ReadByte(); // no news here
-            originalInvokeId = queue.ReadByte();
+            OriginalInvokeId = queue.ReadByte();
             serviceAckChoice = queue.popU1B();
         }
 
-        public override bool expectsReply()
-        {
-            return false;
-        }
+        public override bool expectsReply { get; protected set; } = false;
     }
 }

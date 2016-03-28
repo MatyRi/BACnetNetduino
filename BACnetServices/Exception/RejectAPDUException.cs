@@ -5,16 +5,11 @@ namespace BACnetServices.Exception
 {
     class RejectAPDUException : BACnetException
     {
-        private readonly Reject apdu;
-
-    public RejectAPDUException(Reject apdu) : base(apdu.ToString())
+        public RejectAPDUException(Reject apdu) : base(apdu.ToString())
         {
-            this.apdu = apdu;
+            this.Apdu = apdu;
         }
 
-        public Reject getApdu()
-        {
-            return apdu;
-        }
+        public Reject Apdu { get; }
     }
 }

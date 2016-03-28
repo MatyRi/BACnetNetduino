@@ -7,6 +7,6 @@ namespace BACnetNetwork
     public interface IAPDU
     {
         void write(ByteStream apduStream);
-        bool expectsReply();
+        bool expectsReply { get; }
     }
 }

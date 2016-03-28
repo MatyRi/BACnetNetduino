@@ -168,15 +168,15 @@ namespace BACnetServices
 
         private void OnConfirmedRequestReceived(Address fromAddress, OctetString linkService, int invokeId, ConfirmedRequest request)
         {
-            if (request.getServiceRequest() == null) { return; }
+            if (request.ServiceRequest== null) { return; }
 
             try
             {
-                request.getServiceRequest().handle(fromAddress, linkService);
+                request.ServiceRequest.handle(fromAddress, linkService);
             }
             catch (NotImplementedException e)
             {
-                Debug.Print("Unsupported confirmed request: invokeId=" + invokeId + ", from=" + fromAddress + ", request=" + request.getServiceRequest().GetType().FullName);
+                Debug.Print("Unsupported confirmed request: invokeId=" + invokeId + ", from=" + fromAddress + ", request=" + request.ServiceRequest.GetType().FullName);
                 throw new BACnetErrorException(ErrorClass.Services, ErrorCode.ServiceRequestDenied);
             }
             catch (BACnetErrorException e)
@@ -210,11 +210,11 @@ namespace BACnetServices
 
         private void OnUnconfirmedRequestReceived(Address fromAddress, OctetString linkService, UnconfirmedRequest request)
         {
-            if (request.getService() == null) { return; } // HOT FIX
+            if (request.Service== null) { return; } // HOT FIX
 
             try
             {
-                request.getService().handle(this, fromAddress, linkService);
+                request.Service.handle(this, fromAddress, linkService);
             }
             catch (BACnetException e)
             {

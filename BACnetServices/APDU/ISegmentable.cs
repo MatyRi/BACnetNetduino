@@ -4,21 +4,21 @@ namespace BACnetServices.APDU
 {
     interface ISegmentable
     {
-        byte getInvokeId();
+        byte InvokeId { get; }
 
-        bool isSegmentedMessage();
+        bool IsSegmentedMessage { get; }
 
-        bool isMoreFollows();
+        bool IsMoreFollows { get; }
 
-        int getSequenceNumber();
+        int SequenceNumber { get; }
 
-        int getProposedWindowSize();
+        int ProposedWindowSize { get; }
 
-        void appendServiceData(ByteStream segmentable);
+        void AppendServiceData(ByteStream segmentable);
 
-        void parseServiceData(); // throws BACnetException;
+        void ParseServiceData();
 
-        ByteStream getServiceData();
+        ByteStream ServiceData { get; }
 
         APDU clone(bool moreFollows, int sequenceNumber, int actualSegWindow, ByteStream data);
 

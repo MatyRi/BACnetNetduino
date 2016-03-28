@@ -82,16 +82,16 @@ namespace BACnetServices
             if (apdu is ConfirmedRequest)
             {
                 ConfirmedRequest confAPDU = (ConfirmedRequest) apdu;
-                byte invokeId = confAPDU.getInvokeId();
+                byte invokeId = confAPDU.InvokeId;
 
-                if (confAPDU.isSegmentedMessage() && confAPDU.getSequenceNumber() > 0)
+                if (confAPDU.IsSegmentedMessage&& confAPDU.SequenceNumber> 0)
                 {
                     // This is a subsequent part of a segmented message. Notify the waiting room.
                     // TODO waitingRoom.notifyMember(address, linkService, invokeId, false, confAPDU);
                 }
                 else
                 {
-                    if (confAPDU.isSegmentedMessage())
+                    if (confAPDU.IsSegmentedMessage)
                     {
                         // This is the initial part of a segmented message. Go and receive the subsequent parts.
                         /*WaitingRoomKey key = waitingRoom.enterServer(address, linkService, invokeId);
@@ -108,7 +108,7 @@ namespace BACnetServices
                     // Handle the request.
                     try
                     {
-                        confAPDU.parseServiceData();
+                        confAPDU.ParseServiceData();
 
                         /*if (localDevice.getDCCEnableDisable().equals(EnableDisable.disable))
                     {
@@ -142,7 +142,7 @@ namespace BACnetServices
                     }
                     catch (BACnetException e)
                     {
-                        Error error = new Error(confAPDU.getInvokeId(),
+                        Error error = new Error(confAPDU.InvokeId,
                             new BaseError((byte) 127,
                                 new BACnetError(ErrorClass.Services, ErrorCode.InconsistentParameters)));
                         network.sendAPDU(address, linkService, error, false);

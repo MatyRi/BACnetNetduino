@@ -140,14 +140,14 @@ namespace BACnetNetwork
             {
                 if (link != null)
                     throw new System.Exception("Invalid arguments: link service address provided for a local recipient");
-                npci = new NPDU.NPDU(null, null, apdu.expectsReply());
+                npci = new NPDU.NPDU(null, null, apdu.expectsReply);
             }
             else
             {
                 if (link == null)
                     throw new System.Exception(
                         "Invalid arguments: link service address not provided for a remote recipient");
-                npci = new NPDU.NPDU(recipient, null, apdu.expectsReply());
+                npci = new NPDU.NPDU(recipient, null, apdu.expectsReply);
             }
             npci.write(queue);
         }

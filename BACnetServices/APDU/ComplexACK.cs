@@ -7,7 +7,7 @@ namespace BACnetServices.APDU
     {
         public static readonly byte TYPE_ID = 3;
 
-        public static int getHeaderSize(bool segmented)
+        public static int GetHeaderSize(bool segmented)
         {
             if (segmented)
                 return 5;
@@ -19,7 +19,6 @@ namespace BACnetServices.APDU
          * in the present PDU. If the response is present in its entirety, the 'segmented-message' parameter shall be FALSE.
          * If the present PDU contains only a segment of the response, this parameter shall be TRUE.
          */
-        private bool segmentedMessage;
 
         /**
          * This parameter is only meaningful if the 'segmented-message' parameter is TRUE. If 'segmented-message' is TRUE,
@@ -27,7 +26,6 @@ namespace BACnetServices.APDU
          * for the last and shall be FALSE for the readonly segment. If 'segmented-message' is FALSE, then 'more-follows' shall
          * be set FALSE by the encoder and shall be ignored by the decoder.
          */
-        private bool moreFollows;
 
         /**
          * This optional parameter is only present if the 'segmented-message' parameter is TRUE. In this case, the
@@ -36,7 +34,6 @@ namespace BACnetServices.APDU
          * acknowledge the receipt of one or more segments of a segmented response. The sequence-number of the first segment
          * of a segmented response shall be zero.
          */
-        private int sequenceNumber;
 
         /**
          * This optional parameter is only present if the 'segmented-message' parameter is TRUE. In this case, the
@@ -44,7 +41,6 @@ namespace BACnetServices.APDU
          * segments containing 'original-invokeID' the sender is able or willing to send before waiting for a segment
          * acknowledgment PDU (see 5.2 and 5.3). The value of the 'proposed-window-size' shall be in the range 1 - 127.
          */
-        private int proposedWindowSize;
 
         /**
          * This parameter shall contain the value of the BACnetConfirmedServiceChoice corresponding to the service contained
@@ -54,7 +50,6 @@ namespace BACnetServices.APDU
          * according to the rules of 20.2. These parameters are defined in the individual service descriptions in this
          * standard and are represented in Clause 21 in accordance with the rules of ASN.1.
          */
-        private AcknowledgementService service;
 
         /**
          * This field is used to allow parsing of only the APDU so that those fields are available in case there is a
@@ -71,7 +66,7 @@ namespace BACnetServices.APDU
             setFields(segmentedMessage, moreFollows, originalInvokeId, sequenceNumber, proposedWindowSize,
                     service.ChoiceId);
 
-            this.service = service;
+            this.Service = service;
         }
 
         public ComplexACK(bool segmentedMessage, bool moreFollows, byte originalInvokeId, int sequenceNumber,
@@ -86,97 +81,68 @@ namespace BACnetServices.APDU
         private void setFields(bool segmentedMessage, bool moreFollows, byte originalInvokeId, int sequenceNumber,
                 int proposedWindowSize, byte serviceChoice)
         {
-            this.segmentedMessage = segmentedMessage;
-            this.moreFollows = moreFollows;
-            this.originalInvokeId = originalInvokeId;
-            this.sequenceNumber = sequenceNumber;
-            this.proposedWindowSize = proposedWindowSize;
+            this.expectsReply = segmentedMessage;
+            this.IsMoreFollows = moreFollows;
+            this.OriginalInvokeId = originalInvokeId;
+            this.SequenceNumber = sequenceNumber;
+            this.ProposedWindowSize = proposedWindowSize;
             this.serviceChoice = serviceChoice;
         }
 
-        
-        public override byte getPduType()
-        {
-            return TYPE_ID;
-        }
 
-        public bool isMoreFollows()
-        {
-            return moreFollows;
-        }
+        public override byte PduType => TYPE_ID;
 
-        public int getProposedWindowSize()
-        {
-            return proposedWindowSize;
-        }
+        public bool IsMoreFollows { get; private set; }
 
-        public bool isSegmentedMessage()
-        {
-            return segmentedMessage;
-        }
+        public int ProposedWindowSize { get; private set; }
 
-        public int getSequenceNumber()
-        {
-            return sequenceNumber;
-        }
+        public bool IsSegmentedMessage => expectsReply;
 
-        /*public AcknowledgementService getService()
-        {
-            return service;
-        }*/
+        public int SequenceNumber { get; private set; }
 
-        /*public void appendServiceData(ByteStream data)
-        {
-            this.serviceData.push(data);
-        }*/
+        public AcknowledgementService Service { get; private set; }
 
-        public ByteStream getServiceData()
-        {
-            return serviceData;
-        }
+        public void AppendServiceData(ByteStream data) => serviceData.Write(data);
 
-        public byte getInvokeId()
-        {
-            return originalInvokeId;
-        }
+        public ByteStream ServiceData => serviceData;
 
-        
+        public byte InvokeId => OriginalInvokeId;
+
         public override string ToString()
         {
-            return "ComplexACK(segmentedMessage=" + segmentedMessage + ", moreFollows=" + moreFollows
-                    + ", originalInvokeId=" + originalInvokeId + ", sequenceNumber=" + sequenceNumber
-                    + ", proposedWindowSize=" + proposedWindowSize + ", serviceChoice=" + serviceChoice + ", service="
-                    + service + ")";
+            return "ComplexACK(segmentedMessage=" + expectsReply + ", moreFollows=" + IsMoreFollows
+                    + ", originalInvokeId=" + OriginalInvokeId + ", sequenceNumber=" + SequenceNumber
+                    + ", proposedWindowSize=" + ProposedWindowSize + ", serviceChoice=" + serviceChoice + ", service="
+                    + Service + ")";
         }
 
-        
-    /*public override void write(ByteStream queue)
+        public override void write(ByteStream queue)
         {
-            queue.push(getShiftedTypeId(TYPE_ID) | (segmentedMessage ? 8 : 0) | (moreFollows ? 4 : 0));
-            queue.push(originalInvokeId);
-            if (segmentedMessage)
+            queue.WriteByte((byte) (GetShiftedTypeId(TYPE_ID) | (expectsReply ? 8 : 0) | (IsMoreFollows ? 4 : 0)));
+            queue.WriteByte(OriginalInvokeId);
+            if (expectsReply)
             {
-                queue.push(sequenceNumber);
-                queue.push(proposedWindowSize);
+                queue.WriteByte((byte) SequenceNumber);
+                queue.WriteByte((byte) ProposedWindowSize);
             }
-            queue.push(serviceChoice);
-            if (service != null)
-                service.write(queue);
+            queue.WriteByte(serviceChoice);
+            if (Service != null)
+                Service.write(queue);
             else
-                queue.push(serviceData);
-        }*/
+                queue.Write(serviceData);
+        }
 
         internal ComplexACK(ByteStream queue)
         {
             byte b = queue.ReadByte();
-            segmentedMessage = (b & 8) != 0;
-            moreFollows = (b & 4) != 0;
+            expectsReply = (b & 8) != 0;
+            IsMoreFollows = (b & 4) != 0;
 
-            originalInvokeId = queue.ReadByte();
-            if (segmentedMessage)
+            OriginalInvokeId = queue.ReadByte();
+            if (expectsReply)
             {
-                sequenceNumber = queue.popU1B();
-                proposedWindowSize = queue.popU1B();
+                SequenceNumber = queue.popU1B();
+                ProposedWindowSize = queue.popU1B();
             }
             serviceChoice = queue.ReadByte();
             serviceData = new ByteStream(queue.ReadToEnd());
@@ -185,21 +151,18 @@ namespace BACnetServices.APDU
         public void parseServiceData()
         {
         if (serviceData != null) {
-                service = AcknowledgementService.createAcknowledgementService(serviceChoice, serviceData);
+                Service = AcknowledgementService.createAcknowledgementService(serviceChoice, serviceData);
                 serviceData = null;
             }
         }
 
         public APDU clone(bool moreFollows, int sequenceNumber, int actualSegWindow, ByteStream serviceData)
         {
-            return new ComplexACK(segmentedMessage, moreFollows, originalInvokeId, sequenceNumber,
+            return new ComplexACK(expectsReply, moreFollows, OriginalInvokeId, sequenceNumber,
                     actualSegWindow, serviceChoice, serviceData);
         }
 
-        
-        public override bool expectsReply()
-        {
-            return segmentedMessage;
-        }
+
+        public override bool expectsReply { get; protected set; }
     }
 }

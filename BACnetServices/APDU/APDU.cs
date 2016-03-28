@@ -33,7 +33,7 @@ namespace BACnetServices.APDU
             throw new IllegalPduTypeException("Unknown APDU Type: " + BitConverter.ToString(new[] {type}));
         }
 
-        public abstract byte getPduType();
+        public abstract byte PduType { get; }
 
         //public abstract void write(ByteStream queue);
         public virtual void write(ByteStream queue)
@@ -41,12 +41,8 @@ namespace BACnetServices.APDU
             throw new NotImplementedException();
         }
 
-        protected byte getShiftedTypeId(byte typeId)
-        {
-            return (byte) (typeId << 4);
-        }
+        protected byte GetShiftedTypeId(byte typeId) => (byte) (typeId << 4);
 
-        public abstract bool expectsReply();
-
+        public abstract bool expectsReply { get; protected set; }
     }
 }

@@ -16,59 +16,42 @@ namespace BACnetServices.APDU
          * This parameter, of type BACnetAbortReason, contains the reason the transaction with the indicated invoke ID is
          * being aborted.
          */
-        private readonly int abortReason;
 
         public Abort(bool server, byte originalInvokeId, int abortReason)
         {
             this.server = server;
-            this.originalInvokeId = originalInvokeId;
-            this.abortReason = abortReason;
+            this.OriginalInvokeId = originalInvokeId;
+            this.AbortReason = abortReason;
         }
 
-        
-        public override byte getPduType()
-        {
-            return TYPE_ID;
-        }
 
-        
-        public override bool isServer()
-        {
-            return server;
-        }
+        public override byte PduType => TYPE_ID;
 
-        public int getAbortReason()
-        {
-            return abortReason;
-        }
+        public override bool IsServer => server;
 
-        
-    /*public override void write(ByteStream queue)
+        public int AbortReason { get; }
+
+
+        public override void write(ByteStream queue)
         {
-            int data = getShiftedTypeId(TYPE_ID) | (server ? 1 : 0);
-            queue.push(data);
-            queue.push(originalInvokeId);
-            queue.push(abortReason);
-        }*/
+            int data = GetShiftedTypeId(TYPE_ID) | (server ? 1 : 0);
+            queue.WriteByte((byte) data);
+            queue.WriteByte(OriginalInvokeId);
+            queue.WriteByte((byte) AbortReason);
+        }
 
         internal Abort(ByteStream queue)
         {
             server = (queue.popU1B() & 1) == 1;
-            originalInvokeId = queue.ReadByte();
-            abortReason = queue.popU1B();
+            OriginalInvokeId = queue.ReadByte();
+            AbortReason = queue.popU1B();
         }
 
 
-        
-    public override string ToString()
-    {
-        return "Abort(server=" + server + ", originalInvokeId=" + originalInvokeId + ", abortReason=;"; // TODO  + new AbortReason(abortReason) + ")";
-        }
+        public override string ToString()
+            => "Abort(server=" + server + ", originalInvokeId=" + OriginalInvokeId + ", abortReason=;";
 
-        
-    public override bool expectsReply()
-        {
-            return false;
-        }
+
+        public override bool expectsReply { get; protected set; } = false;
     }
 }

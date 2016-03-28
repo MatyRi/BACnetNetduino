@@ -1,5 +1,7 @@
 using BACnetDataTypes;
 using BACnetDataTypes.Constructed;
+using BACnetDataTypes.Enumerated;
+using BACnetDataTypes.Exception;
 using BACnetServices.Service.Unconfirmed;
 
 namespace BACnetServices.APDU
@@ -13,41 +15,31 @@ namespace BACnetServices.APDU
          * the rules of 20.2. These parameters are defined in the individual service descriptions in this standard and are
          * represented in Clause 21 in accordance with the rules of ASN.1.
          */
-        private readonly UnconfirmedRequestService service;
 
         public UnconfirmedRequest(UnconfirmedRequestService service)
         {
-            this.service = service;
+            Service = service;
         }
 
-        public override byte getPduType()
-        {
-            return TYPE_ID;
-        }
+        public override byte PduType => TYPE_ID;
 
-        public UnconfirmedRequestService getService()
-        {
-            return service;
-        }
+        public UnconfirmedRequestService Service { get; }
 
         public override void write(ByteStream queue)
         {
-            queue.WriteByte(getShiftedTypeId(TYPE_ID));
-            queue.WriteByte(service.ChoiceId);
-            service.write(queue);
+            queue.WriteByte(GetShiftedTypeId(TYPE_ID));
+            queue.WriteByte(Service.ChoiceId);
+            Service.write(queue);
         }
 
         public UnconfirmedRequest(ServicesSupported services, ByteStream queue)
         {
             queue.ReadByte();
             byte choiceId = queue.ReadByte();
-            service = UnconfirmedRequestService.createUnconfirmedRequestService(services, choiceId, queue);
-            //if (service == null) { throw new BACnetErrorException(ErrorClass.device, ErrorCode.serviceRequestDenied); }
+            Service = UnconfirmedRequestService.createUnconfirmedRequestService(services, choiceId, queue);
+            if (Service == null) { throw new BACnetErrorException(ErrorClass.Device, ErrorCode.ServiceRequestDenied); }
         }
 
-        public override bool expectsReply()
-        {
-            return false;
-        }
-}
+        public override bool expectsReply { get; protected set; } = false;
+    }
 }

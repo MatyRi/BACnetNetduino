@@ -15,41 +15,32 @@ namespace BACnetServices.APDU
 
         public Reject(byte originalInvokeId, RejectReason rejectReason)
         {
-            this.originalInvokeId = originalInvokeId;
+            this.OriginalInvokeId = originalInvokeId;
             this.rejectReason = rejectReason;
         }
 
-        
-        public override byte getPduType()
-        {
-            return TYPE_ID;
-        }
 
-        
-    /*public override void write(ByteStream queue)
-        {
-            queue.push(getShiftedTypeId(TYPE_ID));
-            queue.push(originalInvokeId);
-            queue.push(rejectReason.byteValue());
-        }*/
+        public override byte PduType => TYPE_ID;
+
+
+        public override void write(ByteStream queue)
+            {
+                queue.WriteByte(GetShiftedTypeId(TYPE_ID));
+                queue.WriteByte(OriginalInvokeId);
+                queue.WriteByte((byte) rejectReason.Value);
+            }
 
         internal Reject(ByteStream queue)
         {
             queue.ReadByte(); // Ignore the first byte. No news there.
-            originalInvokeId = queue.ReadByte();
+            OriginalInvokeId = queue.ReadByte();
             rejectReason = new RejectReason(queue.popU1B());
         }
 
 
-        public override string ToString()
-        {
-            return "Reject(originalInvokeId=" + originalInvokeId + ", rejectReason=" + rejectReason + ")";
-        }
+        public override string ToString() => "Reject(originalInvokeId=" + OriginalInvokeId + ", rejectReason=" + rejectReason + ")";
 
-        
-        public override bool expectsReply()
-        {
-            return false;
-        }
+
+        public override bool expectsReply { get; protected set; } = false;
     }
 }

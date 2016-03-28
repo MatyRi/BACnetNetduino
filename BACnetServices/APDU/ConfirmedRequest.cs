@@ -9,7 +9,7 @@ namespace BACnetServices.APDU
     {
         public static readonly byte TYPE_ID = 0;
 
-        public static int getHeaderSize(bool segmented)
+        public static int GetHeaderSize(bool segmented)
         {
             if (segmented)
                 return 6;
@@ -21,7 +21,6 @@ namespace BACnetServices.APDU
          * in the present PDU. If the request is present in its entirety, the value of the 'segmented-message' parameter
          * shall be FALSE. If the present PDU contains only a segment of the request, this parameter shall be TRUE.
          */
-        private bool segmentedMessage;
 
         /**
          * This parameter is only meaningful if the 'segmented-message' parameter is TRUE. If 'segmented-message' is TRUE,
@@ -29,14 +28,12 @@ namespace BACnetServices.APDU
          * for the last and shall be FALSE for the readonly segment. If 'segmented-message' is FALSE, then 'more-follows' shall
          * be set FALSE by the encoder and shall be ignored by the decoder.
          */
-        private bool moreFollows;
 
         /**
          * This parameter shall be TRUE if the device issuing the confirmed request will accept a segmented complex
          * acknowledgment as a response. It shall be FALSE otherwise. This parameter is included in the confirmed request so
          * that the responding device may determine how to convey its response.
          */
-        private bool segmentedResponseAccepted;
 
         /**
          * This optional parameter specifies the maximum number of segments that the device will accept. This parameter is
@@ -45,7 +42,6 @@ namespace BACnetServices.APDU
          * accepted. B'010' 4 segments accepted. B'011' 8 segments accepted. B'100' 16 segments accepted. B'101' 32 segments
          * accepted. B'110' 64 segments accepted. B'111' Greater than 64 segments accepted.
          */
-        private MaxSegments maxSegmentsAccepted;
 
         /**
          * This parameter specifies the maximum size of a single APDU that the issuing device will accept. This parameter is
@@ -57,7 +53,6 @@ namespace BACnetServices.APDU
          * reserved by ASHRAE B'1100' reserved by ASHRAE B'1101' reserved by ASHRAE B'1110' reserved by ASHRAE B'1111'
          * reserved by ASHRAE
          */
-        private MaxApduLength maxApduLengthAccepted;
 
         /**
          * This parameter shall be an integer in the range 0 - 255 assigned by the service requester. It shall be used to
@@ -78,7 +73,6 @@ namespace BACnetServices.APDU
          * shall maintain the 'invokeID' as well as the requesting device address until a response has been sent. The
          * responding device may discard the 'invokeID' information after a response has been sent.
          */
-        private byte invokeId;
 
         /**
          * This optional parameter is only present if the 'segmented-message' parameter is TRUE. In this case, the
@@ -87,7 +81,6 @@ namespace BACnetServices.APDU
          * receipt of one or more segments of a segmented request. The 'sequence-number' of the first segment of a segmented
          * request shall be zero.
          */
-        private int sequenceNumber;
 
         /**
          * This optional parameter is only present if the 'segmented-message' parameter is TRUE. In this case, the
@@ -95,7 +88,6 @@ namespace BACnetServices.APDU
          * segments containing 'invokeID' the sender is able or willing to send before waiting for a segment acknowledgment
          * PDU (see 5.2 and 5.3). The value of the 'proposed-window-size' shall be in the range 1 - 127.
          */
-        private int proposedWindowSize;
 
         /**
          * This parameter shall contain the parameters of the specific service that is being requested, encoded according to
@@ -103,192 +95,148 @@ namespace BACnetServices.APDU
          * represented in Clause 21 in accordance with the rules of ASN.1.
          */
         private byte serviceChoice;
-        private ConfirmedRequestService serviceRequest;
 
         /**
          * This field is used to allow parsing of only the APDU so that those fields are available in case there is a
          * problem parsing the service request.
          */
-        private ByteStream serviceData;
 
         public ConfirmedRequest(bool segmentedMessage, bool moreFollows, bool segmentedResponseAccepted,
-                MaxSegments maxSegmentsAccepted, MaxApduLength maxApduLengthAccepted, byte invokeId, int sequenceNumber,
-                int proposedWindowSize, ConfirmedRequestService serviceRequest)
+            MaxSegments maxSegmentsAccepted, MaxApduLength maxApduLengthAccepted, byte invokeId, int sequenceNumber,
+            int proposedWindowSize, ConfirmedRequestService serviceRequest)
         {
+            setFields(segmentedMessage, moreFollows, segmentedResponseAccepted, maxSegmentsAccepted,
+                maxApduLengthAccepted,
+                invokeId, sequenceNumber, proposedWindowSize, serviceRequest.ChoiceId);
 
-            setFields(segmentedMessage, moreFollows, segmentedResponseAccepted, maxSegmentsAccepted, maxApduLengthAccepted,
-                    invokeId, sequenceNumber, proposedWindowSize, serviceRequest.ChoiceId);
-
-            this.serviceRequest = serviceRequest;
+            ServiceRequest = serviceRequest;
         }
 
         public ConfirmedRequest(bool segmentedMessage, bool moreFollows, bool segmentedResponseAccepted,
-                MaxSegments maxSegmentsAccepted, MaxApduLength maxApduLengthAccepted, byte invokeId, int sequenceNumber,
-                int proposedWindowSize, byte serviceChoice, ByteStream serviceData)
+            MaxSegments maxSegmentsAccepted, MaxApduLength maxApduLengthAccepted, byte invokeId, int sequenceNumber,
+            int proposedWindowSize, byte serviceChoice, ByteStream serviceData)
         {
+            setFields(segmentedMessage, moreFollows, segmentedResponseAccepted, maxSegmentsAccepted,
+                maxApduLengthAccepted,
+                invokeId, sequenceNumber, proposedWindowSize, serviceChoice);
 
-            setFields(segmentedMessage, moreFollows, segmentedResponseAccepted, maxSegmentsAccepted, maxApduLengthAccepted,
-                    invokeId, sequenceNumber, proposedWindowSize, serviceChoice);
-
-            this.serviceData = serviceData;
+            ServiceData = serviceData;
         }
 
         private void setFields(bool segmentedMessage, bool moreFollows, bool segmentedResponseAccepted,
-                MaxSegments maxSegmentsAccepted, MaxApduLength maxApduLengthAccepted, byte invokeId, int sequenceNumber,
-                int proposedWindowSize, byte serviceChoice)
+            MaxSegments maxSegmentsAccepted, MaxApduLength maxApduLengthAccepted, byte invokeId, int sequenceNumber,
+            int proposedWindowSize, byte serviceChoice)
         {
-            this.segmentedMessage = segmentedMessage;
-            this.moreFollows = moreFollows;
-            this.segmentedResponseAccepted = segmentedResponseAccepted;
-            this.maxSegmentsAccepted = maxSegmentsAccepted;
-            this.maxApduLengthAccepted = maxApduLengthAccepted;
-            this.invokeId = invokeId;
-            this.sequenceNumber = sequenceNumber;
-            this.proposedWindowSize = proposedWindowSize;
+            IsSegmentedMessage = segmentedMessage;
+            IsMoreFollows = moreFollows;
+            IsSegmentedResponseAccepted = segmentedResponseAccepted;
+            MaxSegmentsAccepted = maxSegmentsAccepted;
+            MaxApduLengthAccepted = maxApduLengthAccepted;
+            InvokeId = invokeId;
+            SequenceNumber = sequenceNumber;
+            ProposedWindowSize = proposedWindowSize;
             this.serviceChoice = serviceChoice;
         }
 
-        
-        public override byte getPduType()
+
+        public override byte PduType => TYPE_ID;
+
+
+        public byte InvokeId { get; private set; }
+
+        public int SequenceNumber { get; private set; }
+
+        public MaxApduLength MaxApduLengthAccepted { get; private set; }
+
+        public MaxSegments MaxSegmentsAccepted { get; private set; }
+
+        public bool IsMoreFollows { get; private set; }
+
+        public int ProposedWindowSize { get; private set; }
+
+        public bool IsSegmentedMessage { get; private set; }
+
+        public bool IsSegmentedResponseAccepted { get; private set; }
+
+        public ConfirmedRequestService ServiceRequest { get; private set; }
+
+        public void AppendServiceData(ByteStream data)
         {
-            return TYPE_ID;
+            ServiceData.Write(data);
         }
 
-        
-        public byte getInvokeId()
-        {
-            return invokeId;
-        }
+        public ByteStream ServiceData { get; private set; }
 
-        
-        public int getSequenceNumber()
-        {
-            return sequenceNumber;
-        }
 
-        public MaxApduLength getMaxApduLengthAccepted()
+        public override void write(ByteStream queue)
         {
-            return maxApduLengthAccepted;
-        }
-
-        public MaxSegments getMaxSegmentsAccepted()
-        {
-            return maxSegmentsAccepted;
-        }
-
-        
-        public bool isMoreFollows()
-        {
-            return moreFollows;
-        }
-
-        
-        public int getProposedWindowSize()
-        {
-            return proposedWindowSize;
-        }
-
-        
-        public bool isSegmentedMessage()
-        {
-            return segmentedMessage;
-        }
-
-        public bool isSegmentedResponseAccepted()
-        {
-            return segmentedResponseAccepted;
-        }
-
-        public ConfirmedRequestService getServiceRequest()
-        {
-            return serviceRequest;
-        }
-
-        
-        public void appendServiceData(ByteStream data)
-        {
-            // TODO this.serviceData.push(data);
-        }
-
-        
-        public ByteStream getServiceData()
-        {
-            return serviceData;
-        }
-
-        
-        /*public override void write(ByteStream queue)
-        {
-            queue.push(getShiftedTypeId(TYPE_ID) | (segmentedMessage ? 8 : 0) | (moreFollows ? 4 : 0)
-                    | (segmentedResponseAccepted ? 2 : 0));
-            queue.push(((maxSegmentsAccepted.getId() & 7) << 4) | (maxApduLengthAccepted.getId() & 0xf));
-            queue.push(invokeId);
-            if (segmentedMessage)
+            queue.WriteByte((byte) (GetShiftedTypeId(TYPE_ID) | (IsSegmentedMessage ? 8 : 0) | (IsMoreFollows ? 4 : 0)
+                                    | (IsSegmentedResponseAccepted ? 2 : 0)));
+            queue.WriteByte((byte) (((MaxSegmentsAccepted.GetId() & 7) << 4) | (MaxApduLengthAccepted.GetId() & 0xf)));
+            queue.WriteByte(InvokeId);
+            if (IsSegmentedMessage)
             {
-                queue.push(sequenceNumber);
-                queue.push(proposedWindowSize);
+                queue.WriteByte((byte) SequenceNumber);
+                queue.WriteByte((byte) ProposedWindowSize);
             }
-            queue.push(serviceChoice);
-            if (serviceRequest != null)
-                serviceRequest.write(queue);
+            queue.WriteByte(serviceChoice);
+            if (ServiceRequest != null)
+                ServiceRequest.write(queue);
             else
-                queue.push(serviceData);
-        }*/
+                queue.Write(ServiceData);
+        }
 
         public ConfirmedRequest(ServicesSupported servicesSupported, ByteStream queue)
         {
             byte b = queue.ReadByte();
-            segmentedMessage = (b & 8) != 0;
-            moreFollows = (b & 4) != 0;
-            segmentedResponseAccepted = (b & 2) != 0;
+            IsSegmentedMessage = (b & 8) != 0;
+            IsMoreFollows = (b & 4) != 0;
+            IsSegmentedResponseAccepted = (b & 2) != 0;
 
             b = queue.ReadByte();
-            // TODO maxSegmentsAccepted = MaxSegments.valueOf((byte) ((b & 0x70) >> 4));
-            // TODO maxApduLengthAccepted = MaxApduLength.valueOf((byte) (b & 0xf));
-            invokeId = queue.ReadByte();
-            if (segmentedMessage) {
-                sequenceNumber = queue.popU1B();
-                proposedWindowSize = queue.popU1B();
+            MaxSegmentsAccepted = (MaxSegments) ((byte) ((b & 0x70) >> 4));
+            MaxApduLengthAccepted = (MaxApduLength) ((byte) (b & 0xf));
+            InvokeId = queue.ReadByte();
+            if (IsSegmentedMessage)
+            {
+                SequenceNumber = queue.popU1B();
+                ProposedWindowSize = queue.popU1B();
             }
             serviceChoice = queue.ReadByte();
-            serviceData = new ByteStream(queue.ReadToEnd());
+            ServiceData = new ByteStream(queue.ReadToEnd());
 
             ConfirmedRequestService.checkConfirmedRequestService(servicesSupported, serviceChoice);
         }
 
 
-        public void parseServiceData()
+        public void ParseServiceData()
         {
-            if (serviceData != null)
+            if (ServiceData != null)
             {
-                serviceRequest = ConfirmedRequestService.createConfirmedRequestService(serviceChoice, serviceData);
-                serviceData = null;
+                ServiceRequest = ConfirmedRequestService.createConfirmedRequestService(serviceChoice, ServiceData);
+                ServiceData = null;
             }
         }
 
 
         public APDU clone(bool moreFollows, int sequenceNumber, int actualSegWindow, ByteStream serviceData)
-    {
-        return new ConfirmedRequest(segmentedMessage, moreFollows, segmentedResponseAccepted,
-                maxSegmentsAccepted, maxApduLengthAccepted, invokeId, sequenceNumber, actualSegWindow,
+        {
+            return new ConfirmedRequest(IsSegmentedMessage, moreFollows, IsSegmentedResponseAccepted,
+                MaxSegmentsAccepted, MaxApduLengthAccepted, InvokeId, sequenceNumber, actualSegWindow,
                 serviceChoice, serviceData);
-    }
+        }
 
 
-    public override string ToString()
-    {
-        return "ConfirmedRequest(segmentedMessage=" + segmentedMessage + ", moreFollows=" + moreFollows
-                + ", segmentedResponseAccepted=" + segmentedResponseAccepted + ", maxSegmentsAccepted="
-                + maxSegmentsAccepted + ", maxApduLengthAccepted=" + maxApduLengthAccepted + ", invokeId=" + invokeId
-                + ", sequenceNumber=" + sequenceNumber + ", proposedWindowSize=" + proposedWindowSize
-                + ", serviceChoice=" + serviceChoice + ", serviceRequest=" + serviceRequest + ")";
-    }
+        public override string ToString()
+        {
+            return "ConfirmedRequest(segmentedMessage=" + IsSegmentedMessage + ", moreFollows=" + IsMoreFollows
+                   + ", segmentedResponseAccepted=" + IsSegmentedResponseAccepted + ", maxSegmentsAccepted="
+                   + MaxSegmentsAccepted + ", maxApduLengthAccepted=" + MaxApduLengthAccepted + ", invokeId=" + InvokeId
+                   + ", sequenceNumber=" + SequenceNumber + ", proposedWindowSize=" + ProposedWindowSize
+                   + ", serviceChoice=" + serviceChoice + ", serviceRequest=" + ServiceRequest + ")";
+        }
 
 
-    public override bool expectsReply()
-    {
-        return true;
-    }
-
+        public override bool expectsReply { get; protected set; } = true;
     }
 }

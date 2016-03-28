@@ -11,46 +11,33 @@ namespace BACnetServices.APDU
          * This parameter, of type BACnet-Error, indicates the reason the indicated service request could not be carried
          * out. This parameter shall be encoded according to the rules of 20.2.
          */
-        private readonly BaseError error;
 
         public Error(byte originalInvokeId, BaseError error)
         {
-            this.originalInvokeId = originalInvokeId;
-            this.error = error;
+            this.OriginalInvokeId = originalInvokeId;
+            this.ErrorValue = error;
         }
 
-        public override byte getPduType()
+        public override byte PduType => TYPE_ID;
+
+        public override void write(ByteStream queue)
         {
-            return TYPE_ID;
+            queue.WriteByte(GetShiftedTypeId(TYPE_ID));
+            queue.WriteByte(OriginalInvokeId);
+            ErrorValue.write(queue);
         }
 
-        /*public override void write(ByteStream queue)
-        {
-            queue.push(getShiftedTypeId(TYPE_ID));
-            queue.push(originalInvokeId);
-            error.write(queue);
-        }*/
-
-        internal Error(ByteStream queue) // throws BACnetException
+        internal Error(ByteStream queue)
         {
             queue.ReadByte(); // Ignore the first byte. No news there.
-            originalInvokeId = queue.ReadByte();
-            error = BaseError.createBaseError(queue);
+            OriginalInvokeId = queue.ReadByte();
+            ErrorValue = BaseError.createBaseError(queue);
         }
 
-        public override string ToString()
-        {
-            return "ErrorAPDU(" + error + ")";
-        }
+        public override string ToString() => "ErrorAPDU(" + ErrorValue + ")";
 
-        public BaseError getError()
-        {
-            return error;
-        }
+        public BaseError ErrorValue { get; }
 
-        public override bool expectsReply()
-        {
-            return false;
-        }
+        public override bool expectsReply { get; protected set; } = false;
     }
 }
