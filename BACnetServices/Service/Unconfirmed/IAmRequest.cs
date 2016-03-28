@@ -27,10 +27,7 @@ namespace BACnetServices.Service.Unconfirmed
             this.vendorId = vendorId;
         }
 
-        public override byte getChoiceId()
-        {
-            return TYPE_ID;
-        }
+        public override byte ChoiceId => TYPE_ID;
 
         public override void handle(LocalDevice localDevice, Address from, OctetString linkService)
         {
@@ -49,11 +46,11 @@ namespace BACnetServices.Service.Unconfirmed
                 // Get my bacnet address and compare the addresses
                 foreach (Address addr in localDevice.AllLocalAddresses)
                 {
-                    if (addr.MACAddress.Equals(from.MACAddress))
+                    if (addr.MacAddress.Equals(from.MacAddress))
                         // This is a local address, so ignore.
                         return;
                     //LOGGER.warning("Another instance with my device instance ID found!");
-                    Debug.Print("Another instance with my device instance ID found! Here: " + from.MACAddress.MacAddressDottedString);
+                    Debug.Print("Another instance with my device instance ID found! Here: " + from.MacAddress.MacAddressDottedString);
                 }
             }
 

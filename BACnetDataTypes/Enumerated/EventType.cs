@@ -2,7 +2,7 @@ using BACnetDataTypes.NotificationParameter;
 
 namespace BACnetDataTypes.Enumerated
 {
-    class EventType : Primitive.Enumerated
+    public class EventType : Primitive.Enumerated
     {
         public static readonly EventType ChangeOfBitstring = new EventType(ChangeOfBitString.TYPE_ID);
         public static readonly EventType ChangeOfState = new EventType(NotificationParameter.ChangeOfState.TYPE_ID);

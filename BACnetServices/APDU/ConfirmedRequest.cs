@@ -117,7 +117,7 @@ namespace BACnetServices.APDU
         {
 
             setFields(segmentedMessage, moreFollows, segmentedResponseAccepted, maxSegmentsAccepted, maxApduLengthAccepted,
-                    invokeId, sequenceNumber, proposedWindowSize, serviceRequest.getChoiceId());
+                    invokeId, sequenceNumber, proposedWindowSize, serviceRequest.ChoiceId);
 
             this.serviceRequest = serviceRequest;
         }

@@ -69,7 +69,7 @@ namespace BACnetServices.APDU
         {
 
             setFields(segmentedMessage, moreFollows, originalInvokeId, sequenceNumber, proposedWindowSize,
-                    service.getChoiceId());
+                    service.ChoiceId);
 
             this.service = service;
         }

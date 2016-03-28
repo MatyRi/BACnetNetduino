@@ -25,35 +25,29 @@ namespace BACnetServices.Objects
         public RemoteDevice(uint instanceNumber, Address address, OctetString linkService)
         {
             this.instanceNumber = instanceNumber;
-            this.Address = address;
-            this.LinkService = linkService;
+            Address = address;
+            LinkService = linkService;
         }
 
         public ObjectIdentifier ObjectIdentifier => new ObjectIdentifier(ObjectType.Device, instanceNumber);
         
-        public override string ToString()
-        {
-            return "RemoteDevice(instanceNumber=" + instanceNumber + ", address=" + Address + ", linkServiceAddress="
-                    + LinkService + ")";
-        }
+        public override string ToString() => "RemoteDevice(instanceNumber=" + instanceNumber + ", address=" + Address + ", linkServiceAddress="
+                                             + LinkService + ")";
 
-        public string ToExtendedString()
-        {
-            return "RemoteDevice \n" +
-                    " - instanceNumber = " + instanceNumber + ", \n" +
-                    " - address = " + Address + ", \n" +
-                    " - linkServiceAddress = " + LinkService + ", \n" +
-                    " - maxAPDULengthAccepted = " + maxAPDULengthAccepted + ", \n" +
-                    " - segmentationSupported = " + segmentationSupported + ", \n" +
-                    " - vendorId = " + vendorId + ", \n" +
-                    " - vendorName = " + vendorName + ", \n" +
-                    " - protocol version = " + protocolVersion + ", \n" +
-                    " - protocol revision = " + protocolRevision + ", \n" +
-                    " - model name = " + modelName + ", \n" +
-                    " - name = " + name + ", \n" +
-                    " - servicesSupported = " + servicesSupported + ", \n" +
-                    " - objects = " + objects + "\n";
-        }
+        public string ToExtendedString() => "RemoteDevice \n" +
+                                            " - instanceNumber = " + instanceNumber + ", \n" +
+                                            " - address = " + Address + ", \n" +
+                                            " - linkServiceAddress = " + LinkService + ", \n" +
+                                            " - maxAPDULengthAccepted = " + maxAPDULengthAccepted + ", \n" +
+                                            " - segmentationSupported = " + segmentationSupported + ", \n" +
+                                            " - vendorId = " + vendorId + ", \n" +
+                                            " - vendorName = " + vendorName + ", \n" +
+                                            " - protocol version = " + protocolVersion + ", \n" +
+                                            " - protocol revision = " + protocolRevision + ", \n" +
+                                            " - model name = " + modelName + ", \n" +
+                                            " - name = " + name + ", \n" +
+                                            " - servicesSupported = " + servicesSupported + ", \n" +
+                                            " - objects = " + objects + "\n";
 
         public void setObject(RemoteObject o)
         {

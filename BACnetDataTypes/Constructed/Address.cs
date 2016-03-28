@@ -10,7 +10,6 @@ namespace BACnetDataTypes.Constructed
         public static readonly ushort LOCAL_NETWORK = 0;
         public static readonly Address GLOBAL = new Address(new Unsigned16(0xFFFF), null);
 
-        private static readonly long serialVersionUID = -3376358193474831753L;
         private readonly Unsigned16 networkNumber;
 
         public Address(ushort networkNumber, byte[] macAddress)
@@ -100,6 +99,9 @@ namespace BACnetDataTypes.Constructed
             // TODO Not Implemented asi
         }
 
+        public Address(IPAddress addr, int port) : this(LOCAL_NETWORK, addr.GetAddressBytes(), port)
+        {
+        }
         public Address(IPEndPoint addr) : this(LOCAL_NETWORK, addr.Address.GetAddressBytes(), addr.Port)
         {
         }

@@ -33,7 +33,7 @@ namespace BACnetServices.APDU
         public override void write(ByteStream queue)
         {
             queue.WriteByte(getShiftedTypeId(TYPE_ID));
-            queue.WriteByte(service.getChoiceId());
+            queue.WriteByte(service.ChoiceId);
             service.write(queue);
         }
 

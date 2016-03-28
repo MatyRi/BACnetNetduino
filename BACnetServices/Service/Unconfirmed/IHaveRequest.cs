@@ -20,13 +20,8 @@ namespace BACnetServices.Service.Unconfirmed
             this.objectName = objectName;
         }
 
-        
-        public override byte getChoiceId()
-        {
-            return TYPE_ID;
-        }
+        public override byte ChoiceId => TYPE_ID;
 
-        
         public override void handle(LocalDevice localDevice, Address from, OctetString linkService)
         {
             // TODO RemoteDevice d = localDevice.getRemoteDeviceCreate(deviceIdentifier.getInstanceNumber(), from, linkService);

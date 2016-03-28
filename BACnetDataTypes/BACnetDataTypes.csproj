@@ -48,14 +48,17 @@
     <Compile Include="Constructed\CovSubscription.cs" />
     <Compile Include="Constructed\DateTime.cs" />
     <Compile Include="Constructed\DeviceObjectPropertyReference.cs" />
+    <Compile Include="Constructed\EventTransitionBits.cs" />
     <Compile Include="Constructed\ObjectPropertyReference.cs" />
     <Compile Include="Constructed\ObjectTypesSupported.cs" />
     <Compile Include="Constructed\PriorityArray.cs" />
     <Compile Include="Constructed\PriorityValue.cs" />
     <Compile Include="Constructed\PropertyStates.cs" />
     <Compile Include="Constructed\PropertyValue.cs" />
+    <Compile Include="Constructed\ReadAccessResult.cs" />
     <Compile Include="Constructed\Recipient.cs" />
     <Compile Include="Constructed\RecipientProcess.cs" />
+    <Compile Include="Constructed\ResultFlags.cs" />
     <Compile Include="Constructed\Sequence.cs" />
     <Compile Include="Constructed\SequenceOf.cs" />
     <Compile Include="Constructed\ServicesSupported.cs" />

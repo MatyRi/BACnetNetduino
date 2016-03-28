@@ -22,11 +22,7 @@ namespace BACnetServices.Service.Unconfirmed
             DeviceInstanceRangeHighLimit = deviceInstanceRangeHighLimit;
         }
 
-        
-        public override byte getChoiceId()
-        {
-            return TYPE_ID;
-        }
+        public override byte ChoiceId => TYPE_ID;
 
         /*public override void handle(LocalDevice localDevice, Address from, OctetString linkService)
         {

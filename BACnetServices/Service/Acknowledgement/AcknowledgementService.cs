@@ -1,4 +1,5 @@
 using BACnetDataTypes;
+using BACnetDataTypes.Exception;
 
 namespace BACnetServices.Service.Acknowledgement
 {
@@ -7,7 +8,7 @@ namespace BACnetServices.Service.Acknowledgement
         public static AcknowledgementService createAcknowledgementService(byte type, ByteStream queue)
         {
 
-            /*if (type == GetAlarmSummaryAck.TYPE_ID) // 3
+            if (type == GetAlarmSummaryAck.TYPE_ID) // 3
                 return new GetAlarmSummaryAck(queue);
             if (type == GetEnrollmentSummaryAck.TYPE_ID) // 4
                 return new GetEnrollmentSummaryAck(queue);
@@ -33,11 +34,10 @@ namespace BACnetServices.Service.Acknowledgement
                 return new AuthenticateAck(queue);
             if (type == ReadRangeAck.TYPE_ID) // 26
                 return new ReadRangeAck(queue);
-            if (type == GetEventInformationAck.TYPE_ID) // 29
+            if (type == GetEventInformationAck.TypeId) // 29
                 return new GetEventInformationAck(queue);
 
-            throw new BACnetException("Unsupported service acknowledgement: " + (type & 0xff));*/
-            return null;
+            throw new BACnetException("Unsupported service acknowledgement: " + (type & 0xff));
         }
     }
 }

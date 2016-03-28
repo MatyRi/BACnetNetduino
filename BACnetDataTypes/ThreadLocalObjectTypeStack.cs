@@ -1,40 +1,27 @@
+using System.Collections;
+using BACnetDataTypes.Enumerated;
+using BACnetDataTypes.Error;
+
 namespace BACnetDataTypes
 {
     class ThreadLocalObjectTypeStack
     {
-        /*private static ThreadLocal<List<ObjectType>> objType = new ThreadLocal<List<ObjectType>>();
+        // TODO Not sure this will work
+        private static ObjectType objType = null; //
 
         public static void set(ObjectType objectType)
         {
-            List<ObjectType> stack = objType.get();
-
-            if (stack == null)
-            {
-                stack = new ArrayList<ObjectType>();
-                objType.set(stack);
-            }
-
-            stack.add(objectType);
+            objType = objectType;
         }
 
         public static ObjectType get()
         {
-            List<ObjectType> stack = objType.get();
-            if (stack == null)
-                return null;
-            return stack.get(stack.size() - 1);
+            return objType;
         }
 
         public static void remove()
         {
-            List<ObjectType> stack = objType.get();
-            if (stack == null)
-                return;
-
-            if (stack.size() <= 1)
-                objType.remove();
-            else
-                stack.remove(stack.size() - 1);
-        }*/
+            objType = null;
+        }
     }
 }

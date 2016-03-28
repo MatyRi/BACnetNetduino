@@ -27,7 +27,7 @@ namespace BACnetNetwork
                     int i = 0;
                     foreach (IPAddress addr in networkAddresses)
                     {
-                        Address adrs = new Address(addr.GetAddressBytes());
+                        Address adrs = new Address(addr, LinkLayer.DEFAULT_PORT);
                         addresses[i] = adrs;
                     }
                 }
@@ -83,7 +83,7 @@ namespace BACnetNetwork
 
             // Create the APDU.
 
-            NewNPDUReceived?.Invoke(@from, fromAddress, fromAddress.MACAddress, npdu, bs);
+            NewNPDUReceived?.Invoke(@from, fromAddress, fromAddress.MacAddress, npdu, bs);
         }
 
         public void sendAPDU(Address recipient, OctetString link, IAPDU apdu, bool broadcast)
@@ -113,11 +113,11 @@ namespace BACnetNetwork
 
             IPEndPoint isa;
             if (recipient.IsGlobal)
-                isa = LocalBroadcastAddress.MACAddress.InetSocketAddress;
+                isa = LocalBroadcastAddress.MacAddress.InetSocketAddress;
             else if (link != null)
                 isa = link.InetSocketAddress;
             else
-                isa = recipient.MACAddress.InetSocketAddress;
+                isa = recipient.MacAddress.InetSocketAddress;
 
             this.link.SendPacket(isa, queue.ReadToEnd());
         }

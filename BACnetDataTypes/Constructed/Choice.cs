@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace BACnetDataTypes.Constructed
 {
-    class Choice : BaseType
+    public class Choice : BaseType
     {
         public int ContextId { get; }
         public Encodable Data { get; }

@@ -1,6 +1,6 @@
 namespace BACnetDataTypes.Enumerated
 {
-    class EventState : Primitive.Enumerated
+    public class EventState : Primitive.Enumerated
     {
         public static readonly EventState Normal = new EventState(0);
         public static readonly EventState Fault = new EventState(1);

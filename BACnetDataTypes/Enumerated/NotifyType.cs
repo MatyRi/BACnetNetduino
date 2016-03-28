@@ -1,6 +1,6 @@
 namespace BACnetDataTypes.Enumerated
 {
-    class NotifyType : Primitive.Enumerated
+    public class NotifyType : Primitive.Enumerated
     {
         public static readonly NotifyType Alarm = new NotifyType(0);
         public static readonly NotifyType Event = new NotifyType(1);
