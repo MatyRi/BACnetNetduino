@@ -75,7 +75,14 @@
     <Compile Include="Service\Service.cs" />
     <Compile Include="Service\Unconfirmed\IAmRequest.cs" />
     <Compile Include="Service\Unconfirmed\IHaveRequest.cs" />
+    <Compile Include="Service\Unconfirmed\TimeSynchronizationRequest.cs" />
+    <Compile Include="Service\Unconfirmed\UnconfirmedCovNotificationRequest.cs" />
+    <Compile Include="Service\Unconfirmed\UnconfirmedEventNotificationRequest.cs" />
+    <Compile Include="Service\Unconfirmed\UnconfirmedPrivateTransferRequest.cs" />
     <Compile Include="Service\Unconfirmed\UnconfirmedRequestService.cs" />
+    <Compile Include="Service\Unconfirmed\UnconfirmedTextMessageRequest.cs" />
+    <Compile Include="Service\Unconfirmed\UTCTimeSynchronizationRequest.cs" />
+    <Compile Include="Service\Unconfirmed\WhoHasRequest.cs" />
     <Compile Include="Service\Unconfirmed\WhoIsRequest.cs" />
     <Compile Include="Service\VendorServiceKey.cs" />
   </ItemGroup>

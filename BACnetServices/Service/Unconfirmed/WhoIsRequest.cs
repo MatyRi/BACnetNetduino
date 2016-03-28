@@ -1,6 +1,7 @@
 using BACnetDataTypes;
 using BACnetDataTypes.Constructed;
 using BACnetDataTypes.Primitive;
+using BACnetServices.Objects;
 
 namespace BACnetServices.Service.Unconfirmed
 {
@@ -24,15 +25,15 @@ namespace BACnetServices.Service.Unconfirmed
 
         public override byte ChoiceId => TYPE_ID;
 
-        /*public override void handle(LocalDevice localDevice, Address from, OctetString linkService)
+        public override void handle(LocalDevice localDevice, Address from, OctetString linkService)
         {
-            BACnetObject local = localDevice.getConfiguration();
+            BACnetObject local = localDevice.Configuration;
 
         // Check if we're in the device id range.
-        if (deviceInstanceRangeLowLimit != null && local.getInstanceId() < deviceInstanceRangeLowLimit.intValue())
+        if (DeviceInstanceRangeLowLimit != null && local.getInstanceId() < DeviceInstanceRangeLowLimit.Value)
             return;
 
-        if (deviceInstanceRangeHighLimit != null && local.getInstanceId() > deviceInstanceRangeHighLimit.intValue())
+        if (DeviceInstanceRangeHighLimit != null && local.getInstanceId() > DeviceInstanceRangeHighLimit.Value)
             return;
 
             // Return the result in a i am message.
@@ -41,42 +42,17 @@ namespace BACnetServices.Service.Unconfirmed
             IAmRequest iam = localDevice.MakeIAmRequest();
             localDevice.sendGlobalBroadcast(iam, true);
             //}
-        }*/
-
-        public virtual void handle(Address address, OctetString linkService)
-        {
-
-            // TODO LocalDevice localDevice = Program.Device;
-
-
-
-            //BACnetObject local = localDevice.getConfiguration();
-
-            // Check if we're in the device id range.
-            //if (deviceInstanceRangeLowLimit != null && local.getInstanceId() < deviceInstanceRangeLowLimit.intValue())
-            //    return;
-
-            //if (deviceInstanceRangeHighLimit != null && local.getInstanceId() > deviceInstanceRangeHighLimit.intValue())
-            //    return;
-
-            // Return the result in a i am message.
-            //DCC - AdK
-            //if(!localDevice.getDCCEnableDisable().equals(EnableDisable.disable)) {
-            // TODO IAmRequest iam = localDevice.MakeIAmRequest();
-            // TODO localDevice.sendGlobalBroadcast(iam, true);
-            //}
         }
 
-        /*public override void write(ByteStream queue)
+
+        public override void write(ByteStream queue)
         {
-            writeOptional(queue, deviceInstanceRangeLowLimit, 0);
-            writeOptional(queue, deviceInstanceRangeHighLimit, 1);
-        }*/
+            writeOptional(queue, DeviceInstanceRangeLowLimit, 0);
+            writeOptional(queue, DeviceInstanceRangeHighLimit, 1);
+        }
 
         internal WhoIsRequest(ByteStream queue)
         {
-            //deviceInstanceRangeLowLimit = new UnsignedInteger(queue, 0);
-            //deviceInstanceRangeHighLimit = new UnsignedInteger(queue, 1);
             DeviceInstanceRangeLowLimit = (UnsignedInteger) readOptional(queue, typeof(UnsignedInteger), 0);
             DeviceInstanceRangeHighLimit = (UnsignedInteger) readOptional(queue, typeof(UnsignedInteger), 1);
         }

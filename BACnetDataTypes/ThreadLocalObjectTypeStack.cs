@@ -4,7 +4,7 @@ using BACnetDataTypes.Error;
 
 namespace BACnetDataTypes
 {
-    class ThreadLocalObjectTypeStack
+    public class ThreadLocalObjectTypeStack
     {
         // TODO Not sure this will work
         private static ObjectType objType = null; //

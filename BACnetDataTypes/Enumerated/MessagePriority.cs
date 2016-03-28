@@ -1,6 +1,6 @@
 namespace BACnetDataTypes.Enumerated
 {
-    class MessagePriority : Primitive.Enumerated
+    public class MessagePriority : Primitive.Enumerated
     {
         public static readonly MessagePriority Normal = new MessagePriority(0);
         public static readonly MessagePriority Urgent = new MessagePriority(1);
