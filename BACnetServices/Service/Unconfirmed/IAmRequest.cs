@@ -39,7 +39,7 @@ namespace BACnetServices.Service.Unconfirmed
             }
 
             // Make sure we're not hearing from ourselves.
-            uint myDoi = localDevice.Configuration.getInstanceId();
+            uint myDoi = localDevice.Configuration.InstanceId;
             uint remoteDoi = iAmDeviceIdentifier.InstanceNumber;
             if (remoteDoi == myDoi)
             {

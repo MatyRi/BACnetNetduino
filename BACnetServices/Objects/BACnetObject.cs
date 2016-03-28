@@ -6,14 +6,16 @@ using BACnetDataTypes.Enumerated;
 using BACnetDataTypes.Exception;
 using BACnetDataTypes.Objects;
 using BACnetDataTypes.Primitive;
+using BACnetServices.Service.Confirmed;
+using BACnetServices.Service.Unconfirmed;
 
 namespace BACnetServices.Objects
 {
     public class BACnetObject
     {
         private readonly LocalDevice localDevice;
-        private readonly ObjectIdentifier id;
         private readonly Hashtable properties = new Hashtable();
+        private readonly IList covSubscriptions = new ArrayList();
         //private readonly Map<PropertyIdentifier, Encodable> properties = new HashMap<PropertyIdentifier, Encodable>();
         //private readonly List<ObjectCovSubscription> covSubscriptions = new ArrayList<ObjectCovSubscription>();
 
@@ -22,19 +24,19 @@ namespace BACnetServices.Objects
             this.localDevice = localDevice;
             if (id == null)
                 throw new ArgumentException("object id cannot be null");
-            this.id = id;
+            Id = id;
 
             try
             {
                 setProperty(PropertyIdentifier.ObjectName, new CharacterString(id.ToString()));
 
                 // Set any default values.
-                /* TODO List<PropertyTypeDefinition> defs = ObjectProperties.getPropertyTypeDefinitions(id.getObjectType());
-                for (PropertyTypeDefinition def : defs)
+                IList defs = ObjectProperties.getPropertyTypeDefinitions(id.ObjectType);
+                foreach (PropertyTypeDefinition def in defs)
                 {
-                    if (def.getDefaultValue() != null)
-                        setProperty(def.getPropertyIdentifier(), def.getDefaultValue());
-                }*/
+                    if (def.DefaultValue != null)
+                        setProperty(def.PropertyIdentifier, def.DefaultValue);
+                }
             }
             catch (BACnetServiceException e)
             {
@@ -43,35 +45,32 @@ namespace BACnetServices.Objects
             }
         }
 
-        public ObjectIdentifier getId()
+        public ObjectIdentifier Id { get; }
+
+        public uint InstanceId => Id.InstanceNumber;
+
+        public string ObjectName
         {
-            return id;
+            get
+            {
+                CharacterString name = RawObjectName;
+                if (name == null)
+                    return null;
+                return name.Value;
+            }
         }
 
-        public uint getInstanceId()
-        {
-            return id.InstanceNumber;
-        }
+        public CharacterString RawObjectName => (CharacterString) properties[PropertyIdentifier.ObjectName];
 
-        public string getObjectName()
+        public string Description
         {
-            CharacterString name = getRawObjectName();
-            if (name == null)
-                return null;
-            return name.Value;
-        }
-
-        public CharacterString getRawObjectName()
-        {
-            return (CharacterString) properties[PropertyIdentifier.ObjectName];
-        }
-
-        public string getDescription()
-        {
-            CharacterString name = (CharacterString) properties[PropertyIdentifier.Description];
-            if (name == null)
-                return null;
-            return name.Value;
+            get
+            {
+                CharacterString name = (CharacterString) properties[PropertyIdentifier.Description];
+                if (name == null)
+                    return null;
+                return name.Value;
+            }
         }
 
         //
@@ -80,45 +79,50 @@ namespace BACnetServices.Objects
         //
         public Encodable getProperty(PropertyIdentifier pid)
         {
-            if (((UnsignedInteger) pid).Value== ((UnsignedInteger) PropertyIdentifier.ObjectIdentifier).Value)
-                return id;
-            if (((UnsignedInteger) pid).Value== ((UnsignedInteger) PropertyIdentifier.ObjectType).Value)
-                return id.ObjectType;
+            if (pid.Value == PropertyIdentifier.ObjectIdentifier.Value)
+                return Id;
+            if (pid.Value == PropertyIdentifier.ObjectType.Value)
+                return Id.ObjectType;
 
             // Check that the requested property is valid for the object. This will throw an exception if the
             // property doesn't belong.
-            // TODO ObjectProperties.getPropertyTypeDefinitionRequired(id.getObjectType(), pid);
+            ObjectProperties.getPropertyTypeDefinitionRequired(Id.ObjectType, pid);
 
             // Do some property-specific checking here.
-            if (((UnsignedInteger) pid).Value== ((UnsignedInteger) PropertyIdentifier.LocalTime).Value)
+            if (pid.Value == PropertyIdentifier.LocalTime.Value)
                 return new Time();
-            if (((UnsignedInteger) pid).Value== ((UnsignedInteger) PropertyIdentifier.LocalDate).Value)
+            if (pid.Value == PropertyIdentifier.LocalDate.Value)
                 return new Date();
 
             // AdK - COV subscriptions
-            /*if(pid.intValue() == PropertyIdentifier.activeCovSubscriptions.intValue()) {
-        	List<BACnetObject> objs = localDevice.getLocalObjects();
-        SequenceOf<CovSubscription> covS = new SequenceOf<CovSubscription>();
+            if (pid.Value == PropertyIdentifier.ActiveCovSubscriptions.Value)
+            {
+                IList objs = localDevice.LocalObjects;
+                SequenceOf covS = new SequenceOf(); // CovSubscriptions
 
-            foreach (BACnetObject obj : objs) {
-                    foreach (ObjectCovSubscription s : obj.covSubscriptions)
-            	{
-            		RemoteDevice d = localDevice.getRemoteDevice(s.getAddress());
-        Recipient r = null;
-            		if(d != null) {
-            			r = new Recipient(d.ObjectIdentifier());
-            		} else {
-            			r = new Recipient(s.getAddress());
-            		}
-covS.add(new CovSubscription(new RecipientProcess(r, s.getSubscriberProcessIdentifier()),
-            				new ObjectPropertyReference(obj.id, PropertyIdentifier.presentValue), new Boolean(s.isIssueConfirmedNotifications()),
-            				new UnsignedInteger(s.getTimeRemaining(System.currentTimeMillis())), obj.getCovIncrement() 
-            				));
-            	}
+                foreach (BACnetObject obj in objs)
+                {
+                    foreach (ObjectCovSubscription s in obj.covSubscriptions)
+                    {
+                        RemoteDevice d = localDevice.getRemoteDevice(s.Address);
+                        Recipient r = null;
+                        if (d != null)
+                        {
+                            r = new Recipient(d.ObjectIdentifier);
+                        }
+                        else
+                        {
+                            r = new Recipient(s.Address);
+                        }
+                        covS.add(new CovSubscription(new RecipientProcess(r, s.SubscriberProcessIdentifier),
+                            new ObjectPropertyReference(obj.Id, PropertyIdentifier.PresentValue),
+                            new BBoolean(s.IsIssueConfirmedNotifications),
+                            new UnsignedInteger(s.GetTimeRemaining(System.DateTime.Now.Ticks)), obj.getCovIncrement()
+                            ));
+                    }
+                }
+                return covS;
             }
-            return covS;
-        }*/
-
 
             return (Encodable) properties[pid];
         }
@@ -137,19 +141,18 @@ covS.add(new CovSubscription(new RecipientProcess(r, s.getSubscriberProcessIdent
             if (propertyArrayIndex == null)
                 return result;
 
-            return null; // TODO 
-            /*if (!(result instanceof SequenceOf<?>))
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.propertyIsNotAnArray);
+            if (!(result is SequenceOf))
+            throw new BACnetServiceException(ErrorClass.Property, ErrorCode.PropertyIsNotAnArray);
 
-SequenceOf<?> array = (SequenceOf <?>) result;
-        int index = propertyArrayIndex.intValue();
+        SequenceOf array = (SequenceOf ) result;
+        uint index = propertyArrayIndex.Value;
         if (index == 0)
-            return new UnsignedInteger(array.getCount());
+            return new UnsignedInteger((uint) array.Count);
 
         if (index > array.getCount())
-            throw new BACnetServiceException(ErrorClass.property, ErrorCode.invalidArrayIndex);
+            throw new BACnetServiceException(ErrorClass.Property, ErrorCode.InvalidArrayIndex);
 
-        return array.get(index);*/
+        return array.Get((int) index);
         }
 
         public Encodable getPropertyRequired(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
@@ -166,35 +169,35 @@ SequenceOf<?> array = (SequenceOf <?>) result;
         //
         public void setProperty(PropertyIdentifier pid, Encodable value)
         {
-            // TODO ObjectProperties.validateValue(id.getObjectType(), pid, value);
+            ObjectProperties.validateValue(Id.ObjectType, pid, value);
             setPropertyImpl(pid, value);
 
             // If the relinquish default was set, make sure the present value gets updated as necessary.
-            // TODO if (pid.Equals(PropertyIdentifier.relinquishDefault))
-            //    setCommandableImpl((PriorityArray) getProperty(PropertyIdentifier.priorityArray));
+            if (pid.Equals(PropertyIdentifier.RelinquishDefault))
+                setCommandableImpl((PriorityArray) getProperty(PropertyIdentifier.PriorityArray));
         }
 
         public void setProperty(PropertyIdentifier pid, uint indexBase1, Encodable value)
         {
-            /*ObjectProperties.validateSequenceValue(id.getObjectType(), pid, value);
-    SequenceOf<Encodable> list = (SequenceOf<Encodable>) properties.get(pid);
+            ObjectProperties.validateSequenceValue(Id.ObjectType, pid, value);
+    SequenceOf list = (SequenceOf) properties[pid];
     if (list == null)
     {
-        list = new SequenceOf<Encodable>();
+        list = new SequenceOf();
         setPropertyImpl(pid, list);
     }
-    list.set(indexBase1, value);*/
+    list.set((int) indexBase1, value);
         }
 
         public void setProperty(PropertyValue value)
         {
             PropertyIdentifier pid = value.PropertyIdentifier;
 
-            if (((UnsignedInteger) pid).Value== ((UnsignedInteger) PropertyIdentifier.ObjectIdentifier).Value)
+            if (pid.Value== PropertyIdentifier.ObjectIdentifier.Value)
                 throw new BACnetServiceException(ErrorClass.Property, ErrorCode.WriteAccessDenied);
-            if (((UnsignedInteger) pid).Value== ((UnsignedInteger) PropertyIdentifier.ObjectType).Value)
+            if (pid.Value== PropertyIdentifier.ObjectType.Value)
                 throw new BACnetServiceException(ErrorClass.Property, ErrorCode.WriteAccessDenied);
-            if (((UnsignedInteger) pid).Value== ((UnsignedInteger) PropertyIdentifier.PriorityArray).Value)
+            if (pid.Value== PropertyIdentifier.PriorityArray.Value)
                 throw new BACnetServiceException(ErrorClass.Property, ErrorCode.WriteAccessDenied);
             //        if (pid.intValue() == PropertyIdentifier.relinquishDefault.intValue())
             //            throw new BACnetServiceException(ErrorClass.property, ErrorCode.writeAccessDenied);
@@ -251,27 +254,26 @@ SequenceOf<?> array = (SequenceOf <?>) result;
         {
             Encodable oldValue = (Encodable) properties[pid];
             properties[pid] = value;
-            //properties.Add(pid, value);
 
-            /*if (!ObjectUtils.equals(value, oldValue))
+            if (!value.Equals(oldValue))
     {
         // Check for subscriptions.
-        if (ObjectCovSubscription.sendCovNotification(id.getObjectType(), pid, this.getCovIncrement()))
+        if (ObjectCovSubscription.SendCovNotification(Id.ObjectType, pid, this.getCovIncrement()))
         {
-            synchronized(covSubscriptions) {
-                long now = System.currentTimeMillis();
-                ObjectCovSubscription sub;
-                for (int i = covSubscriptions.size() - 1; i >= 0; i--)
-                {
-                    sub = covSubscriptions.get(i);
-                    if (sub.hasExpired(now))
-                        covSubscriptions.remove(i);
-                    else if (sub.isNotificationRequired(pid, value))
-                        sendCovNotification(sub, now);
-                }
+            //synchronized(covSubscriptions) {
+            long now = System.DateTime.Now.Ticks;
+            ObjectCovSubscription sub;
+            for (int i = covSubscriptions.Count - 1; i >= 0; i--)
+            {
+                sub = (ObjectCovSubscription) covSubscriptions[i];
+                if (sub.HasExpired(now))
+                    covSubscriptions.RemoveAt(i);
+                else if (sub.IsNotificationRequired(pid, value))
+                   sendCovNotification(sub, now);
             }
+            //}
         }
-    }*/
+    }
         }
 
         private PriorityValue createCommandValue(Encodable value)
@@ -307,19 +309,19 @@ SequenceOf<?> array = (SequenceOf <?>) result;
 //
 // COV subscriptions
 //
-/*
+
 public void addCovSubscription(Address from, OctetString linkService, UnsignedInteger subscriberProcessIdentifier,
         BBoolean issueConfirmedNotifications, UnsignedInteger lifetime)
 {
-    synchronized (covSubscriptions) {
+    //synchronized (covSubscriptions) {
         ObjectCovSubscription sub = findCovSubscription(from, subscriberProcessIdentifier);
-        boolean confirmed = issueConfirmedNotifications.booleanValue();
+    bool confirmed = issueConfirmedNotifications.Value;
 
         if (sub == null)
         {
             // Ensure that this object is valid for COV notifications.
-            if (!ObjectCovSubscription.sendCovNotification(id.getObjectType(), null, this.getCovIncrement()))
-                throw new BACnetServiceException(ErrorClass.services, ErrorCode.covSubscriptionFailed,
+            if (!ObjectCovSubscription.SendCovNotification(Id.ObjectType, null, this.getCovIncrement()))
+                throw new BACnetServiceException(ErrorClass.Services, ErrorCode.CovSubscriptionFailed,
                         "Object is invalid for COV notifications");
 
             if (confirmed)
@@ -327,39 +329,39 @@ public void addCovSubscription(Address from, OctetString linkService, UnsignedIn
                 // If the peer wants confirmed notifications, it must be in the remote device list.
                 RemoteDevice d = localDevice.getRemoteDevice(from);
                 if (d == null)
-                    throw new BACnetServiceException(ErrorClass.services, ErrorCode.covSubscriptionFailed,
+                    throw new BACnetServiceException(ErrorClass.Services, ErrorCode.CovSubscriptionFailed,
                             "From address not found in remote device list. Cannot send confirmed notifications");
             }
 
             sub = new ObjectCovSubscription(from, linkService, subscriberProcessIdentifier, this.getCovIncrement());
-            covSubscriptions.add(sub);
+            covSubscriptions.Add(sub);
         }
 
-        sub.setIssueConfirmedNotifications(issueConfirmedNotifications.booleanValue());
-        sub.setExpiryTime(lifetime.intValue());
-    }
+        sub.SetIssueConfirmedNotifications(issueConfirmedNotifications.Value);
+        sub.SetExpiryTime((int) lifetime.Value);
+   // }
 }
 
 public Real getCovIncrement()
 {
-    return (Real)properties[PropertyIdentifier.covIncrement];
+    return (Real)properties[PropertyIdentifier.CovIncrement];
 }
 
 public void removeCovSubscription(Address from, UnsignedInteger subscriberProcessIdentifier)
 {
-    synchronized(covSubscriptions) {
+    //synchronized(covSubscriptions) {
         ObjectCovSubscription sub = findCovSubscription(from, subscriberProcessIdentifier);
         if (sub != null)
-            covSubscriptions.remove(sub);
-    }
+            covSubscriptions.Remove(sub);
+    //}
 }
 
 private ObjectCovSubscription findCovSubscription(Address from, UnsignedInteger subscriberProcessIdentifier)
 {
     foreach (ObjectCovSubscription sub in covSubscriptions)
     {
-        if (sub.getAddress().equals(from)
-                && sub.getSubscriberProcessIdentifier().equals(subscriberProcessIdentifier))
+        if (sub.Address.Equals(from)
+                && sub.SubscriberProcessIdentifier.Equals(subscriberProcessIdentifier))
             return sub;
     }
     return null;
@@ -369,56 +371,56 @@ private void sendCovNotification(ObjectCovSubscription sub, long now)
 {
     try
     {
-        UnsignedInteger timeLeft = new UnsignedInteger(sub.getTimeRemaining(now));
-        SequenceOf<PropertyValue> values = new SequenceOf<PropertyValue>(ObjectCovSubscription.getValues(this));
+        UnsignedInteger timeLeft = new UnsignedInteger(sub.GetTimeRemaining(now));
+        SequenceOf values = new SequenceOf(ObjectCovSubscription.GetValues(this));
 
-        if (sub.isIssueConfirmedNotifications())
+        if (sub.IsIssueConfirmedNotifications)
         {
             // Confirmed
             ConfirmedCovNotificationRequest req = new ConfirmedCovNotificationRequest(
-                    sub.getSubscriberProcessIdentifier(), localDevice.getConfiguration().getId(), id, timeLeft,
+                    sub.SubscriberProcessIdentifier, localDevice.Configuration.Id, Id, timeLeft,
                     values);
-            RemoteDevice d = localDevice.getRemoteDevice(sub.getAddress());
+            RemoteDevice d = localDevice.getRemoteDevice(sub.Address);
             localDevice.send(d, req);
         }
         else {
             // Unconfirmed
             UnconfirmedCovNotificationRequest req = new UnconfirmedCovNotificationRequest(
-                    sub.getSubscriberProcessIdentifier(), localDevice.getConfiguration().getId(), id, timeLeft,
+                    sub.SubscriberProcessIdentifier, localDevice.Configuration.Id, Id, timeLeft,
                     values);
-            localDevice.sendUnconfirmed(sub.getAddress(), sub.getLinkService(), req);
+            localDevice.sendUnconfirmed(sub.Address, sub.LinkService, req);
         }
     }
     catch (BACnetException e)
     {
-        ExceptionDispatch.fireReceivedException(e);
+        throw e;
+        //ExceptionDispatch.fireReceivedException(e);
     }
 }
-        */
-
+        
         public void validate()
         {
             // Ensure that all required properties have values.
-            IList defs = ObjectProperties.getRequiredPropertyTypeDefinitions(id.ObjectType);
+            IList defs = ObjectProperties.getRequiredPropertyTypeDefinitions(Id.ObjectType);
             foreach (PropertyTypeDefinition def in defs)
             {
-                if (getProperty(def.getPropertyIdentifier()) == null)
-                    throw new BACnetServiceException(ErrorClass.Property, ErrorCode.Other, "Required property not set: " + def.getPropertyIdentifier());
+                if (getProperty(def.PropertyIdentifier) == null)
+                    throw new BACnetServiceException(ErrorClass.Property, ErrorCode.Other, "Required property not set: " + def.PropertyIdentifier);
             }
         }
 
         public void removeProperty(PropertyIdentifier pid)
         {
-            PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(id.ObjectType, pid);
-            if (def.isRequired())
+            PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(Id.ObjectType, pid);
+            if (def.IsRequired)
                 throw new BACnetServiceException(ErrorClass.Property, ErrorCode.WriteAccessDenied);
             properties.Remove(pid);
         }
 
         public void removeProperty(PropertyIdentifier pid, UnsignedInteger propertyArrayIndex)
         {
-            PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(id.ObjectType, pid);
-            if (!def.isSequence())
+            PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinitionRequired(Id.ObjectType, pid);
+            if (!def.IsSequence)
                 throw new BACnetServiceException(ErrorClass.Property, ErrorCode.InvalidArrayIndex);
             SequenceOf sequence = (SequenceOf) properties[pid];
             if (sequence != null)

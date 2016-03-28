@@ -45,9 +45,9 @@ namespace BACnetServices.Service.Unconfirmed
             // Check if we're in the device id range.
             if (limits != null)
             {
-                uint localId = localDevice.Configuration.getInstanceId();
+                uint localId = localDevice.Configuration.InstanceId;
                 if (localId < limits.DeviceInstanceRangeLowLimit.Value
-                    || localId > limits.getDeviceInstanceRangeHighLimit().Value)
+                    || localId > limits.DeviceInstanceRangeHighLimit.Value)
                     return;
             }
 
@@ -56,12 +56,12 @@ namespace BACnetServices.Service.Unconfirmed
             if (@object.ContextId == 2)
             {
                 ObjectIdentifier oid = (ObjectIdentifier) @object.Data;
-                result = localDevice.getObject(oid);
+                result = localDevice.GetObject(oid);
             }
             else if (@object.ContextId == 3)
             {
                 string name = ((CharacterString) @object.Data).ToString();
-                result = localDevice.getObject(name);
+                result = localDevice.GetObject(name);
             }
             else
                 return;
@@ -69,8 +69,8 @@ namespace BACnetServices.Service.Unconfirmed
             if (result != null)
             {
                 // Return the result in an i have message.
-                IHaveRequest response = new IHaveRequest(localDevice.Configuration.getId(), result.getId(),
-                    result.getRawObjectName());
+                IHaveRequest response = new IHaveRequest(localDevice.Configuration.Id, result.Id,
+                    result.RawObjectName);
                 localDevice.sendGlobalBroadcast(response);
             }
         }

@@ -142,6 +142,6 @@ namespace BACnetServices.Service.Confirmed
         throw new BACnetErrorException(ErrorClass.Device, ErrorCode.ServiceRequestDenied);
 }
 
-        public abstract AcknowledgementService handle(/*LocalDevice localDevice,*/ Address from, OctetString linkService);
+        public abstract AcknowledgementService handle(LocalDevice localDevice, Address from, OctetString linkService);
     }
 }

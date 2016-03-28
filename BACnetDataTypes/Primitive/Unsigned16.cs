@@ -8,8 +8,8 @@ namespace BACnetDataTypes.Primitive
 
         public Unsigned16(ushort value) : base(value)
         {
-            if (value > MAX)
-                throw new ArgumentException("Value cannot be greater than " + MAX);
+            //if (value > MAX)
+            //    throw new ArgumentException("Value cannot be greater than " + MAX);
         }
 
         public Unsigned16(ByteStream queue) : base(queue) { }

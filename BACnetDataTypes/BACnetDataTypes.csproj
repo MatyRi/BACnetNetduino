@@ -66,6 +66,7 @@
     <Compile Include="Constructed\StatusFlags.cs" />
     <Compile Include="Constructed\TimeStamp.cs" />
     <Compile Include="Constructed\VtSession.cs" />
+    <Compile Include="DebuggerBrowsableState.cs" />
     <Compile Include="Encodable.cs" />
     <Compile Include="Enumerated\AbortReason.cs" />
     <Compile Include="Enumerated\Action.cs" />

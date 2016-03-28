@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="BVLC\BVLC.cs" />
     <Compile Include="BVLC\BVLCEnums.cs" />
+    <Compile Include="DebuggerBrowsableState.cs" />
     <Compile Include="Enums\BVCLEnums.cs" />
     <Compile Include="Enums\MaxApduLength.cs" />
     <Compile Include="Enums\MaxSegments.cs" />

@@ -9,7 +9,6 @@ namespace BACnetDataTypes.Objects
 {
     public class ObjectProperties
     {
-
         private ObjectProperties INSTANCE = new ObjectProperties();
 
 
@@ -18,7 +17,8 @@ namespace BACnetDataTypes.Objects
         private static readonly Hashtable propertyTypes = new Hashtable();
 
 
-        public static PropertyTypeDefinition getPropertyTypeDefinition(ObjectType objectType, PropertyIdentifier propertyIdentifier)
+        public static PropertyTypeDefinition getPropertyTypeDefinition(ObjectType objectType,
+            PropertyIdentifier propertyIdentifier)
         {
             IList list = (IList) propertyTypes[objectType];
             if (list == null)
@@ -26,73 +26,81 @@ namespace BACnetDataTypes.Objects
 
             foreach (PropertyTypeDefinition def in list)
             {
-                if (def.getPropertyIdentifier().Equals(propertyIdentifier))
+                if (def.PropertyIdentifier.Equals(propertyIdentifier))
                     return def;
             }
 
             return null;
         }
 
-        public static PropertyTypeDefinition getPropertyTypeDefinitionRequired(ObjectType objectType, PropertyIdentifier propertyIdentifier)
+        public static PropertyTypeDefinition getPropertyTypeDefinitionRequired(ObjectType objectType,
+            PropertyIdentifier propertyIdentifier)
         {
             PropertyTypeDefinition def = getPropertyTypeDefinition(objectType, propertyIdentifier);
             if (def == null)
-                throw new BACnetServiceException(ErrorClass.Property, ErrorCode.UnknownProperty, objectType + "/" + propertyIdentifier);
+                throw new BACnetServiceException(ErrorClass.Property, ErrorCode.UnknownProperty,
+                    objectType + "/" + propertyIdentifier);
             return def;
         }
 
- public static void validateValue(ObjectType objectType, PropertyIdentifier propertyIdentifier, Encodable value)
-    {
-        PropertyTypeDefinition def = getPropertyTypeDefinitionRequired(objectType, propertyIdentifier);
-        if (def.isSequence()) {
-            SequenceOf seq = (SequenceOf)value;
-            foreach (Encodable e in seq)
+        public static void validateValue(ObjectType objectType, PropertyIdentifier propertyIdentifier, Encodable value)
+        {
+            PropertyTypeDefinition def = getPropertyTypeDefinitionRequired(objectType, propertyIdentifier);
+            if (def.IsSequence)
             {
-                if (!def.getType().IsInstanceOfType(e)) // TODO IsAssignableFrom
-                    throw new BACnetServiceException(ErrorClass.Property, ErrorCode.InvalidDataType, "expected "
-                            + def.getType() + ", received=" + value.GetType());
+                SequenceOf seq = (SequenceOf) value;
+                foreach (Encodable e in seq)
+                {
+                    if (!def.Type.IsInstanceOfType(e)) // TODO IsAssignableFrom
+                        throw new BACnetServiceException(ErrorClass.Property, ErrorCode.InvalidDataType, "expected "
+                                                                                                         + def.Type+
+                                                                                                         ", received=" +
+                                                                                                         value.GetType());
+                }
             }
-        }
-        //else if (!def.getClazz().isAssignableFrom(value.getClass()))
-        else if (!def.getType().IsInstanceOfType(value))
+            //else if (!def.getClazz().isAssignableFrom(value.getClass()))
+            else if (!def.Type.IsInstanceOfType(value))
                 throw new BACnetServiceException(ErrorClass.Property, ErrorCode.InvalidDataType, "expected "
-                    + def.getType() + ", received=" + value.GetType());
-    }
+                                                                                                 + def.Type+
+                                                                                                 ", received=" +
+                                                                                                 value.GetType());
+        }
 
-public static void validateSequenceValue(ObjectType objectType, PropertyIdentifier propertyIdentifier, Encodable value) 
-{
-    PropertyTypeDefinition def = getPropertyTypeDefinitionRequired(objectType, propertyIdentifier);
-        if (!def.isSequence())
-            throw new BACnetServiceException(ErrorClass.Property, ErrorCode.PropertyIsNotAnArray);
+        public static void validateSequenceValue(ObjectType objectType, PropertyIdentifier propertyIdentifier,
+            Encodable value)
+        {
+            PropertyTypeDefinition def = getPropertyTypeDefinitionRequired(objectType, propertyIdentifier);
+            if (!def.IsSequence)
+                throw new BACnetServiceException(ErrorClass.Property, ErrorCode.PropertyIsNotAnArray);
             //if (!def.getClazz().isAssignableFrom(value.getClass()))
-            if (!def.getType().IsInstanceOfType(value))
+            if (!def.Type.IsInstanceOfType(value))
                 throw new BACnetServiceException(ErrorClass.Property, ErrorCode.InvalidDataType);
-    }
+        }
 
-    public static IList getPropertyTypeDefinitions(ObjectType objectType)
-{
-    return getPropertyTypeDefinitions(objectType, 0);
-}
+        public static IList getPropertyTypeDefinitions(ObjectType objectType)
+        {
+            return getPropertyTypeDefinitions(objectType, 0);
+        }
 
-public static IList getRequiredPropertyTypeDefinitions(ObjectType objectType)
-{
-    return getPropertyTypeDefinitions(objectType, 1);
-}
+        public static IList getRequiredPropertyTypeDefinitions(ObjectType objectType)
+        {
+            return getPropertyTypeDefinitions(objectType, 1);
+        }
 
-public static IList getOptionalPropertyTypeDefinitions(ObjectType objectType)
-{
-    return getPropertyTypeDefinitions(objectType, 2);
-}
+        public static IList getOptionalPropertyTypeDefinitions(ObjectType objectType)
+        {
+            return getPropertyTypeDefinitions(objectType, 2);
+        }
 
-public static bool isCommandable(ObjectType oType, PropertyIdentifier pid)
-{
-    if (!pid.Equals(PropertyIdentifier.PresentValue))
-        return false;
-    return oType.Equals(ObjectType.AnalogOutput) || oType.Equals(ObjectType.AnalogValue)
-            || oType.Equals(ObjectType.BinaryOutput) || oType.Equals(ObjectType.BinaryValue)
-            || oType.Equals(ObjectType.MultiStateOutput) || oType.Equals(ObjectType.MultiStateValue)
-            || oType.Equals(ObjectType.AccessDoor);
-}
+        public static bool isCommandable(ObjectType oType, PropertyIdentifier pid)
+        {
+            if (!pid.Equals(PropertyIdentifier.PresentValue))
+                return false;
+            return oType.Equals(ObjectType.AnalogOutput) || oType.Equals(ObjectType.AnalogValue)
+                   || oType.Equals(ObjectType.BinaryOutput) || oType.Equals(ObjectType.BinaryValue)
+                   || oType.Equals(ObjectType.MultiStateOutput) || oType.Equals(ObjectType.MultiStateValue)
+                   || oType.Equals(ObjectType.AccessDoor);
+        }
 
 /**
  * @param objectType
@@ -100,58 +108,61 @@ public static bool isCommandable(ObjectType oType, PropertyIdentifier pid)
  *            0 = all, 1 = required, 2 = optional
  * @return
  */
-private static IList getPropertyTypeDefinitions(ObjectType objectType, int include)
-{
-    IList result = new ArrayList();
-    IList list = (IList) propertyTypes[objectType];
-    if (list != null)
-    {
-        foreach (PropertyTypeDefinition def in list)
+
+        private static IList getPropertyTypeDefinitions(ObjectType objectType, int include)
         {
-            if (include == 0 || (include == 1 && def.isRequired()) || (include == 2 && def.isOptional()))
-                result.Add(def);
+            IList result = new ArrayList();
+            IList list = (IList) propertyTypes[objectType];
+            if (list != null)
+            {
+                foreach (PropertyTypeDefinition def in list)
+                {
+                    if (include == 0 || (include == 1 && def.IsRequired) || (include == 2 && def.IsOptional))
+                        result.Add(def);
+                }
+            }
+            return result;
         }
-    }
-    return result;
-}
 
-private static void add(ObjectType oType, PropertyIdentifier pid, Type type, bool sequence, bool required, Encodable defaultValue)
-{
-    IList list = (IList) propertyTypes[oType];
-    if (list == null)
-    {
-        list = new ArrayList();
-        propertyTypes[oType] = list;
-    }
-
-    // Check for existing entries.
-    foreach (PropertyTypeDefinition def in list)
-    {
-        if (def.getPropertyIdentifier().Equals(pid))
+        private static void add(ObjectType oType, PropertyIdentifier pid, Type type, bool sequence, bool required,
+            Encodable defaultValue)
         {
-            list.Remove(def);
-            break;
+            IList list = (IList) propertyTypes[oType];
+            if (list == null)
+            {
+                list = new ArrayList();
+                propertyTypes[oType] = list;
+            }
+
+            // Check for existing entries.
+            foreach (PropertyTypeDefinition def in list)
+            {
+                if (def.PropertyIdentifier.Equals(pid))
+                {
+                    list.Remove(def);
+                    break;
+                }
+            }
+
+            list.Add(new PropertyTypeDefinition(oType, pid, type, sequence, required, defaultValue));
         }
-    }
 
-    list.Add(new PropertyTypeDefinition(oType, pid, type, sequence, required, defaultValue));
-}
+        public static void addPropertyTypeDefinition(ObjectType oType, PropertyIdentifier pid, Type type, bool sequence,
+            bool required, Encodable defaultValue)
+        {
+            IList list = (IList) propertyTypes[oType];
+            if (list == null)
+                throw new System.Exception("ObjectType not found: " + oType);
 
-public static void addPropertyTypeDefinition(ObjectType oType, PropertyIdentifier pid, Type type, bool sequence, bool required, Encodable defaultValue)
-{
-    IList list = (IList) propertyTypes[oType];
-    if (list == null)
-        throw new System.Exception("ObjectType not found: " + oType);
+            // Check for existing entries.
+            foreach (PropertyTypeDefinition def in list)
+            {
+                if (def.PropertyIdentifier.Equals(pid))
+                    throw new System.Exception("ObjectType already contains the given PropertyIdentifier");
+            }
 
-    // Check for existing entries.
-    foreach (PropertyTypeDefinition def in list)
-    {
-        if (def.getPropertyIdentifier().Equals(pid))
-            throw new System.Exception("ObjectType already contains the given PropertyIdentifier");
-    }
-
-    list.Add(new PropertyTypeDefinition(oType, pid, type, sequence, required, defaultValue));
-}
+            list.Add(new PropertyTypeDefinition(oType, pid, type, sequence, required, defaultValue));
+        }
 
         private void Init()
         {
@@ -441,62 +452,76 @@ public static void addPropertyTypeDefinition(ObjectType oType, PropertyIdentifie
 
     */
 
-        // Device
-        add(ObjectType.Device, PropertyIdentifier.ObjectIdentifier, typeof(ObjectIdentifier), false, true, new ObjectIdentifier(ObjectType.Device, 0x3fffff));
-        add(ObjectType.Device, PropertyIdentifier.ObjectName, typeof(CharacterString), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ObjectType, typeof(ObjectType), false, true, ObjectType.Device);
-        add(ObjectType.Device, PropertyIdentifier.SystemStatus, typeof(DeviceStatus), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.VendorName, typeof(CharacterString), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.VendorIdentifier, typeof(Unsigned16), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ModelName, typeof(CharacterString), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.FirmwareRevision, typeof(CharacterString), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ApplicationSoftwareVersion, typeof(CharacterString), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.Location, typeof(CharacterString), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.Description, typeof(CharacterString), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.ProtocolVersion, typeof(UnsignedInteger), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ProtocolRevision, typeof(UnsignedInteger), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ProtocolServicesSupported, typeof(ServicesSupported), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ProtocolObjectTypesSupported, typeof(ObjectTypesSupported), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ObjectList, typeof(ObjectIdentifier), true, true, null);
-        add(ObjectType.Device, PropertyIdentifier.StructuredObjectList, typeof(ObjectIdentifier), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.MaxApduLengthAccepted, typeof(UnsignedInteger), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.SegmentationSupported, typeof(Segmentation), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.VtClassesSupported, typeof(VtClass), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.ActiveVtSessions, typeof(VtSession), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.LocalTime, typeof(Time), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.LocalDate, typeof(Date), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.UtcOffset, typeof(SignedInteger), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.DaylightSavingsStatus, typeof(BBoolean), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.ApduSegmentTimeout, typeof(UnsignedInteger), false, true, new UnsignedInteger(1000));
-        add(ObjectType.Device, PropertyIdentifier.ApduTimeout, typeof(UnsignedInteger), false, true, new UnsignedInteger(5000));
-        add(ObjectType.Device, PropertyIdentifier.NumberOfApduRetries, typeof(UnsignedInteger), false, true, new UnsignedInteger(2));
-        add(ObjectType.Device, PropertyIdentifier.ListOfSessionKeys, typeof(SessionKey), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.TimeSynchronizationRecipients, typeof(Recipient), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.MaxMaster, typeof(UnsignedInteger), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.MaxInfoFrames, typeof(UnsignedInteger), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.DeviceAddressBinding, typeof(AddressBinding), true, true, new SequenceOf()); // AddressBinding
-        add(ObjectType.Device, PropertyIdentifier.DatabaseRevision, typeof(UnsignedInteger), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ConfigurationFiles, typeof(ObjectIdentifier), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.LastRestoreTime, typeof(TimeStamp), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.BackupFailureTimeout, typeof(Unsigned16), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.BackupPreparationTime, typeof(Unsigned16), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.RestorePreparationTime, typeof(Unsigned16), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.RestoreCompletionTime, typeof(Unsigned16), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.BackupAndRestoreState, typeof(BackupState), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.ActiveCovSubscriptions, typeof(CovSubscription), true, true, new SequenceOf()); // CovSubscription
-        add(ObjectType.Device, PropertyIdentifier.MaxSegmentsAccepted, typeof(UnsignedInteger), false, true, null);
-        add(ObjectType.Device, PropertyIdentifier.UtcTimeSynchronizationRecipients, typeof(Recipient), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.TimeSynchronizationInterval, typeof(UnsignedInteger), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.AlignIntervals, typeof(BBoolean), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.IntervalOffset, typeof(UnsignedInteger), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.SlaveProxyEnable, typeof(BBoolean), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.AutoSlaveDiscovery, typeof(BBoolean), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.SlaveAddressBinding, typeof(AddressBinding), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.ManualSlaveAddressBinding, typeof(AddressBinding), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.LastRestartReason, typeof(RestartReason), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.RestartNotificationRecipients, typeof(Recipient), true, false, null);
-        add(ObjectType.Device, PropertyIdentifier.TimeOfDeviceRestart, typeof(TimeStamp), false, false, null);
-        add(ObjectType.Device, PropertyIdentifier.ProfileName, typeof(CharacterString), false, false, null);
+            // Device
+            add(ObjectType.Device, PropertyIdentifier.ObjectIdentifier, typeof (ObjectIdentifier), false, true,
+                new ObjectIdentifier(ObjectType.Device, 0x3fffff));
+            add(ObjectType.Device, PropertyIdentifier.ObjectName, typeof (CharacterString), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.ObjectType, typeof (ObjectType), false, true, ObjectType.Device);
+            add(ObjectType.Device, PropertyIdentifier.SystemStatus, typeof (DeviceStatus), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.VendorName, typeof (CharacterString), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.VendorIdentifier, typeof (Unsigned16), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.ModelName, typeof (CharacterString), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.FirmwareRevision, typeof (CharacterString), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.ApplicationSoftwareVersion, typeof (CharacterString), false, true,
+                null);
+            add(ObjectType.Device, PropertyIdentifier.Location, typeof (CharacterString), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.Description, typeof (CharacterString), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.ProtocolVersion, typeof (UnsignedInteger), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.ProtocolRevision, typeof (UnsignedInteger), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.ProtocolServicesSupported, typeof (ServicesSupported), false, true,
+                null);
+            add(ObjectType.Device, PropertyIdentifier.ProtocolObjectTypesSupported, typeof (ObjectTypesSupported), false,
+                true, null);
+            add(ObjectType.Device, PropertyIdentifier.ObjectList, typeof (ObjectIdentifier), true, true, null);
+            add(ObjectType.Device, PropertyIdentifier.StructuredObjectList, typeof (ObjectIdentifier), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.MaxApduLengthAccepted, typeof (UnsignedInteger), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.SegmentationSupported, typeof (Segmentation), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.VtClassesSupported, typeof (VtClass), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.ActiveVtSessions, typeof (VtSession), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.LocalTime, typeof (Time), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.LocalDate, typeof (Date), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.UtcOffset, typeof (SignedInteger), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.DaylightSavingsStatus, typeof (BBoolean), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.ApduSegmentTimeout, typeof (UnsignedInteger), false, true,
+                new UnsignedInteger(1000));
+            add(ObjectType.Device, PropertyIdentifier.ApduTimeout, typeof (UnsignedInteger), false, true,
+                new UnsignedInteger(5000));
+            add(ObjectType.Device, PropertyIdentifier.NumberOfApduRetries, typeof (UnsignedInteger), false, true,
+                new UnsignedInteger(2));
+            add(ObjectType.Device, PropertyIdentifier.ListOfSessionKeys, typeof (SessionKey), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.TimeSynchronizationRecipients, typeof (Recipient), true, false,
+                null);
+            add(ObjectType.Device, PropertyIdentifier.MaxMaster, typeof (UnsignedInteger), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.MaxInfoFrames, typeof (UnsignedInteger), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.DeviceAddressBinding, typeof (AddressBinding), true, true,
+                new SequenceOf()); // AddressBinding
+            add(ObjectType.Device, PropertyIdentifier.DatabaseRevision, typeof (UnsignedInteger), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.ConfigurationFiles, typeof (ObjectIdentifier), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.LastRestoreTime, typeof (TimeStamp), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.BackupFailureTimeout, typeof (Unsigned16), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.BackupPreparationTime, typeof (Unsigned16), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.RestorePreparationTime, typeof (Unsigned16), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.RestoreCompletionTime, typeof (Unsigned16), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.BackupAndRestoreState, typeof (BackupState), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.ActiveCovSubscriptions, typeof (CovSubscription), true, true,
+                new SequenceOf()); // CovSubscription
+            add(ObjectType.Device, PropertyIdentifier.MaxSegmentsAccepted, typeof (UnsignedInteger), false, true, null);
+            add(ObjectType.Device, PropertyIdentifier.UtcTimeSynchronizationRecipients, typeof (Recipient), true, false,
+                null);
+            add(ObjectType.Device, PropertyIdentifier.TimeSynchronizationInterval, typeof (UnsignedInteger), false,
+                false, null);
+            add(ObjectType.Device, PropertyIdentifier.AlignIntervals, typeof (BBoolean), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.IntervalOffset, typeof (UnsignedInteger), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.SlaveProxyEnable, typeof (BBoolean), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.AutoSlaveDiscovery, typeof (BBoolean), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.SlaveAddressBinding, typeof (AddressBinding), true, false, null);
+            add(ObjectType.Device, PropertyIdentifier.ManualSlaveAddressBinding, typeof (AddressBinding), true, false,
+                null);
+            add(ObjectType.Device, PropertyIdentifier.LastRestartReason, typeof (RestartReason), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.RestartNotificationRecipients, typeof (Recipient), true, false,
+                null);
+            add(ObjectType.Device, PropertyIdentifier.TimeOfDeviceRestart, typeof (TimeStamp), false, false, null);
+            add(ObjectType.Device, PropertyIdentifier.ProfileName, typeof (CharacterString), false, false, null);
 
             /*
         // Event enrollment
@@ -918,6 +943,6 @@ public static void addPropertyTypeDefinition(ObjectType oType, PropertyIdentifie
         add(ObjectType.trendLogMultiple, PropertyIdentifier.eventTimeStamps, typeof(TimeStamp), true, false, null);
         add(ObjectType.trendLogMultiple, PropertyIdentifier.profileName, typeof(CharacterString), false, false, null);
         */
-    }
+        }
     }
 }

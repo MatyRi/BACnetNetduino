@@ -9,6 +9,8 @@ using BACnetDataTypes.Primitive;
 using BACnetNetwork;
 using BACnetNetwork.NPDU;
 using BACnetServices.APDU;
+using BACnetServices.Service.Acknowledgement;
+using BACnetServices.Service.Confirmed;
 using BACnetServices.Service.Unconfirmed;
 using Microsoft.SPOT;
 
@@ -200,6 +202,11 @@ namespace BACnetServices
 
             // Unconfirmed services will never have to be segmented, so just send it.
             network.sendAPDU(address, linkService, new UnconfirmedRequest(serviceRequest), broadcast);
+        }
+
+        public AcknowledgementService send(Address address, OctetString linkService, uint maxApduLengthAccepted, Segmentation segmentationSupported, ConfirmedRequestService serviceRequest)
+        {
+            throw new NotImplementedException();
         }
     }
 }

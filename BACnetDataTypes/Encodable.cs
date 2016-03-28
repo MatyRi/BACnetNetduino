@@ -316,25 +316,25 @@ namespace BACnetDataTypes
                     return new Null();
 
                 // Try converting to the definition value.
-                return (Encodable) amb.ConvertTo(def.getType());
+                return (Encodable) amb.ConvertTo(def.Type);
             }
 
             if (propertyArrayIndex != null)
             {
-                if (!def.isSequence() && !def.getType().IsSubclassOf(typeof (SequenceOf)))
+                if (!def.IsSequence&& !def.Type.IsSubclassOf(typeof (SequenceOf)))
                     throw new BACnetErrorException(ErrorClass.Property, ErrorCode.PropertyIsNotAList);
-                if (def.getType().IsSubclassOf(typeof (SequenceOf)))
-                    return readWrapped(source, def.getInnerType(), contextId);
+                if (def.Type.IsSubclassOf(typeof (SequenceOf)))
+                    return readWrapped(source, def.InnerType, contextId);
             }
             else
             {
-                if (def.isSequence())
-                    return readSequenceOf(source, def.getType(), contextId);
-                if (def.getType().IsSubclassOf(typeof (SequenceOf)))
-                    return readSequenceType(source, def.getType(), contextId);
+                if (def.IsSequence)
+                    return readSequenceOf(source, def.Type, contextId);
+                if (def.Type.IsSubclassOf(typeof (SequenceOf)))
+                    return readSequenceType(source, def.Type, contextId);
             }
 
-            return readWrapped(source, def.getType(), contextId);
+            return readWrapped(source, def.Type, contextId);
         }
 
         protected static Encodable readOptionalEncodable(ByteStream source, ObjectType objectType,
@@ -351,7 +351,7 @@ namespace BACnetDataTypes
             PropertyTypeDefinition def = ObjectProperties.getPropertyTypeDefinition(objectType, propertyIdentifier);
             if (def == null)
                 return readSequenceOf(source, typeof (AmbiguousValue), contextId);
-            return readSequenceOf(source, def.getType(), contextId);
+            return readSequenceOf(source, def.Type, contextId);
         }
 
         // Read vendor-specific // Map<VendorServiceKey, SequenceDefinition>

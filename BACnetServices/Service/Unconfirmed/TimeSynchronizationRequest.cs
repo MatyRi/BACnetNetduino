@@ -1,8 +1,10 @@
+using System;
 using BACnetDataTypes;
 using BACnetDataTypes.Constructed;
 using BACnetDataTypes.Enumerated;
 using BACnetDataTypes.Exception;
 using BACnetDataTypes.Primitive;
+using DateTime = BACnetDataTypes.Constructed.DateTime;
 
 namespace BACnetServices.Service.Unconfirmed
 {
@@ -39,8 +41,9 @@ namespace BACnetServices.Service.Unconfirmed
                     (ServicesSupported)
                         localDevice.Configuration.getProperty(PropertyIdentifier.ProtocolServicesSupported);
                 if (servicesSupported.isTimeSynchronization())
+                    throw new NotImplementedException();
                     // TODO localDevice.getEventHandler().synchronizeTime(time, false);
-                    int i = 5;
+
             }
             catch (BACnetServiceException e)
             {

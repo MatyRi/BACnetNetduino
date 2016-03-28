@@ -4,8 +4,11 @@ using BACnetDataTypes.Constructed;
 using BACnetDataTypes.Enumerated;
 using BACnetDataTypes.Exception;
 using BACnetDataTypes.Primitive;
+using BACnetNetwork.Enums;
 using BACnetServices.APDU;
 using BACnetServices.Objects;
+using BACnetServices.Service.Acknowledgement;
+using BACnetServices.Service.Confirmed;
 using BACnetServices.Service.Unconfirmed;
 using Microsoft.SPOT;
 using DateTime = System.DateTime;
@@ -32,6 +35,7 @@ namespace BACnetServices
         //private readonly List<BACnetObject> localObjects = new CopyOnWriteArrayList<BACnetObject>();
         private readonly IList localObjects = new ArrayList();
         //private readonly List<RemoteDevice> remoteDevices = new CopyOnWriteArrayList<RemoteDevice>();
+        private readonly IList remoteDevices = new ArrayList();
         private bool initialized;
         //private ExecutorService executorService;
         private bool ownsExecutorService;
@@ -172,7 +176,7 @@ namespace BACnetServices
 
             try
             {
-                request.ServiceRequest.handle(fromAddress, linkService);
+                request.ServiceRequest.handle(this, fromAddress, linkService);
             }
             catch (NotImplementedException e)
             {
@@ -329,36 +333,36 @@ namespace BACnetServices
 
         public IList LocalObjects => localObjects;
 
-        //    public BACnetObject getObject(ObjectIdentifier id)
-        //    {
-        //        if (id.getObjectType().intValue() == ObjectType.device.intValue())
-        //        {
-        //            // Check if we need to look into the local device.
-        //            if (id.getInstanceNumber() == 0x3FFFFF || id.getInstanceNumber() == configuration.getInstanceId())
-        //                return configuration;
-        //        }
+        public BACnetObject GetObject(ObjectIdentifier id)
+        {
+            if (id.ObjectType.Value == ObjectType.Device.Value)
+            {
+                // Check if we need to look into the local device.
+                if (id.InstanceNumber == 0x3FFFFF || id.InstanceNumber == configuration.InstanceId)
+                    return configuration;
+            }
 
-        //        for (BACnetObject obj : localObjects)
-        //        {
-        //            if (obj.getId().equals(id))
-        //                return obj;
-        //        }
-        //        return null;
-        //    }
+            foreach (BACnetObject obj in localObjects)
+            {
+                if (obj.Id.Equals(id))
+                    return obj;
+            }
+            return null;
+        }
 
-        //    public BACnetObject getObject(string name)
-        //    {
-        //        // Check if we need to look into the local device.
-        //        if (name.equals(configuration.getObjectName()))
-        //            return configuration;
+        public BACnetObject GetObject(string name)
+        {
+            // Check if we need to look into the local device.
+            if (name.Equals(configuration.ObjectName))
+                return configuration;
 
-        //        for (BACnetObject obj : localObjects)
-        //        {
-        //            if (name.equals(obj.getObjectName()))
-        //                return obj;
-        //        }
-        //        return null;
-        //    }
+            foreach (BACnetObject obj in localObjects)
+            {
+                if (name.Equals(obj.ObjectName))
+                    return obj;
+            }
+            return null;
+        }
 
         //    public void addObject(BACnetObject obj)
         //    {
@@ -434,41 +438,39 @@ namespace BACnetServices
         ////
         //// Message sending
         ////
-        //public AcknowledgementService send(RemoteDevice d, ConfirmedRequestService serviceRequest)
-        //{
-        //        return applicationLayer.send(d.getAddress(), d.getLinkService(), d.getMaxAPDULengthAccepted(),
-        //                d.getSegmentationSupported(), serviceRequest);
-        //}
+        public AcknowledgementService send(RemoteDevice d, ConfirmedRequestService serviceRequest)
+        {
+            return applicationLayer.send(d.Address, d.LinkService, d.MaxAPDULengthAccepted,
+                    d.SegmentationSupported, serviceRequest);
+        }
 
-        //public AcknowledgementService send(Address address, MaxApduLength maxAPDULength,
-        //        Segmentation segmentationSupported, ConfirmedRequestService serviceRequest)
-        //{
-        //        return applicationLayer.send(address, null, maxAPDULength.getMaxLength(), segmentationSupported, serviceRequest);
-        //}
+        public AcknowledgementService send(Address address, MaxApduLength maxAPDULength,
+                Segmentation segmentationSupported, ConfirmedRequestService serviceRequest)
+        {
+            return applicationLayer.send(address, null, (uint) maxAPDULength.GetMaxApduLength(), segmentationSupported, serviceRequest);
+        }
 
-        //public AcknowledgementService send(Address address, OctetString linkService, MaxApduLength maxAPDULength,
-        //        Segmentation segmentationSupported, ConfirmedRequestService serviceRequest)
-        //{
-        //        return applicationLayer
-        //                .send(address, linkService, maxAPDULength.getMaxLength(), segmentationSupported, serviceRequest);
-        //}
+        public AcknowledgementService send(Address address, OctetString linkService, MaxApduLength maxAPDULength,
+                Segmentation segmentationSupported, ConfirmedRequestService serviceRequest)
+        {
+            return applicationLayer.send(address, linkService, (uint) maxAPDULength.GetMaxApduLength(), segmentationSupported, serviceRequest);
+        }
 
-        //public void sendUnconfirmed(Address address, UnconfirmedRequestService serviceRequest)
-        //{
-        //    applicationLayer.sendUnconfirmed(address, null, serviceRequest, false);
-        //}
+        public void sendUnconfirmed(Address address, UnconfirmedRequestService serviceRequest)
+        {
+            applicationLayer.sendUnconfirmed(address, null, serviceRequest, false);
+        }
 
-        //public void sendUnconfirmed(Address address, OctetString linkService, UnconfirmedRequestService serviceRequest)
-        //            throws BACnetException
-        //{
-        //    applicationLayer.sendUnconfirmed(address, linkService, serviceRequest, false);
-        //}
+        public void sendUnconfirmed(Address address, OctetString linkService, UnconfirmedRequestService serviceRequest)
+        {
+            applicationLayer.sendUnconfirmed(address, linkService, serviceRequest, false);
+        }
 
-        //public void sendLocalBroadcast(UnconfirmedRequestService serviceRequest)
-        //{
-        //    Address bcast = applicationLayer.getLocalBroadcastAddress();
-        //    applicationLayer.sendUnconfirmed(bcast, null, serviceRequest, true);
-        //}
+        /*public void sendLocalBroadcast(UnconfirmedRequestService serviceRequest)
+        {
+            Address bcast = applicationLayer.getLocalBroadcastAddress();
+            applicationLayer.sendUnconfirmed(bcast, null, serviceRequest, true);
+        }*/
 
         internal void sendGlobalBroadcast(UnconfirmedRequestService serviceRequest)
         {
@@ -490,222 +492,221 @@ namespace BACnetServices
         ////
         //// Remote device management
         ////
-        //public RemoteDevice getRemoteDevice(int instanceId) 
-        //{
-        //    RemoteDevice d = getRemoteDeviceImpl(instanceId, null, null);
-        //        if (d == null)
-        //            throw new BACnetException("Unknown device: instance id=" + instanceId);
-        //        return d;
-        //    }
+        public RemoteDevice getRemoteDevice(uint instanceId)
+        {
+            RemoteDevice d = getRemoteDeviceImpl(instanceId, null, null);
+            if (d == null)
+                throw new BACnetException("Unknown device: instance id=" + instanceId);
+            return d;
+        }
 
-        //    public RemoteDevice getRemoteDevice(int instanceId, Address address, OctetString linkService)
-        //            throws BACnetException
-        //{
-        //    RemoteDevice d = getRemoteDeviceImpl(instanceId, address, linkService);
-        //        if (d == null)
-        //            throw new BACnetException("Unknown device: instance id=" + instanceId + ", address=" + address
-        //                    + ", linkService=" + linkService);
-        //        return d;
-        //    }
+        public RemoteDevice getRemoteDevice(uint instanceId, Address address, OctetString linkService)
+        {
+            RemoteDevice d = getRemoteDeviceImpl(instanceId, address, linkService);
+                if (d == null)
+                    throw new BACnetException("Unknown device: instance id=" + instanceId + ", address=" + address
+                            + ", linkService=" + linkService);
+                return d;
+            }
 
-        //    public RemoteDevice getRemoteDeviceCreate(int instanceId, Address address, OctetString linkService)
-        //{
-        //    RemoteDevice d = getRemoteDeviceImpl(instanceId, address, linkService);
-        //    if (d == null)
-        //    {
-        //        if (address == null)
-        //            throw new NullPointerException("addr cannot be null");
-        //        d = new RemoteDevice(instanceId, address, linkService);
-        //        remoteDevices.add(d);
-        //    }
-        //    return d;
-        //}
+    public RemoteDevice getRemoteDeviceCreate(uint instanceId, Address address, OctetString linkService)
+    {
+        RemoteDevice d = getRemoteDeviceImpl(instanceId, address, linkService);
+        if (d == null)
+        {
+            if (address == null)
+                throw new NullReferenceException("addr cannot be null");
+            d = new RemoteDevice(instanceId, address, linkService);
+            remoteDevices.Add(d);
+        }
+        return d;
+    }
 
-        //public void addRemoteDevice(RemoteDevice d)
-        //{
-        //    remoteDevices.add(d);
-        //}
+    public void addRemoteDevice(RemoteDevice d)
+    {
+        remoteDevices.Add(d);
+    }
 
-        //private RemoteDevice getRemoteDeviceImpl(int instanceId, Address address, OctetString linkService)
-        //{
-        //    for (RemoteDevice d : remoteDevices)
-        //    {
-        //        if (strict || address == null)
-        //        {
-        //            // Only compare by device id, as should be sufficient according to the spec's insistence on 
-        //            // unique device ids.
-        //            if (d.getInstanceNumber() == instanceId)
-        //                return d;
-        //        }
-        //        else {
-        //            // Compare device ids and address.
-        //            if (d.getInstanceNumber() == instanceId && d.getAddress().equals(address)
-        //                    && ObjectUtils.equals(d.getLinkService(), linkService))
-        //                return d;
-        //        }
-        //    }
-        //    return null;
-        //}
+    private RemoteDevice getRemoteDeviceImpl(uint instanceId, Address address, OctetString linkService)
+    {
+        foreach (RemoteDevice d in remoteDevices)
+        {
+            if (strict || address == null)
+            {
+                // Only compare by device id, as should be sufficient according to the spec's insistence on 
+                // unique device ids.
+                if (d.InstanceNumber == instanceId)
+                    return d;
+            }
+            else {
+                // Compare device ids and address.
+                if (d.InstanceNumber == instanceId && d.Address.Equals(address)
+                        && d.LinkService.Equals(linkService))
+                    return d;
+            }
+        }
+        return null;
+    }
 
-        //public List<RemoteDevice> getRemoteDevices()
-        //{
-        //    return remoteDevices;
-        //}
+    public IList getRemoteDevices()
+    {
+        return remoteDevices;
+    }
 
-        //public RemoteDevice getRemoteDevice(Address address)
-        //{
-        //    for (RemoteDevice d : remoteDevices)
-        //    {
-        //        if (d.getAddress().equals(address))
-        //            return d;
-        //    }
-        //    return null;
-        //}
+    public RemoteDevice getRemoteDevice(Address address)
+    {
+        foreach (RemoteDevice d in remoteDevices)
+        {
+            if (d.Address.Equals(address))
+                return d;
+        }
+        return null;
+    }
 
-        //public RemoteDevice getRemoteDeviceByUserData(Object userData)
-        //{
-        //    for (RemoteDevice d : remoteDevices)
-        //    {
-        //        if (ObjectUtils.equals(userData, d.getUserData()))
-        //            return d;
-        //    }
-        //    return null;
-        //}
+    //public RemoteDevice getRemoteDeviceByUserData(Object userData)
+    //{
+    //    for (RemoteDevice d : remoteDevices)
+    //    {
+    //        if (ObjectUtils.equals(userData, d.getUserData()))
+    //            return d;
+    //    }
+    //    return null;
+    //}
 
-        //    //
-        //    //
-        //    // Intrinsic events
-        //    //
-        //    public List<BACnetException> sendIntrinsicEvent(ObjectIdentifier eventObjectIdentifier, TimeStamp timeStamp,
-        //            int notificationClassId, EventType eventType, CharacterString messageText, NotifyType notifyType,
-        //            EventState fromState, EventState toState, NotificationParameters eventValues)
-        //{
+    //    //
+    //    //
+    //    // Intrinsic events
+    //    //
+    //    public List<BACnetException> sendIntrinsicEvent(ObjectIdentifier eventObjectIdentifier, TimeStamp timeStamp,
+    //            int notificationClassId, EventType eventType, CharacterString messageText, NotifyType notifyType,
+    //            EventState fromState, EventState toState, NotificationParameters eventValues)
+    //{
 
-        //    // Try to find a notification class with the given id in the local objects.
-        //    BACnetObject nc = null;
-        //        foreach (BACnetObject obj : localObjects) {
-        //        if (ObjectType.notificationClass.equals(obj.getId().getObjectType()))
-        //        {
-        //            try
-        //            {
-        //                UnsignedInteger ncId = (UnsignedInteger)obj.getProperty(PropertyIdentifier.notificationClass);
-        //                if (ncId != null && ncId.intValue() == notificationClassId)
-        //                {
-        //                    nc = obj;
-        //                    break;
-        //                }
-        //            }
-        //            catch (BACnetServiceException e)
-        //            {
-        //                // Should never happen, so wrap in a RTE
-        //                throw new RuntimeException(e);
-        //            }
-        //        }
-        //    }
+    //    // Try to find a notification class with the given id in the local objects.
+    //    BACnetObject nc = null;
+    //        foreach (BACnetObject obj : localObjects) {
+    //        if (ObjectType.notificationClass.equals(obj.getId().getObjectType()))
+    //        {
+    //            try
+    //            {
+    //                UnsignedInteger ncId = (UnsignedInteger)obj.getProperty(PropertyIdentifier.notificationClass);
+    //                if (ncId != null && ncId.intValue() == notificationClassId)
+    //                {
+    //                    nc = obj;
+    //                    break;
+    //                }
+    //            }
+    //            catch (BACnetServiceException e)
+    //            {
+    //                // Should never happen, so wrap in a RTE
+    //                throw new RuntimeException(e);
+    //            }
+    //        }
+    //    }
 
-        //        if (nc == null)
-        //            throw new BACnetException("Notification class object not found for given id: " + notificationClassId);
+    //        if (nc == null)
+    //            throw new BACnetException("Notification class object not found for given id: " + notificationClassId);
 
-        //// Get the required properties from the notification class object.
-        //SequenceOf<Destination> recipientList = null;
-        //Boolean ackRequired = null;
-        //UnsignedInteger priority = null;
-        //        try {
-        //            recipientList = (SequenceOf<Destination>) nc.getPropertyRequired(PropertyIdentifier.recipientList);
-        //            ackRequired = new Boolean(
-        //                    ((EventTransitionBits) nc.getPropertyRequired(PropertyIdentifier.ackRequired)).contains(toState));
+    //// Get the required properties from the notification class object.
+    //SequenceOf<Destination> recipientList = null;
+    //Boolean ackRequired = null;
+    //UnsignedInteger priority = null;
+    //        try {
+    //            recipientList = (SequenceOf<Destination>) nc.getPropertyRequired(PropertyIdentifier.recipientList);
+    //            ackRequired = new Boolean(
+    //                    ((EventTransitionBits) nc.getPropertyRequired(PropertyIdentifier.ackRequired)).contains(toState));
 
-        //            // Determine which priority value to use based upon the toState.
-        //            SequenceOf<UnsignedInteger> priorities = (SequenceOf<UnsignedInteger>)nc
-        //                    .getPropertyRequired(PropertyIdentifier.priority);
-        //            if (toState.equals(EventState.normal))
-        //                priority = priorities.get(3);
-        //            else if (toState.equals(EventState.fault))
-        //                priority = priorities.get(2);
-        //            else
-        //                // everything else is offnormal
-        //                priority = priorities.get(1);
-        //        }
-        //        catch (BACnetServiceException e) {
-        //            // Should never happen, so wrap in a RTE
-        //            throw new RuntimeException(e);
-        //        }
+    //            // Determine which priority value to use based upon the toState.
+    //            SequenceOf<UnsignedInteger> priorities = (SequenceOf<UnsignedInteger>)nc
+    //                    .getPropertyRequired(PropertyIdentifier.priority);
+    //            if (toState.equals(EventState.normal))
+    //                priority = priorities.get(3);
+    //            else if (toState.equals(EventState.fault))
+    //                priority = priorities.get(2);
+    //            else
+    //                // everything else is offnormal
+    //                priority = priorities.get(1);
+    //        }
+    //        catch (BACnetServiceException e) {
+    //            // Should never happen, so wrap in a RTE
+    //            throw new RuntimeException(e);
+    //        }
 
-        //        // Send the message to the destinations that are interested in it, while recording any exceptions in the result
-        //        // list
-        //        List<BACnetException> sendExceptions = new ArrayList<BACnetException>();
-        //        for (Destination destination : recipientList) {
-        //            if (destination.isSuitableForEvent(timeStamp, toState)) {
-        //                if (destination.getIssueConfirmedNotifications().boolValue()) {
-        //                    RemoteDevice remoteDevice = null;
-        //                    if (destination.getRecipient().isAddress())
-        //                        remoteDevice = getRemoteDevice(destination.getRecipient().getAddress());
-        //                    else {
-        //                    	//AdK
-        //                    	try {
-        //                    		remoteDevice = getRemoteDevice(destination.getRecipient().ObjectIdentifier()
-        //                                .getInstanceNumber());
-        //                    	} catch (BACnetException e) {
-        //                    		System.out.println("Unknown device " + destination.getRecipient().ObjectIdentifier()
-        //                                    .getInstanceNumber());
-        //                    		continue;
-        //                    	}
-        //                    }
-        //                    if (remoteDevice != null) {
-        //                        ConfirmedEventNotificationRequest req = new ConfirmedEventNotificationRequest(
-        //                                destination.getProcessIdentifier(), configuration.getId(), eventObjectIdentifier,
-        //                                timeStamp, new UnsignedInteger(notificationClassId), priority, eventType, messageText,
-        //                                notifyType, ackRequired, fromState, toState, eventValues);
+    //        // Send the message to the destinations that are interested in it, while recording any exceptions in the result
+    //        // list
+    //        List<BACnetException> sendExceptions = new ArrayList<BACnetException>();
+    //        for (Destination destination : recipientList) {
+    //            if (destination.isSuitableForEvent(timeStamp, toState)) {
+    //                if (destination.getIssueConfirmedNotifications().boolValue()) {
+    //                    RemoteDevice remoteDevice = null;
+    //                    if (destination.getRecipient().isAddress())
+    //                        remoteDevice = getRemoteDevice(destination.getRecipient().getAddress());
+    //                    else {
+    //                    	//AdK
+    //                    	try {
+    //                    		remoteDevice = getRemoteDevice(destination.getRecipient().ObjectIdentifier()
+    //                                .getInstanceNumber());
+    //                    	} catch (BACnetException e) {
+    //                    		System.out.println("Unknown device " + destination.getRecipient().ObjectIdentifier()
+    //                                    .getInstanceNumber());
+    //                    		continue;
+    //                    	}
+    //                    }
+    //                    if (remoteDevice != null) {
+    //                        ConfirmedEventNotificationRequest req = new ConfirmedEventNotificationRequest(
+    //                                destination.getProcessIdentifier(), configuration.getId(), eventObjectIdentifier,
+    //                                timeStamp, new UnsignedInteger(notificationClassId), priority, eventType, messageText,
+    //                                notifyType, ackRequired, fromState, toState, eventValues);
 
-        //                        try {
-        //                            send(remoteDevice, req);
-        //                        }
-        //                        catch (BACnetException e) {
-        //                            sendExceptions.add(e);
-        //                        }
-        //                    }
-        //                }
-        //                else {
-        //                    Address address = null;
-        //                    if (destination.getRecipient().isAddress())
-        //                        address = destination.getRecipient().getAddress();
-        //                    else {
-        //                        RemoteDevice remoteDevice = getRemoteDevice(destination.getRecipient().ObjectIdentifier()
-        //                                .getInstanceNumber());
-        //                        if (remoteDevice != null)
-        //                            address = remoteDevice.getAddress();
-        //                    }
+    //                        try {
+    //                            send(remoteDevice, req);
+    //                        }
+    //                        catch (BACnetException e) {
+    //                            sendExceptions.add(e);
+    //                        }
+    //                    }
+    //                }
+    //                else {
+    //                    Address address = null;
+    //                    if (destination.getRecipient().isAddress())
+    //                        address = destination.getRecipient().getAddress();
+    //                    else {
+    //                        RemoteDevice remoteDevice = getRemoteDevice(destination.getRecipient().ObjectIdentifier()
+    //                                .getInstanceNumber());
+    //                        if (remoteDevice != null)
+    //                            address = remoteDevice.getAddress();
+    //                    }
 
-        //                    if (address != null) {
-        //                        UnconfirmedEventNotificationRequest req = new UnconfirmedEventNotificationRequest(
-        //                                destination.getProcessIdentifier(), configuration.getId(), eventObjectIdentifier,
-        //                                timeStamp, new UnsignedInteger(notificationClassId), priority, eventType, messageText,
-        //                                notifyType, ackRequired, fromState, toState, eventValues);
-        //                        try {
-        //                            applicationLayer.sendUnconfirmed(address, null, req, false);
-        //                        }
-        //                        catch (BACnetException e) {
-        //                            sendExceptions.add(e);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
+    //                    if (address != null) {
+    //                        UnconfirmedEventNotificationRequest req = new UnconfirmedEventNotificationRequest(
+    //                                destination.getProcessIdentifier(), configuration.getId(), eventObjectIdentifier,
+    //                                timeStamp, new UnsignedInteger(notificationClassId), priority, eventType, messageText,
+    //                                notifyType, ackRequired, fromState, toState, eventValues);
+    //                        try {
+    //                            applicationLayer.sendUnconfirmed(address, null, req, false);
+    //                        }
+    //                        catch (BACnetException e) {
+    //                            sendExceptions.add(e);
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
 
-        //        return sendExceptions;
-        //    }
+    //        return sendExceptions;
+    //    }
 
-        //    //
-        //    //
-        //    // Convenience methods
-        //    //
-        internal Address[] AllLocalAddresses => applicationLayer.NetworkLayer.AllLocalAddresses;
+    //    //
+    //    //
+    //    // Convenience methods
+    //    //
+    internal Address[] AllLocalAddresses => applicationLayer.NetworkLayer.AllLocalAddresses;
 
         internal IAmRequest MakeIAmRequest()
         {
             try
             {
-                return new IAmRequest(configuration.getId(),
+                return new IAmRequest(configuration.Id,
                         (UnsignedInteger)configuration.getProperty(PropertyIdentifier.MaxApduLengthAccepted),
                         (Segmentation)configuration.getProperty(PropertyIdentifier.SegmentationSupported),
                         (Unsigned16)configuration.getProperty(PropertyIdentifier.VendorIdentifier));

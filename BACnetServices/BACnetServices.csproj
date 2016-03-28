@@ -47,12 +47,14 @@
     <Compile Include="APDU\UnconfirmedRequest.cs" />
     <Compile Include="ApplicationLayer.cs" />
     <Compile Include="BACnetStack.cs" />
+    <Compile Include="DebuggerBrowsableState.cs" />
     <Compile Include="Exception\AbortAPDUException.cs" />
     <Compile Include="Exception\ErrorAPDUException.cs" />
     <Compile Include="Exception\RejectAPDUException.cs" />
     <Compile Include="Exception\SegmentedMessageAbortedException.cs" />
     <Compile Include="LocalDevice.cs" />
     <Compile Include="Objects\BACnetObject.cs" />
+    <Compile Include="Objects\ObjectCovSubscription.cs" />
     <Compile Include="Objects\RemoteDevice.cs" />
     <Compile Include="Objects\RemoteObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Service\Acknowledgement\ReadRangeAck.cs" />
     <Compile Include="Service\Acknowledgement\VtDataAck.cs" />
     <Compile Include="Service\Acknowledgement\VtOpenAck.cs" />
+    <Compile Include="Service\Confirmed\ConfirmedCovNotificationRequest.cs" />
     <Compile Include="Service\Confirmed\ConfirmedRequestService.cs" />
     <Compile Include="Service\Service.cs" />
     <Compile Include="Service\Unconfirmed\IAmRequest.cs" />

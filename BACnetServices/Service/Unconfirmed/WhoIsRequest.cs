@@ -30,10 +30,10 @@ namespace BACnetServices.Service.Unconfirmed
             BACnetObject local = localDevice.Configuration;
 
         // Check if we're in the device id range.
-        if (DeviceInstanceRangeLowLimit != null && local.getInstanceId() < DeviceInstanceRangeLowLimit.Value)
+        if (DeviceInstanceRangeLowLimit != null && local.InstanceId< DeviceInstanceRangeLowLimit.Value)
             return;
 
-        if (DeviceInstanceRangeHighLimit != null && local.getInstanceId() > DeviceInstanceRangeHighLimit.Value)
+        if (DeviceInstanceRangeHighLimit != null && local.InstanceId> DeviceInstanceRangeHighLimit.Value)
             return;
 
             // Return the result in a i am message.
